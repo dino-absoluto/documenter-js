@@ -1,0 +1,34 @@
+{
+  "name": "@dinoabsoluto/documenter",
+  "version": "1.0.0",
+  "description": "Generate documents",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dino-absoluto/documenter-js.git"
+  },
+  "keywords": [
+    "generate",
+    "document",
+    "api"
+  ],
+  "author": "Dino <dinoabsoluto+dev@gmail.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/dino-absoluto/documenter-js/issues"
+  },
+  "homepage": "https://github.com/dino-absoluto/documenter-js#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^1.7.0",
+    "@typescript-eslint/parser": "^1.7.0",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}
