@@ -17,16 +17,19 @@
  *
  */
 /* imports */
-export { Node } from './node'
-export { PlainText } from './plain-text'
-export { SoftBreak } from './soft-break'
-export { Link } from './link'
-export { Image } from './image'
+import { Section } from './section'
+import { Heading } from './heading'
 
-export { Section } from './section'
-export { Paragraph } from './paragraph'
-export { Heading } from './heading'
-export { Table } from './table'
-export { CodeBlock } from './codeblock'
-export { CodeSpan } from './codespan'
-export { Blockquote } from './blockquote'
+/* code */
+export class Document {
+  public filename: string
+  public data: Section
+  public constructor (filename: string, data: Section) {
+    this.filename = filename
+    this.data = data
+    this.updateHeadings()
+  }
+
+  private updateHeadings (): void {
+  }
+}

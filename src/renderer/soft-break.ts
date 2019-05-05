@@ -17,16 +17,14 @@
  *
  */
 /* imports */
-export { Node } from './node'
-export { PlainText } from './plain-text'
-export { SoftBreak } from './soft-break'
-export { Link } from './link'
-export { Image } from './image'
+import { Node } from './node'
 
-export { Section } from './section'
-export { Paragraph } from './paragraph'
-export { Heading } from './heading'
-export { Table } from './table'
-export { CodeBlock } from './codeblock'
-export { CodeSpan } from './codespan'
-export { Blockquote } from './blockquote'
+/* code */
+/**
+ * Describe a plain text element.
+ */
+export class SoftBreak extends Node {
+  public toString (): string {
+    return '\n'
+  }
+}

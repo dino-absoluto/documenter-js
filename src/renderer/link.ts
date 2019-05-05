@@ -23,29 +23,6 @@ import { Node } from './node'
 /**
  * Describe a plain text element.
  */
-export class PlainText extends Node {
-  private data: string
-  public constructor (data: string = '') {
-    super()
-    this.data = data
-  }
-
-  public toString (): string {
-    return this.data
-  }
-}
-
-export class CodeSpan extends PlainText {
-  public toString (): string {
-    return `\`${super.toString()}\``
-  }
-}
-
-export class SoftBreak extends Node {
-  public toString (): string {
-    return '\n'
-  }
-}
 
 export class Link extends Node {
   private title: string
@@ -58,11 +35,5 @@ export class Link extends Node {
 
   public toString (): string {
     return `[${this.title}](${this.url})`
-  }
-}
-
-export class Image extends Link {
-  public toString (): string {
-    return '!' + super.toString()
   }
 }
