@@ -50,7 +50,5 @@ import { Parser } from './parser'
 export const documenter = (modelFile: string): void => {
   const parser = new Parser()
   parser.loadPackage(modelFile)
-  // for (const entry of pkg.members) {
-  //   traverse(model, entry)
-  // }
+  parser.parse()
 }

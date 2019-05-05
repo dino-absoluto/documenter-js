@@ -73,6 +73,18 @@ export class Page {
   public constructor (filename: string) {
     this.filename = filename
   }
+
+  public toString (): string {
+    return this.sections.map(s => s.toString()).join('\n\n')
+  }
+
+  public flatten (): void {
+    for (const pg of this.subPages) {
+      pg.flatten()
+      this.sections.push(...pg.sections)
+    }
+    this.subPages = []
+  }
 }
 
 export class Parser {
@@ -157,14 +169,34 @@ export class Parser {
     const pkgName = pkg && pkg.name
     const page = new Page(
       (pkgName || '') + item.getScopedNameWithinPackage() + '.md')
+    const children: Node[] = []
     if (item instanceof ApiDocumentedItem && item.tsdocComment) {
       const docComment = item.tsdocComment
-      this.parseDocNode(item, docComment.summarySection)
+      children.push(this.parseDocNode(item, docComment.summarySection))
+      if (docComment.remarksBlock) {
+        children.push(this.parseDocNode(item, docComment.remarksBlock))
+      }
+      if (docComment.params) {
+        children.push(this.parseDocNode(item, docComment.params))
+      }
     }
+    page.sections.push(new Section(children))
     for (const mem of item.members) {
       const memPage = this.parseItem(mem)
       page.subPages.push(memPage)
     }
     return page
+  }
+
+  public parse (): void {
+    const pages = []
+    for (const entry of this.model.members) {
+      const page = this.parseItem(entry)
+      pages.push(page)
+    }
+    for (const pg of pages) {
+      pg.flatten()
+    }
+    console.log(pages.map(p => p.toString()).join('\n\n---\n\n'))
   }
 }
