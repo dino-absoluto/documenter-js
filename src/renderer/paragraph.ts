@@ -35,6 +35,19 @@ export class Paragraph extends Node {
   }
 }
 
+export class Blockquote extends Paragraph {
+  public toString (): string {
+    return super.toString().split('\n').map(s => `> ${s}`).join('\n')
+  }
+}
+
+export class CodeBlock extends Paragraph {
+  public highlight: string = ''
+  public toString (): string {
+    return '```' + this.highlight + '\n' + super.toString() + '\n```'
+  }
+}
+
 export class Heading extends Node {
   private data: Node
   private level: number

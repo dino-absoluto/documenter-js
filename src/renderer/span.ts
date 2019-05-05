@@ -35,8 +35,34 @@ export class PlainText extends Node {
   }
 }
 
+export class CodeSpan extends PlainText {
+  public toString (): string {
+    return `\`${super.toString()}\``
+  }
+}
+
 export class SoftBreak extends Node {
   public toString (): string {
     return '\n'
+  }
+}
+
+export class Link extends Node {
+  private title: string
+  private url: string
+  public constructor (title: string, url: string) {
+    super()
+    this.title = title
+    this.url = url
+  }
+
+  public toString (): string {
+    return `[${this.title}](${this.url})`
+  }
+}
+
+export class Image extends Link {
+  public toString (): string {
+    return '!' + super.toString()
   }
 }
