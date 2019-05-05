@@ -17,7 +17,11 @@
  *
  */
 /* imports */
-import { ApiModel, ApiItem, ApiDocumentedItem } from '@microsoft/api-extractor-model'
+import {
+  ApiModel,
+  ApiItem,
+  ApiDocumentedItem
+} from '@microsoft/api-extractor-model'
 import { format } from 'util'
 import render from './renderer'
 import * as c from 'kleur'
@@ -26,7 +30,8 @@ import * as c from 'kleur'
 const traverse = (item: ApiItem, depth = 0): void => {
   let text = format(
     depth,
-    item.kind, item.displayName
+    item.kind, item.displayName,
+    item.getScopedNameWithinPackage()
   )
   if (item instanceof ApiDocumentedItem && item.tsdocComment) {
     const docComment = item.tsdocComment

@@ -21,3 +21,8 @@ import { Hello } from './hello'
 
 export { Hello }
 export { printMessage } from './hello'
+
+/**
+ * See {@link ./hello#printMessage}
+ */
+export const PI_CONSTANT = 3.14
