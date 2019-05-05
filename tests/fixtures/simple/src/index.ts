@@ -20,3 +20,4 @@
 import { Hello } from './hello'
 
 export { Hello }
+export { printMessage } from './hello'
