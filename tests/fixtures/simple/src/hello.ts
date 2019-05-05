@@ -20,21 +20,28 @@
 
 /* code */
 /**
- * @public
  * Describe a Hello object.
+ *
+ * @remarks
+ * Doesn't do much except printing to console.
+ *
+ * @public
  */
 export class Hello {
   /**
    * Print a message.
+   *
+   * @param i - print this number
+   * @returns void
    */
-  public print (): void {
-    console.log('Hello World!')
+  public print (i: number): void {
+    console.log('Hello World!', i + '!')
   }
 }
 
 /**
- * @beta
  * Print a welcome message.
+ * @beta
  */
 export const printMessage = (): void => {
   console.log('Welcome!')
