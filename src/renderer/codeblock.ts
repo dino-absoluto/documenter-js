@@ -17,20 +17,20 @@
  *
  */
 /* imports */
-import { Node } from './node'
+import { Paragraph } from './paragraph'
 
 /* code */
 /**
  * Describe a document
  */
-export class Paragraph extends Node {
-  private data: Node[]
-  public constructor (children: Node[] = []) {
-    super()
-    this.data = children
+export class CodeBlock extends Paragraph {
+  public highlight: string
+  public constructor (children: Node[], highlight: string = '') {
+    super(children)
+    this.highlight = highlight
   }
 
   public toString (): string {
-    return this.data.map(node => node.toString()).join('')
+    return '```' + this.highlight + '\n' + super.toString() + '\n```'
   }
 }

@@ -20,17 +20,19 @@
 import { Node } from './node'
 
 /* code */
-/**
- * Describe a document
- */
-export class Paragraph extends Node {
-  private data: Node[]
-  public constructor (children: Node[] = []) {
+export class Heading extends Node {
+  private data: Node
+  private level: number
+  public constructor (level: number, data: Node) {
     super()
-    this.data = children
+    level = Number.isInteger(level)
+      ? Math.min(6, Math.max(0, level))
+      : 6
+    this.level = level
+    this.data = data
   }
 
   public toString (): string {
-    return this.data.map(node => node.toString()).join('')
+    return '#'.repeat(this.level) + ' ' + this.data.toString()
   }
 }

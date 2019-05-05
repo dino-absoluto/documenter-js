@@ -17,20 +17,14 @@
  *
  */
 /* imports */
-import { Node } from './node'
+import { Paragraph } from './paragraph'
 
 /* code */
 /**
  * Describe a document
  */
-export class Paragraph extends Node {
-  private data: Node[]
-  public constructor (children: Node[] = []) {
-    super()
-    this.data = children
-  }
-
+export class Blockquote extends Paragraph {
   public toString (): string {
-    return this.data.map(node => node.toString()).join('')
+    return super.toString().split('\n').map(s => `> ${s}`).join('\n')
   }
 }
