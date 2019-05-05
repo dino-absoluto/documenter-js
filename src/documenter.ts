@@ -30,13 +30,13 @@ const traverse = (item: ApiItem, depth = 0): void => {
   if (item instanceof ApiDocumentedItem && item.tsdocComment) {
     const docComment = item.tsdocComment
     text += '\n---render\n' + format(
-      render(docComment.summarySection)
+      render(docComment.summarySection).toString()
     )
     if (docComment.remarksBlock) {
-      text += render(docComment.remarksBlock)
+      text += render(docComment.remarksBlock).toString()
     }
     if (docComment.params) {
-      text += render(docComment.params)
+      text += render(docComment.params).toString()
     }
     text += '\n---render-end'
   }

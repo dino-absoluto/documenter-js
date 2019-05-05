@@ -25,37 +25,63 @@ import {
   DocParamCollection
 } from '@microsoft/tsdoc'
 
+import { Node } from './node'
+
+import {
+  PlainText,
+  SoftBreak
+} from './span'
+
+import { Section } from './section'
+import {
+  Paragraph,
+  Heading
+} from './paragraph'
+
+import { Table } from './table'
+
 /* code */
-export const render = (node: DocNode): string => {
+export const render = (node: DocNode): Node => {
   switch (node.kind) {
     case DocNodeKind.PlainText: {
       const typed = node as DocPlainText
-      return typed.text
+      return new PlainText(typed.text)
     }
     case DocNodeKind.SoftBreak: {
-      return '\n'
+      return new SoftBreak()
     }
-    case DocNodeKind.Paragraph:
+    case DocNodeKind.Paragraph: {
+      return new Paragraph(node.getChildNodes().map(render))
+    }
     case DocNodeKind.Section: {
-      return node.getChildNodes().map(render).join('')
+      return new Section(node.getChildNodes().map(render))
     }
     case DocNodeKind.Block: {
       const typed = node as DocBlock
-      return `## ${typed.blockTag.tagName}\n${render(typed.content)}`
+      const nodes = [
+        new Heading(2, new PlainText(typed.blockTag.tagName)),
+        ...typed.content.getChildNodes().map(render)
+      ]
+      return new Section(nodes)
     }
     case DocNodeKind.ParamCollection: {
       const typed = node as DocParamCollection
       const params = typed.blocks.map(block => {
-        return `${
-          block.parameterName
-        } ${
+        return [
+          block.parameterName,
           render(block.content)
-        }`
+        ]
       })
-      return params.join('')
+      if (params.length) {
+        const rs = new Table([ 'Name', 'Description' ])
+        rs.addRows(...params)
+        return rs
+      } else {
+        return new PlainText()
+      }
     }
     default: {
-      return node.kind
+      return new PlainText(node.kind)
     }
   }
 }
