@@ -53,9 +53,10 @@ export class Table extends Node {
       title.padEnd(widths[index], ' ')
     )
     const lines = []
-    lines.push(titles.join('|'))
-    lines.push(titles.map(i => '-'.repeat(i.length)).join('|'))
-    lines.push(...rows.map(row => row.join('|')))
+    const sep = ' | '
+    lines.push(titles.join(sep).trim())
+    lines.push(titles.map(i => '-'.repeat(i.length)).join(sep).trim())
+    lines.push(...rows.map(row => row.join(sep).trim()))
     return lines.join('\n')
   }
 }
