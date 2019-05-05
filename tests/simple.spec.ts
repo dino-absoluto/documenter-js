@@ -18,6 +18,37 @@
  */
 /* imports */
 import * as path from 'path'
+import { accessSync } from 'fs'
+import { execFile as execFileCB } from 'child_process'
+import { promisify } from 'util'
+
+const execFile = promisify(execFileCB)
+const dataDir = path.join(__dirname, 'fixtures/simple')
+const docModelFile = path.join(dataDir, '__tmp__/docModel/simple.api.json')
+
+beforeAll(async () => {
+  try {
+    accessSync(docModelFile)
+    return
+  } catch (err) {
+  }
+  let output = ''
+  {
+    const data = await execFile('npm', ['run', 'build:ts'], {
+      cwd: dataDir
+    })
+    output += data.stdout
+    output += data.stderr
+  }
+  {
+    const data = await execFile('npm', ['run', 'build:api'], {
+      cwd: dataDir
+    })
+    output += data.stdout
+    output += data.stderr
+  }
+  console.log(output)
+}, 20000)
 
 /* code */
 describe('simple', () => {
