@@ -40,6 +40,7 @@
     "typescript": "^3.4.5"
   },
   "dependencies": {
-    "@microsoft/api-extractor-model": "^7.1.0"
+    "@microsoft/api-extractor-model": "^7.1.0",
+    "kleur": "^3.0.3"
   }
 }
