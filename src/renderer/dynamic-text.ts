@@ -20,20 +20,15 @@
 import { Node } from './node'
 
 /* code */
-/**
- * Describe a plain text element.
- */
-
-export class Link extends Node {
-  private title: Node
-  private url: Node
-  public constructor (title: Node, url: Node) {
+type DynamicTextCallback = () => string
+export class DynamicText extends Node {
+  private callback: DynamicTextCallback
+  public constructor (callback: DynamicTextCallback) {
     super()
-    this.title = title
-    this.url = url
+    this.callback = callback
   }
 
   public toString (): string {
-    return `[${this.title.toString()}](${this.url.toString()})`
+    return this.callback()
   }
 }
