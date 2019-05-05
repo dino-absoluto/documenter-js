@@ -150,9 +150,10 @@ export class Parser {
       case DocNodeKind.LinkTag: {
         const typed = node as DocLinkTag
         if (typed.codeDestination) {
+          const dest = this.resolveDeclaration(item, typed.codeDestination)
           return new Link(
-            new PlainText(typed.linkText || 'unknown'),
-            new PlainText(typed.codeDestination.emitAsTsdoc())
+            new PlainText(typed.linkText || dest.displayName),
+            new PlainText(dest.getScopedNameWithinPackage())
           )
         } else {
           return new PlainText()
