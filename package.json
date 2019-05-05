@@ -2,7 +2,7 @@
   "name": "@dinoabsoluto/documenter",
   "version": "1.0.0",
   "description": "Generate documents",
-  "main": "index.js",
+  "main": "dist/index",
   "scripts": {
     "lint": "eslint --ext .js,.ts src",
     "test": "jest"
@@ -38,5 +38,8 @@
     "make-dir": "^3.0.0",
     "ts-jest": "^24.0.2",
     "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "@microsoft/api-extractor-model": "^7.1.0"
   }
 }

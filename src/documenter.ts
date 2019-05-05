@@ -17,4 +17,16 @@
  *
  */
 /* imports */
-export { documenter as default } from './documenter'
+import { ApiModel } from '@microsoft/api-extractor-model'
+/* code */
+
+export const documenter = (modelFile: string): void => {
+  const model = new ApiModel()
+  const pkg = model.loadPackage(modelFile)
+  for (const entry of pkg.members) {
+    for (const mem of entry.members) {
+      console.log(mem.kind, mem.displayName)
+      console.log(mem)
+    }
+  }
+}

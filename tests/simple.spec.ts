@@ -21,6 +21,7 @@ import * as path from 'path'
 import { accessSync } from 'fs'
 import { execFile as execFileCB } from 'child_process'
 import { promisify } from 'util'
+import documenter from '../src'
 
 const execFile = promisify(execFileCB)
 const dataDir = path.join(__dirname, 'fixtures/simple')
@@ -53,6 +54,6 @@ beforeAll(async () => {
 /* code */
 describe('simple', () => {
   test('simple', () => {
-    console.log(path.resolve('.'))
+    documenter(docModelFile)
   })
 })
