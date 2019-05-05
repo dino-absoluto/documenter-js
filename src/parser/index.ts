@@ -41,7 +41,7 @@ import {
 type Resolver = (ref: DocDeclarationReference) => string | undefined
 
 /* code */
-export const render = (model: ApiModel, item: ApiItem, node: DocNode): Node => {
+export const parser = (model: ApiModel, item: ApiItem, node: DocNode): Node => {
   switch (node.kind) {
     case DocNodeKind.PlainText: {
       const typed = node as DocPlainText
@@ -51,16 +51,16 @@ export const render = (model: ApiModel, item: ApiItem, node: DocNode): Node => {
       return new SoftBreak()
     }
     case DocNodeKind.Paragraph: {
-      const children = node.getChildNodes().map((n) => render(model, item, n))
+      const children = node.getChildNodes().map((n) => parser(model, item, n))
       return new Paragraph(children)
     }
     case DocNodeKind.Section: {
-      const children = node.getChildNodes().map((n) => render(model, item, n))
+      const children = node.getChildNodes().map((n) => parser(model, item, n))
       return new Section(children)
     }
     case DocNodeKind.Block: {
       const typed = node as DocBlock
-      const children = typed.content.getChildNodes().map((n) => render(model, item, n))
+      const children = typed.content.getChildNodes().map((n) => parser(model, item, n))
       const nodes = [
         new Heading(2, new PlainText(typed.blockTag.tagName)),
         ...children
@@ -72,7 +72,7 @@ export const render = (model: ApiModel, item: ApiItem, node: DocNode): Node => {
       const params = typed.blocks.map(block => {
         return [
           block.parameterName,
-          render(model, item, block.content)
+          parser(model, item, block.content)
         ]
       })
       if (params.length) {
@@ -101,4 +101,4 @@ export const render = (model: ApiModel, item: ApiItem, node: DocNode): Node => {
   }
 }
 
-export default render
+export default parser
