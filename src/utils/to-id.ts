@@ -19,7 +19,7 @@
 /* imports */
 /* code */
 export default (text: string): string => {
-  text = text.toLocaleLowerCase()
+  text = text.toLowerCase()
   text = text.replace(/<\w+[^>]+/g, '')
   text = text.replace(/[^\w\s]/g, '')
   text = text.replace(/\s+/g, '-')

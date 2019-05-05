@@ -30,7 +30,9 @@ import {
 import {
   ApiModel,
   ApiItem,
-  ApiDocumentedItem
+  ApiDocumentedItem,
+  ApiPackage,
+  ApiVariable
 } from '@microsoft/api-extractor-model'
 
 import {
@@ -126,7 +128,7 @@ export class Parser {
         const typed = node as DocBlock
         const children = typed.content.getChildNodes().map((n) => this.parseDocNode(item, n))
         const nodes = [
-          new Heading(2, new PlainText(typed.blockTag.tagName)),
+          new Heading(4, new PlainText(typed.blockTag.tagName.substr(1))),
           ...children
         ]
         return new Section(nodes)
@@ -142,7 +144,10 @@ export class Parser {
         if (params.length) {
           const rs = new Table([ 'Name', 'Description' ].map(s => new PlainText(s)))
           rs.addRows(...params)
-          return rs
+          return new Section([
+            new Heading(4, new PlainText('parameters')),
+            rs
+          ])
         } else {
           return new PlainText()
         }
@@ -168,17 +173,33 @@ export class Parser {
   public parseItem (item: ApiItem): Page {
     const pkg = item.getAssociatedPackage()
     const pkgName = pkg && pkg.name
+    const scopedName = item.getScopedNameWithinPackage()
     const page = new Page(
-      (pkgName || '') + item.getScopedNameWithinPackage() + '.md')
+      (pkgName || '') + (scopedName ? '.' + scopedName : '') + '.md')
     const children: Node[] = []
+    if (item instanceof ApiPackage) {
+      children.push(new Heading(1, new PlainText(
+        pkgName + ' package')))
+    }
+    if (scopedName) {
+      children.push(new Heading(2, new PlainText(
+        scopedName + ' ' + item.kind.toLowerCase())))
+    }
+    if (item instanceof ApiVariable) {
+      console.log(item.getExcerptWithModifiers())
+      console.log(item.variableTypeExcerpt.text)
+    }
     if (item instanceof ApiDocumentedItem && item.tsdocComment) {
       const docComment = item.tsdocComment
       children.push(this.parseDocNode(item, docComment.summarySection))
-      if (docComment.remarksBlock) {
-        children.push(this.parseDocNode(item, docComment.remarksBlock))
-      }
       if (docComment.params) {
         children.push(this.parseDocNode(item, docComment.params))
+      }
+      if (docComment.returnsBlock) {
+        children.push(this.parseDocNode(item, docComment.returnsBlock))
+      }
+      if (docComment.remarksBlock) {
+        children.push(this.parseDocNode(item, docComment.remarksBlock))
       }
     }
     page.sections.push(new Section(children))
@@ -198,6 +219,10 @@ export class Parser {
     for (const pg of pages) {
       pg.flatten()
     }
-    console.log(pages.map(p => p.toString()).join('\n\n---\n\n'))
+    console.log(
+      '------\n' +
+      pages.map(p => p.toString()).join('\n\n---\n\n') +
+      '\n------'
+    )
   }
 }
