@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { PlainText } from '../span'
+import { PlainText } from '../plain-text'
 import { Table } from '../table'
 /* code */
 
