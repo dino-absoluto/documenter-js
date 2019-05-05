@@ -22,6 +22,7 @@ export { PlainText } from './plain-text'
 export { SoftBreak } from './soft-break'
 export { Link } from './link'
 export { Image } from './image'
+export { DynamicText } from './dynamic-text'
 
 export { Section } from './section'
 export { Paragraph } from './paragraph'
