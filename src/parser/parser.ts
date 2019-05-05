@@ -32,7 +32,8 @@ import {
   ApiItem,
   ApiDocumentedItem,
   ApiPackage,
-  ApiVariable
+  ApiDeclaredItem,
+  ApiClass
 } from '@microsoft/api-extractor-model'
 
 import {
@@ -44,7 +45,8 @@ import {
   Heading,
   Table,
   Link,
-  DynamicText
+  DynamicText,
+  CodeBlock
 } from '../renderer'
 
 import toId from '../utils/to-id'
@@ -185,9 +187,10 @@ export class Parser {
       children.push(new Heading(2, new PlainText(
         scopedName + ' ' + item.kind.toLowerCase())))
     }
-    if (item instanceof ApiVariable) {
-      console.log(item.getExcerptWithModifiers())
-      console.log(item.variableTypeExcerpt.text)
+    if (item instanceof ApiDeclaredItem) {
+      children.push(new CodeBlock([
+        new PlainText(item.getExcerptWithModifiers())
+      ], 'typescript'))
     }
     if (item instanceof ApiDocumentedItem && item.tsdocComment) {
       const docComment = item.tsdocComment
