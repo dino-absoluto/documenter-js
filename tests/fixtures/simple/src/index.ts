@@ -23,6 +23,7 @@ export { Hello }
 export { printMessage } from './hello'
 
 /**
- * See {@link ./hello#printMessage}
+ * See {@link Hello.print}
+ * @public
  */
 export const PI_CONSTANT = 3.14

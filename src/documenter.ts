@@ -23,11 +23,11 @@ import {
   ApiDocumentedItem
 } from '@microsoft/api-extractor-model'
 import { format } from 'util'
-import render from './renderer'
+import parse from './parser'
 import * as c from 'kleur'
 /* code */
 
-const traverse = (item: ApiItem, depth = 0): void => {
+const traverse = (model: ApiModel, item: ApiItem, depth = 0): void => {
   let text = format(
     depth,
     item.kind, item.displayName,
@@ -38,19 +38,19 @@ const traverse = (item: ApiItem, depth = 0): void => {
     let rtext = ''
     text += '\n---render\n'
     rtext = format(
-      render(docComment.summarySection).toString()
+      parse(model, item, docComment.summarySection).toString()
     )
     if (docComment.remarksBlock) {
-      rtext += render(docComment.remarksBlock).toString()
+      rtext += parse(model, item, docComment.remarksBlock).toString()
     }
     if (docComment.params) {
-      rtext += render(docComment.params).toString()
+      rtext += parse(model, item, docComment.params).toString()
     }
     text += c.green(rtext) + '\n---render-end'
   }
   console.log(text)
   for (const mem of item.members) {
-    traverse(mem, depth + 1)
+    traverse(model, mem, depth + 1)
   }
 }
 
@@ -58,6 +58,6 @@ export const documenter = (modelFile: string): void => {
   const model = new ApiModel()
   const pkg = model.loadPackage(modelFile)
   for (const entry of pkg.members) {
-    traverse(entry)
+    traverse(model, entry)
   }
 }
