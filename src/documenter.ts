@@ -20,6 +20,7 @@
 import { ApiModel, ApiItem, ApiDocumentedItem } from '@microsoft/api-extractor-model'
 import { format } from 'util'
 import render from './renderer'
+import * as c from 'kleur'
 /* code */
 
 const traverse = (item: ApiItem, depth = 0): void => {
@@ -29,16 +30,18 @@ const traverse = (item: ApiItem, depth = 0): void => {
   )
   if (item instanceof ApiDocumentedItem && item.tsdocComment) {
     const docComment = item.tsdocComment
-    text += '\n---render\n' + format(
+    let rtext = ''
+    text += '\n---render\n'
+    rtext = format(
       render(docComment.summarySection).toString()
     )
     if (docComment.remarksBlock) {
-      text += render(docComment.remarksBlock).toString()
+      rtext += render(docComment.remarksBlock).toString()
     }
     if (docComment.params) {
-      text += render(docComment.params).toString()
+      rtext += render(docComment.params).toString()
     }
-    text += '\n---render-end'
+    text += c.green(rtext) + '\n---render-end'
   }
   console.log(text)
   for (const mem of item.members) {
