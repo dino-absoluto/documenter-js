@@ -35,6 +35,9 @@ const traverse = (item: ApiItem, depth = 0): void => {
     if (docComment.remarksBlock) {
       text += render(docComment.remarksBlock)
     }
+    if (docComment.params) {
+      text += render(docComment.params)
+    }
     text += '\n---render-end'
   }
   console.log(text)

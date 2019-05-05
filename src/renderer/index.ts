@@ -21,7 +21,8 @@ import {
   DocNodeKind,
   DocNode,
   DocPlainText,
-  DocBlock
+  DocBlock,
+  DocParamCollection
 } from '@microsoft/tsdoc'
 
 /* code */
@@ -41,6 +42,17 @@ export const render = (node: DocNode): string => {
     case DocNodeKind.Block: {
       const typed = node as DocBlock
       return `## ${typed.blockTag.tagName}\n${render(typed.content)}`
+    }
+    case DocNodeKind.ParamCollection: {
+      const typed = node as DocParamCollection
+      const params = typed.blocks.map(block => {
+        return `${
+          block.parameterName
+        } ${
+          render(block.content)
+        }`
+      })
+      return params.join('')
     }
     default: {
       return node.kind
