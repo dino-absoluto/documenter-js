@@ -33,6 +33,6 @@ export class Heading extends Node {
   }
 
   public toString (): string {
-    return '#'.repeat(this.level) + ' ' + this.data.toString()
+    return '#'.repeat(this.level) + ' ' + this.data.flatten()
   }
 }

@@ -18,7 +18,6 @@
  */
 /* imports */
 import { Section } from './section'
-import { Heading } from './heading'
 
 /* code */
 export class Document {

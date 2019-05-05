@@ -17,20 +17,14 @@
  *
  */
 /* imports */
-import { Node } from './node'
+import { ParentNode } from './node'
 
 /* code */
 /**
  * Describe a document
  */
-export class Section extends Node {
-  private data: Node[]
-  public constructor (data: Node[] = []) {
-    super()
-    this.data = data
-  }
-
+export class Section extends ParentNode {
   public toString (): string {
-    return this.data.map(node => node.toString()).join('\n\n')
+    return this.children.map(node => node.toString()).join('\n\n')
   }
 }

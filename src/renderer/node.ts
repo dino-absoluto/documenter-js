@@ -20,4 +20,18 @@
 /* code */
 export abstract class Node {
   public abstract toString (): string
+  public flatten (): string {
+    return this.toString().trim().replace(/\n/g, '<br/>')
+  }
+}
+
+export abstract class ChildNode extends Node {
+}
+
+export abstract class ParentNode extends ChildNode {
+  protected children: ChildNode[] = []
+  public constructor (children: ChildNode[]) {
+    super()
+    this.children = children
+  }
 }

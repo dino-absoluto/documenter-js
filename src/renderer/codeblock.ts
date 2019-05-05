@@ -17,6 +17,7 @@
  *
  */
 /* imports */
+import { ChildNode } from './node'
 import { Paragraph } from './paragraph'
 
 /* code */
@@ -25,7 +26,7 @@ import { Paragraph } from './paragraph'
  */
 export class CodeBlock extends Paragraph {
   public highlight: string
-  public constructor (children: Node[], highlight: string = '') {
+  public constructor (children: ChildNode[], highlight: string = '') {
     super(children)
     this.highlight = highlight
   }

@@ -26,9 +26,9 @@ import { Node } from './node'
 export class Table extends Node {
   private data: Node[][] = []
   private columns: string[] = []
-  public constructor (columns: string[] = []) {
+  public constructor (columns: Node[] = []) {
     super()
-    this.columns = columns.map(i => i.trim().replace(/\n/g, '<br>'))
+    this.columns = columns.map(i => i.flatten())
   }
 
   public addRows (...items: Node[][]): void {
@@ -38,8 +38,11 @@ export class Table extends Node {
   public toString (): string {
     const { columns, data } = this
     const widths = columns.map(i => i.length)
-    let rows = data.map(array => array.map(
-      i => i.toString().trim().replace(/\n/g, '<br>')))
+    let rows = data.map(array =>
+      array.map(
+        i => i.flatten()
+      )
+    )
     for (const row of rows) {
       for (const [index, field] of row.entries()) {
         widths[index] = Math.max(widths[index], field.length)
