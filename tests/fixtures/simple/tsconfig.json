@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "strict": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "preserveConstEnums": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "tsBuildInfoFile": "./__tmp__/built/cache/tsbuildinfo",
+    "outDir": "./__tmp__/built/compiled",
+    "declaration": true,
+    "declarationDir": "./__tmp__/built/dts"
+  },
+  "include": [
+    "./src/**/*.ts"
+  ]
+}

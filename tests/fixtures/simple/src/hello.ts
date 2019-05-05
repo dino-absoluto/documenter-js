@@ -20,6 +20,7 @@
 
 /* code */
 /**
+ * @public
  * Describe a Hello object.
  */
 export class Hello {
@@ -32,6 +33,7 @@ export class Hello {
 }
 
 /**
+ * @beta
  * Print a welcome message.
  */
 export const printMessage = (): void => {
