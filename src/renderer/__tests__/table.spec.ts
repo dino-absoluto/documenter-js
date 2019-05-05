@@ -23,7 +23,7 @@ import { Table } from '../table'
 
 describe('Table', () => {
   test('simple', () => {
-    const tb = new Table(['name', 'description'])
+    const tb = new Table(['name', 'description'].map(s => new PlainText(s)))
     tb.addRows([
       new PlainText('a'),
       new PlainText('Describe a')

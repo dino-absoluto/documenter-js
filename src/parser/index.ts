@@ -35,7 +35,8 @@ import {
   Section,
   Paragraph,
   Heading,
-  Table
+  Table,
+  Link
 } from '../renderer'
 
 type Resolver = (ref: DocDeclarationReference) => string | undefined
@@ -71,12 +72,12 @@ export const parser = (model: ApiModel, item: ApiItem, node: DocNode): Node => {
       const typed = node as DocParamCollection
       const params = typed.blocks.map(block => {
         return [
-          block.parameterName,
+          new PlainText(block.parameterName),
           parser(model, item, block.content)
         ]
       })
       if (params.length) {
-        const rs = new Table([ 'Name', 'Description' ])
+        const rs = new Table([ 'Name', 'Description' ].map(s => new PlainText(s)))
         rs.addRows(...params)
         return rs
       } else {
@@ -86,14 +87,10 @@ export const parser = (model: ApiModel, item: ApiItem, node: DocNode): Node => {
     case DocNodeKind.LinkTag: {
       const typed = node as DocLinkTag
       if (typed.codeDestination) {
-        const dest = typed.codeDestination
-        const link = model.resolveDeclarationReference(dest, item)
-        if (link.resolvedApiItem) {
-          console.log(link.resolvedApiItem.getScopedNameWithinPackage())
-        }
+        return new Link(typed.linkText || 'unknown', typed.codeDestination.emitAsTsdoc())
+      } else {
+        return new PlainText()
       }
-      return 'undefined'
-      // return new Link(typed.linkText, typed.codeDestination)
     }
     default: {
       return new PlainText(node.kind)
