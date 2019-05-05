@@ -4,6 +4,7 @@
   "description": "Generate documents",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint --ext .js,.ts src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
