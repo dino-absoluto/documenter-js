@@ -28,6 +28,7 @@ const TMPDIR = path.join(ROOTDIR, '__tmp__/tests')
 beforeAll(async () => {
   const testPath = path.resolve(global.jasmine.testPath)
   const relative = path.relative(ROOTDIR, testPath)
+    .replace(/\/__tests__\//g, '/')
   const tmpDir = path.join(TMPDIR, relative)
   await makeDir(tmpDir)
   process.chdir(tmpDir)
