@@ -65,7 +65,7 @@ export class HeadingAnchor extends Heading {
   }
 
   public get link (): string {
-    return this.parent.filename + '#' + toId(this.text)
+    return this.parent.filename + '#' + this.parent.generateId(this.text)
   }
 }
 
@@ -86,6 +86,10 @@ export class Page {
     } else {
       return this.pFilename
     }
+  }
+
+  public generateId (text: string): string {
+    return toId(text)
   }
 
   public toString (): string {
