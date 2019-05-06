@@ -138,24 +138,14 @@ export class Block extends Node implements ParentNode {
   }
 
   public append (...nodes: Node[]): void {
-    for (const node of nodes) {
-      node.parentPointer = {
-        parent: this,
-        index: this.children.length
-      }
-      this.children.push(node)
-    }
+    const lastIndex = this.children.length
+    this.children.push(...nodes)
+    this.refreshIndex(lastIndex)
   }
 
   public prepend (...nodes: Node[]): void {
-    for (const [index, node] of nodes.entries()) {
-      node.parentPointer = {
-        parent: this,
-        index
-      }
-    }
     this.children.unshift(...nodes)
-    this.refreshIndex(nodes.length)
+    this.refreshIndex()
   }
 
   public refreshIndex (begin = 0, end = this.children.length): void {
