@@ -18,8 +18,14 @@
  */
 /* imports */
 import {
-  ApiModel
+  ApiModel,
+  ApiItem,
+  ApiItemKind
 } from '@microsoft/api-extractor-model'
+
+import {
+  Document
+} from '../ast'
 
 /* imports */
 export class Parser {
@@ -30,6 +36,36 @@ export class Parser {
     this.model.loadPackage(filename)
   }
 
-  public parse (): void {
+  public parseItem (item: ApiItem): Document {
+    const doc = new Document()
+    switch (item.kind) {
+      case ApiItemKind.Class:
+      case ApiItemKind.Enum:
+      case ApiItemKind.Interface:
+      case ApiItemKind.Method:
+      case ApiItemKind.MethodSignature:
+      case ApiItemKind.Function:
+      case ApiItemKind.Namespace:
+      case ApiItemKind.Package:
+      case ApiItemKind.Property:
+      case ApiItemKind.PropertySignature:
+      case ApiItemKind.TypeAlias:
+      case ApiItemKind.Variable: {
+        break
+      }
+      default: {
+        throw new Error('Unsupported ApiItem kind: ' + item.kind)
+      }
+    }
+    return doc
+  }
+
+  public parse (): Set<Document> {
+    const docs = new Set<Document>()
+    for (const entry of this.model.members) {
+      const doc = this.parseItem(entry)
+      docs.add(doc)
+    }
+    return docs
   }
 }
