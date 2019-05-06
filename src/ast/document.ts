@@ -41,15 +41,27 @@ export class Document extends Block {
     return 'DOCUMENT'
   }
 
+  public get parent (): Document | undefined {
+    return super.parent as Document
+  }
+
   public get parentPointer (): ParentPointer | undefined {
     return super.parentPointer
   }
 
   public set parentPointer (loc: ParentPointer | undefined) {
+    if (loc) {
+      if (!(loc.parent instanceof Document)) {
+        throw new Error('Document can only be added to other Document')
+      }
+    }
     super.parentPointer = loc
   }
 
   public get path (): string | undefined {
+    if (this.parent) {
+      return this.parent.path
+    }
     return this.pPath
   }
 
