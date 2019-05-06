@@ -94,7 +94,8 @@ export class Block extends Node implements ParentNode {
   public children: Node[] = []
   public constructor (children: Node[] = []) {
     super()
-    this.children = children
+    this.children = Array.from(children)
+    this.refreshIndex()
   }
 
   public append (...nodes: Node[]): void {
