@@ -29,4 +29,8 @@ export class CodeBlock extends Block {
     super(children)
     this.highlight = highlight
   }
+
+  public get kind (): string {
+    return 'CODEBLOCK'
+  }
 }

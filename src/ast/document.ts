@@ -36,6 +36,10 @@ export class Document extends Block {
     }
   }
 
+  public get kind (): string {
+    return 'DOCUMENT'
+  }
+
   public get path (): string | undefined {
     return this.pPath
   }

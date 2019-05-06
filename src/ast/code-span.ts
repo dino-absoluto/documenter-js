@@ -24,4 +24,7 @@ import { Span } from './node'
  * A codespan.
  */
 export class CodeSpan extends Span {
+  public get kind (): string {
+    return 'CODESPAN'
+  }
 }

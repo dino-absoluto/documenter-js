@@ -32,6 +32,10 @@ export class Heading extends Span {
     this.level = level
   }
 
+  public get kind (): string {
+    return 'HEADING'
+  }
+
   public get level (): number {
     return this.pLevel
   }

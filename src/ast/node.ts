@@ -59,6 +59,10 @@ export class Node implements ChildNode {
     return this.location
   }
 
+  public get kind (): string {
+    return 'NODE'
+  }
+
   public get index (): number | undefined {
     if (this.location) {
       return this.location.index
@@ -111,6 +115,10 @@ export class Block extends Node implements ParentNode {
     this.refreshIndex()
   }
 
+  public get kind (): string {
+    return 'BLOCK'
+  }
+
   public append (...nodes: Node[]): void {
     for (const node of nodes) {
       node.location = {
@@ -151,5 +159,9 @@ export class Span extends Node {
   public constructor (text: string) {
     super()
     this.text = text
+  }
+
+  public get kind (): string {
+    return 'SPAN'
   }
 }
