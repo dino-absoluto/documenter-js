@@ -18,12 +18,12 @@
  */
 /* imports */
 import {
-  ChildNode,
-  ParentNode
+  Node,
+  Block
 } from '../node'
 /* code */
 
-class CNode extends ChildNode {
+class CNode extends Node {
   public id: unknown
   public constructor (id: unknown) {
     super()
@@ -31,7 +31,7 @@ class CNode extends ChildNode {
   }
 }
 
-class PNode extends ParentNode {
+class PNode extends Block {
   public id: unknown
   public constructor (id: unknown) {
     super()
@@ -78,7 +78,7 @@ describe('ParentNode', () => {
   })
 })
 
-describe('ChildNode', () => {
+describe('Node', () => {
   let p: PNode
   beforeEach(() => {
     p = new PNode('parent')

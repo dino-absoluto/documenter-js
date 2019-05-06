@@ -18,15 +18,29 @@
  */
 /* imports */
 /* code */
-export class Node {
-}
-
 interface Location {
   index: number
   parent: ParentNode
 }
 
-export class ChildNode extends Node {
+export interface ChildNode {
+  location?: Location
+  index?: number
+  parent?: ParentNode
+  remove (): void
+  before (...nodes: Node[]): void
+  after (...nodes: Node[]): void
+  replaceWith (...nodes: Node[]): void
+}
+
+export interface ParentNode {
+  children: Node[]
+  refreshIndex (start?: number, end?: number): void
+  append (...nodes: Node[]): void
+  prepend (...nodes: Node[]): void
+}
+
+export class Node implements ChildNode {
   public location?: Location = undefined
   private getLocation (): Location {
     if (!this.location) {
@@ -56,19 +70,19 @@ export class ChildNode extends Node {
     this.location = undefined
   }
 
-  public before (...nodes: ChildNode[]): void {
+  public before (...nodes: Node[]): void {
     const { parent, index } = this.getLocation()
     parent.children.splice(index, 0, ...nodes)
     parent.refreshIndex(index)
   }
 
-  public after (...nodes: ChildNode[]): void {
+  public after (...nodes: Node[]): void {
     const { parent, index } = this.getLocation()
     parent.children.splice(index + 1, 0, ...nodes)
     parent.refreshIndex(index + 1)
   }
 
-  public replaceWith (...nodes: ChildNode[]): void {
+  public replaceWith (...nodes: Node[]): void {
     const { parent, index } = this.getLocation()
     parent.children.splice(index, 1, ...nodes)
     parent.refreshIndex(index)
@@ -76,14 +90,14 @@ export class ChildNode extends Node {
   }
 }
 
-export class ParentNode extends ChildNode {
-  public children: ChildNode[] = []
-  public constructor (children: ChildNode[] = []) {
+export class Block extends Node implements ParentNode {
+  public children: Node[] = []
+  public constructor (children: Node[] = []) {
     super()
     this.children = children
   }
 
-  public append (...nodes: ChildNode[]): void {
+  public append (...nodes: Node[]): void {
     for (const node of nodes) {
       node.location = {
         parent: this,
@@ -93,7 +107,7 @@ export class ParentNode extends ChildNode {
     }
   }
 
-  public prepend (...nodes: ChildNode[]): void {
+  public prepend (...nodes: Node[]): void {
     for (const [index, node] of nodes.entries()) {
       node.location = {
         parent: this,
@@ -112,5 +126,13 @@ export class ParentNode extends ChildNode {
         index: i
       }
     }
+  }
+}
+
+export class Span extends Node {
+  public text: string
+  public constructor (text: string) {
+    super()
+    this.text = text
   }
 }

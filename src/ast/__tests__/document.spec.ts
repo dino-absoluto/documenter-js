@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { ParentNode } from '../node'
+import { Block } from '../node'
 import { Document } from '../document'
 import { Heading } from '../heading'
 
@@ -25,7 +25,7 @@ import { Heading } from '../heading'
 describe('Document', () => {
   test('setPath()', () => {
     const doc = new Document()
-    const group = new ParentNode()
+    const group = new Block()
     const h1 = new Heading('example')
     const h2 = new Heading('example')
     const h3 = new Heading('Hello World!')

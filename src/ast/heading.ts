@@ -17,9 +17,9 @@
  *
  */
 /* imports */
-import { Text } from './text'
+import { Span } from './node'
 /* code */
 
-export class Heading extends Text {
+export class Heading extends Span {
   public link?: string
 }

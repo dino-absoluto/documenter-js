@@ -17,16 +17,16 @@
  *
  */
 /* imports */
-import { ChildNode, ParentNode } from './node'
+import { Node, Block } from './node'
 import { Heading } from './heading'
 import toId from '../utils/to-id'
 /* code */
 
-export class Document extends ParentNode {
+export class Document extends Block {
   private pPath?: string
-  private static * traverse (node: ChildNode): IterableIterator<ChildNode> {
+  private static * traverse (node: Node): IterableIterator<Node> {
     yield node
-    if (node instanceof ParentNode) {
+    if (node instanceof Block) {
       for (const cnode of node.children) {
         yield * Document.traverse(cnode)
       }
