@@ -17,10 +17,17 @@
  *
  */
 /* imports */
+import {
+  ApiModel
+} from '@microsoft/api-extractor-model'
 
 /* imports */
 export class Parser {
-  public loadPackage (fpath: string): void {
+  public readonly model = new ApiModel()
+  public maxDepth = 1
+
+  public loadPackage (filename: string): void {
+    this.model.loadPackage(filename)
   }
 
   public parse (): void {
