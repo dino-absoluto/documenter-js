@@ -17,7 +17,13 @@
  *
  */
 /* imports */
-import { Table, TableHeader } from '../table'
+import {
+  Table,
+  TableHeader,
+  TableRow,
+  TableCell
+} from '../table'
+import { Block } from '../node'
 
 /* code */
 describe('Table', () => {
@@ -29,5 +35,21 @@ describe('Table', () => {
       { children: [ { text: 'Name' } ] },
       { children: [ { text: 'Description' } ] }
     ])
+  })
+})
+
+describe('TableRow', () => {
+  test('parent', () => {
+    const block = new Block()
+    const row = new TableRow(['Abc', 'Welcome!'])
+    expect(() => block.append(row)).toThrow('TableRow')
+  })
+})
+
+describe('TableCell', () => {
+  test('parent', () => {
+    const block = new Block()
+    const cell = new TableCell('Abc')
+    expect(() => block.append(cell)).toThrow('TableCell')
   })
 })

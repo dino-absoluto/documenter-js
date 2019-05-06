@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Block, Span, ParentPointer } from './node'
+import { Block, ParentPointer } from './node'
 
 /* code */
 /**
@@ -30,90 +30,8 @@ const enum TableColumnAlignment {
 }
 
 let initCells: (children: (TableCell | string)[]) => TableCell[]
-
-/**
- * A table row.
- */
-export class TableRow extends Block {
-  public get kind (): string {
-    return 'TABLE_ROW'
-  }
-  public constructor (children: (TableCell | string)[]) {
-    super(initCells(children))
-  }
-}
-
-/**
- * A table cell.
- */
-export class TableCell extends Block {
-  public get kind (): string {
-    return 'TABLE_CELL'
-  }
-
-  public get parent (): TableRow | undefined {
-    return super.parent as TableRow
-  }
-
-  public get parentPointer (): ParentPointer | undefined {
-    return super.parentPointer
-  }
-
-  public set parentPointer (loc: ParentPointer | undefined) {
-    if (loc) {
-      if (!(loc.parent instanceof TableRow)) {
-        throw new Error('Document can only be added to other Document')
-      }
-    }
-    super.parentPointer = loc
-  }
-}
-
-initCells = (children: (TableCell | string)[]): TableCell[] => {
-  return children.map(cell => {
-    if (cell instanceof TableCell) {
-      return cell
-    } else {
-      return new TableCell([
-        new Span(cell)
-      ])
-    }
-  })
-}
-
-/**
- * A table header row.
- */
-export class TableHeader extends TableRow {
-  public get kind (): string {
-    return 'TABLE_HEADER'
-  }
-
-  public aligns: TableColumnAlignment[]
-  public constructor (
-    children: (TableCell | string)[],
-    aligns: TableColumnAlignment[] = []
-  ) {
-    super(children)
-    this.aligns = aligns
-  }
-}
-
-const initHeader = (header: TableHeader | string[]): TableHeader => {
-  if (header instanceof TableHeader) {
-    return header
-  } else {
-    return new TableHeader(header)
-  }
-}
-
-const initRow = (row: TableRow | string[]): TableRow => {
-  if (row instanceof TableRow) {
-    return row
-  } else {
-    return new TableRow(row)
-  }
-}
+let initHeader: (header: TableHeader | string[]) => TableHeader
+let initRow: (row: TableRow | string[]) => TableRow
 
 /**
  * A table.
@@ -136,4 +54,104 @@ export class Table extends Block {
   public addRow (...rows: (TableRow | string[])[]): void {
     this.append(...rows.map(initRow))
   }
+}
+
+/**
+ * A table row.
+ */
+export class TableRow extends Block {
+  public get kind (): string {
+    return 'TABLE_ROW'
+  }
+
+  public constructor (children: (TableCell | string)[]) {
+    super(initCells(children))
+  }
+
+  public get parent (): Table | undefined {
+    return super.parent as Table
+  }
+
+  public get parentPointer (): ParentPointer | undefined {
+    return super.parentPointer
+  }
+
+  public set parentPointer (loc: ParentPointer | undefined) {
+    if (loc) {
+      if (!(loc.parent instanceof Table)) {
+        throw new Error('TableRow can only be added to Table')
+      }
+    }
+    super.parentPointer = loc
+  }
+}
+
+/**
+ * A table cell.
+ */
+export class TableCell extends Block {
+  public get kind (): string {
+    return 'TABLE_CELL'
+  }
+
+  public get parent (): TableRow | undefined {
+    return super.parent as TableRow
+  }
+
+  public get parentPointer (): ParentPointer | undefined {
+    return super.parentPointer
+  }
+
+  public set parentPointer (loc: ParentPointer | undefined) {
+    if (loc) {
+      if (!(loc.parent instanceof TableRow)) {
+        throw new Error('TableCell can only be added to TableRow')
+      }
+    }
+    super.parentPointer = loc
+  }
+}
+
+/**
+ * A table header row.
+ */
+export class TableHeader extends TableRow {
+  public get kind (): string {
+    return 'TABLE_HEADER'
+  }
+
+  public aligns: TableColumnAlignment[]
+  public constructor (
+    children: (TableCell | string)[],
+    aligns: TableColumnAlignment[] = []
+  ) {
+    super(children)
+    this.aligns = aligns
+  }
+}
+
+initHeader = (header: TableHeader | string[]): TableHeader => {
+  if (header instanceof TableHeader) {
+    return header
+  } else {
+    return new TableHeader(header)
+  }
+}
+
+initRow = (row: TableRow | string[]): TableRow => {
+  if (row instanceof TableRow) {
+    return row
+  } else {
+    return new TableRow(row)
+  }
+}
+
+initCells = (children: (TableCell | string)[]): TableCell[] => {
+  return children.map(cell => {
+    if (cell instanceof TableCell) {
+      return cell
+    } else {
+      return new TableCell(cell)
+    }
+  })
 }
