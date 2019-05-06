@@ -17,17 +17,30 @@
  *
  */
 /* imports */
-import { Block } from './node'
+import { Block, Span, ParentPointer } from './node'
 
 /* code */
 /**
  * Set alignment of column.
  */
-enum TableColumnAlignment {
-  Auto,
-  Left,
-  Center,
-  Right
+const enum TableColumnAlignment {
+  Left = 1,
+  Center = 2,
+  Right = 3
+}
+
+let initCells: (children: (TableCell | string)[]) => TableCell[]
+
+/**
+ * A table row.
+ */
+export class TableRow extends Block {
+  public get kind (): string {
+    return 'TABLE_ROW'
+  }
+  public constructor (children: (TableCell | string)[]) {
+    super(initCells(children))
+  }
 }
 
 /**
@@ -37,31 +50,58 @@ export class TableCell extends Block {
   public get kind (): string {
     return 'TABLE_CELL'
   }
+  public get parent (): TableRow | undefined {
+    return super.parent as TableRow
+  }
+
+  public get parentPointer (): ParentPointer | undefined {
+    return super.parentPointer
+  }
+
+  public set parentPointer (loc: ParentPointer | undefined) {
+    if (loc) {
+      if (!(loc.parent instanceof TableRow)) {
+        throw new Error('Document can only be added to other Document')
+      }
+    }
+    super.parentPointer = loc
+  }
 }
 
-/**
- * A table row.
- */
-export class TableRow extends Block {
-  public get kind (): string {
-    return 'TABLE_ROW'
-  }
+initCells = (children: (TableCell | string)[]): TableCell[] => {
+  return children.map(cell => {
+    if (cell instanceof TableCell) {
+      return cell
+    } else {
+      return new TableCell([
+        new Span(cell)
+      ])
+    }
+  })
 }
 
 /**
  * A table header row.
  */
 export class TableHeader extends TableRow {
-  public align: TableColumnAlignment[]
-  public constructor (
-    children: TableCell[],
-    align: TableColumnAlignment[] = []
-  ) {
-    super(children)
-    this.align = align
-  }
   public get kind (): string {
     return 'TABLE_HEADER'
+  }
+  public aligns: TableColumnAlignment[]
+  public constructor (
+    children: (TableCell | string)[],
+    aligns: TableColumnAlignment[] = []
+  ) {
+    super(children)
+    this.aligns = aligns
+  }
+}
+
+const initHeader = (header: TableHeader | string[]): TableHeader => {
+  if (header instanceof TableHeader) {
+    return header
+  } else {
+    return new TableHeader(header)
   }
 }
 
@@ -69,10 +109,12 @@ export class TableHeader extends TableRow {
  * A table.
  */
 export class Table extends Block {
-  public constructor (header: TableHeader, rows: TableRow[] = []) {
-    super(([ header ] as TableRow[]).concat(rows))
-  }
   public get kind (): string {
     return 'TABLE'
+  }
+  public constructor (header: TableHeader | string[], rows: TableRow[] = []) {
+    super(
+      ([] as TableRow[]).concat([ initHeader(header) ], rows)
+    )
   }
 }
