@@ -111,7 +111,7 @@ export class Link extends Span {
  */
 export class Image extends Span {
   public href: Reference
-  public constructor (text: string, href: ReferenceInit) {
+  public constructor (text: string, href: string | RefCallbackFn) {
     super(text)
     this.href = new Reference(href)
   }
