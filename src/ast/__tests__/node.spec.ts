@@ -76,6 +76,27 @@ describe('ParentNode', () => {
       { index: 3, id: 'd' }
     ].map(expect.objectContaining))
   })
+  test('switch parent', () => {
+    const p1 = new PNode('parent1')
+    const p2 = new PNode('parent2')
+    const n1 = new CNode('a')
+    const n2 = new CNode('b')
+    const n3 = new CNode('c')
+    p1.append(n1, n2, n3)
+    expect(p1.children).toMatchObject([
+      { index: 0, id: 'a' },
+      { index: 1, id: 'b' },
+      { index: 2, id: 'c' }
+    ].map(expect.objectContaining))
+    p2.append(n2)
+    expect(p2.children).toMatchObject([
+      { index: 0, id: 'b' }
+    ].map(expect.objectContaining))
+    expect(p1.children).toMatchObject([
+      { index: 0, id: 'a' },
+      { index: 1, id: 'c' }
+    ].map(expect.objectContaining))
+  })
 })
 
 describe('Node', () => {

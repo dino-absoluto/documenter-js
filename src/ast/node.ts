@@ -64,6 +64,16 @@ export class Node implements ChildNode {
   }
 
   public set parentPointer (loc: ParentPointer | undefined) {
+    const { pParentPointer } = this
+    if (pParentPointer && loc) {
+      if (loc.parent === pParentPointer.parent) {
+        pParentPointer.index = loc.index
+      } else {
+        this.remove()
+        this.pParentPointer = loc
+      }
+      return
+    }
     this.pParentPointer = loc
   }
 
