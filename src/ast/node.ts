@@ -51,6 +51,10 @@ export interface ParentNode {
  * A basic node.
  */
 export class Node implements ChildNode {
+  public get kind (): string {
+    return 'NODE'
+  }
+
   private pParentPointer?: ParentPointer = undefined
   private getParent (): ParentPointer {
     if (!this.pParentPointer) {
@@ -75,10 +79,6 @@ export class Node implements ChildNode {
       return
     }
     this.pParentPointer = loc
-  }
-
-  public get kind (): string {
-    return 'NODE'
   }
 
   public get index (): number | undefined {
@@ -126,15 +126,15 @@ export class Node implements ChildNode {
  * A text block node.
  */
 export class Block extends Node implements ParentNode {
+  public get kind (): string {
+    return 'BLOCK'
+  }
+
   public children: Node[] = []
   public constructor (children: Node[] = []) {
     super()
     this.children = Array.from(children)
     this.refreshIndex()
-  }
-
-  public get kind (): string {
-    return 'BLOCK'
   }
 
   public append (...nodes: Node[]): void {
@@ -163,13 +163,13 @@ export class Block extends Node implements ParentNode {
  * A text span node.
  */
 export class Span extends Node {
+  public get kind (): string {
+    return 'SPAN'
+  }
+
   public text: string
   public constructor (text: string) {
     super()
     this.text = text
-  }
-
-  public get kind (): string {
-    return 'SPAN'
   }
 }

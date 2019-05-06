@@ -24,13 +24,12 @@ import { Block, Node } from './node'
  * A codeblock.
  */
 export class CodeBlock extends Block {
+  public get kind (): string {
+    return 'CODEBLOCK'
+  }
   public highlight = ''
   public constructor (children: Node[], highlight: string = '') {
     super(children)
     this.highlight = highlight
-  }
-
-  public get kind (): string {
-    return 'CODEBLOCK'
   }
 }

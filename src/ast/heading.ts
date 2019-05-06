@@ -24,16 +24,16 @@ import { Span } from './node'
  * A heading.
  */
 export class Heading extends Span {
+  public get kind (): string {
+    return 'HEADING'
+  }
+
   private pLevel: number = 4
   public link?: string
 
   public constructor (text: string, level: number = 4) {
     super(text)
     this.level = level
-  }
-
-  public get kind (): string {
-    return 'HEADING'
   }
 
   public get level (): number {

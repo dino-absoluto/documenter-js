@@ -50,6 +50,7 @@ export class TableCell extends Block {
   public get kind (): string {
     return 'TABLE_CELL'
   }
+
   public get parent (): TableRow | undefined {
     return super.parent as TableRow
   }
@@ -87,6 +88,7 @@ export class TableHeader extends TableRow {
   public get kind (): string {
     return 'TABLE_HEADER'
   }
+
   public aligns: TableColumnAlignment[]
   public constructor (
     children: (TableCell | string)[],
@@ -120,6 +122,7 @@ export class Table extends Block {
   public get kind (): string {
     return 'TABLE'
   }
+
   public constructor (header: TableHeader | string[], rows: TableRow[] = []) {
     super(
       ([] as TableRow[]).concat([ initHeader(header) ], rows)

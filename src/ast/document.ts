@@ -35,11 +35,10 @@ function * traverse (node: Node): IterableIterator<Node> {
  * A document.
  */
 export class Document extends Block {
-  private pPath?: string
-
   public get kind (): string {
     return 'DOCUMENT'
   }
+  private pPath?: string
 
   public get parent (): Document | undefined {
     return super.parent as Document

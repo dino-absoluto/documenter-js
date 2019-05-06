@@ -95,14 +95,14 @@ export class Reference {
  * A link.
  */
 export class Link extends Span {
+  public get kind (): string {
+    return 'LINK'
+  }
+
   public href: Reference
   public constructor (text: string, href: ReferenceInit) {
     super(text)
     this.href = new Reference(href)
-  }
-
-  public get kind (): string {
-    return 'LINK'
   }
 }
 
@@ -110,13 +110,13 @@ export class Link extends Span {
  * An image.
  */
 export class Image extends Span {
+  public get kind (): string {
+    return 'IMAGE'
+  }
+
   public href: Reference
   public constructor (text: string, href: string | RefCallbackFn) {
     super(text)
     this.href = new Reference(href)
-  }
-
-  public get kind (): string {
-    return 'IMAGE'
   }
 }
