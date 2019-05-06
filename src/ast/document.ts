@@ -33,10 +33,15 @@ export class Document extends ParentNode {
     }
   }
 
+  public get path (): string | undefined {
+    return this.pPath
+  }
+
   public setPath (fpath?: string): void {
     this.pPath = fpath
     this.generateIDs()
   }
+
   public generateIDs (): void {
     const { pPath: fpath } = this
     const idCount: { [id: string]: number } = {}
