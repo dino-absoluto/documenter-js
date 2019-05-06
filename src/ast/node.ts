@@ -123,6 +123,21 @@ export class Node implements ChildNode {
 }
 
 /**
+ * A text span node.
+ */
+export class Span extends Node {
+  public get kind (): string {
+    return 'SPAN'
+  }
+
+  public text: string
+  public constructor (text: string) {
+    super()
+    this.text = text
+  }
+}
+
+/**
  * A text block node.
  */
 export class Block extends Node implements ParentNode {
@@ -131,9 +146,11 @@ export class Block extends Node implements ParentNode {
   }
 
   public children: Node[] = []
-  public constructor (children: Node[] = []) {
+  public constructor (children: Node[] | string = []) {
     super()
-    this.children = Array.from(children)
+    this.children = typeof children === 'string'
+      ? [ new Span(children) ]
+      : Array.from(children)
     this.refreshIndex()
   }
 
@@ -156,20 +173,5 @@ export class Block extends Node implements ParentNode {
         index: i
       }
     }
-  }
-}
-
-/**
- * A text span node.
- */
-export class Span extends Node {
-  public get kind (): string {
-    return 'SPAN'
-  }
-
-  public text: string
-  public constructor (text: string) {
-    super()
-    this.text = text
   }
 }
