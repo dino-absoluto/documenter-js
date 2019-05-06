@@ -47,4 +47,15 @@ describe('Document', () => {
     expect(h2.link).toBe(undefined)
     expect(h3.link).toBe(undefined)
   })
+  test('parent', () => {
+    const doc = new Document()
+    const doc1 = new Document()
+    const group = new Block()
+    expect(() => group.append(doc1)).toThrow()
+    doc.append(doc1)
+    doc.path = 'simple.md'
+    expect(doc1.path).toBe('simple.md')
+    doc1.path = 'doc1.md'
+    expect(doc1.path).toBe('simple.md')
+  })
 })
