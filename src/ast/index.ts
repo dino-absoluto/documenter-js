@@ -20,6 +20,7 @@
 export { CodeBlock } from './code-block'
 export { CodeSpan } from './code-span'
 export { Document } from './document'
+export { FormattedSpan } from './formatted-span'
 export { Heading } from './heading'
 export {
   Reference,
