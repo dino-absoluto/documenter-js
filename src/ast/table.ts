@@ -105,6 +105,14 @@ const initHeader = (header: TableHeader | string[]): TableHeader => {
   }
 }
 
+const initRow = (row: TableRow | string[]): TableRow => {
+  if (row instanceof TableRow) {
+    return row
+  } else {
+    return new TableRow(row)
+  }
+}
+
 /**
  * A table.
  */
@@ -116,5 +124,13 @@ export class Table extends Block {
     super(
       ([] as TableRow[]).concat([ initHeader(header) ], rows)
     )
+  }
+
+  public get header (): TableHeader {
+    return this.children[0] as TableHeader
+  }
+
+  public addRow (...rows: (TableRow | string[])[]): void {
+    this.append(...rows.map(initRow))
   }
 }
