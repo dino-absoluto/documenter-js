@@ -29,7 +29,7 @@ export class CodeBlock extends Block {
   }
 
   public highlight = ''
-  public constructor (children: Node[], highlight: string = '') {
+  public constructor (children: Node[] | string, highlight: string = '') {
     super(children)
     this.highlight = highlight
   }
