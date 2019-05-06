@@ -140,7 +140,7 @@ export class Span extends Node {
 /**
  * A text block node.
  */
-export class Block extends Node implements ParentNode {
+export abstract class Block extends Node implements ParentNode {
   public get kind (): string {
     return 'BLOCK'
   }

@@ -20,16 +20,22 @@
 import { Span } from './node'
 
 /* code */
-interface FormattedSpanAttributes {
+export interface FormattedSpanAttributes {
   strong?: boolean
   em?: boolean
+  code?: boolean
 }
 /**
  * A formatted text span.
  */
 export class FormattedSpan extends Span implements FormattedSpanAttributes {
+  public get kind (): string {
+    return 'FORMATTED_SPAN'
+  }
+
   public strong: boolean = false
   public em: boolean = false
+  public code: boolean = false
   public constructor (text: string, opts: FormattedSpanAttributes = {}) {
     super(text)
     if (opts.strong !== undefined) {

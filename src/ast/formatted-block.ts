@@ -20,17 +20,33 @@
 import { Block, Node } from './node'
 
 /* code */
+export const enum BlockType {
+  Default = 0,
+  Info,
+  Warning,
+  Error,
+  Code,
+  Blockquote
+}
+
+export interface FormattedBlockAttribute {
+  type?: BlockType
+  subType?: string
+}
+
 /**
- * A codeblock.
+ * A formatted text span.
  */
-export class CodeBlock extends Block {
+export class FormattedBlock extends Block implements FormattedBlockAttribute {
   public get kind (): string {
-    return 'CODEBLOCK'
+    return 'FORMATTED_BLOCK'
   }
 
-  public highlight = ''
-  public constructor (children: Node[] | string, highlight: string = '') {
+  public type: BlockType = BlockType.Default
+  public constructor (children: Node[] | string, opts: FormattedBlockAttribute = {}) {
     super(children)
-    this.highlight = highlight
+    if (opts.type !== undefined) {
+      this.type = opts.type
+    }
   }
 }

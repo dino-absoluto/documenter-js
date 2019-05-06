@@ -21,12 +21,17 @@ import {
   ApiModel,
   ApiPackage,
   ApiItem,
-  ApiItemKind
+  ApiItemKind,
+  ApiDeclaredItem,
+  ApiDocumentedItem
 } from '@microsoft/api-extractor-model'
 
 import {
   Document,
-  Heading
+  Heading,
+  FormattedBlock,
+  FormattedSpan,
+  BlockType
 } from '../ast'
 
 /* code */
@@ -86,6 +91,21 @@ export class Parser {
         throw new Error('Unsupported ApiItem kind: ' + item.kind)
     }
     doc.append(heading)
+    this.pHeadings.set(item, heading)
+    if (item instanceof ApiDocumentedItem && item.tsdocComment) {
+      const comment = item.tsdocComment
+      if (comment.deprecatedBlock) {
+      }
+    }
+    if (item instanceof ApiDeclaredItem) {
+      doc.append(
+        new FormattedBlock([ new FormattedSpan('Signature:', { strong: true }) ]),
+        new FormattedBlock(item.getExcerptWithModifiers(), {
+          type: BlockType.Code,
+          subType: 'typescript'
+        })
+      )
+    }
     switch (item.kind) {
       case ApiItemKind.Class:
       case ApiItemKind.Enum:
