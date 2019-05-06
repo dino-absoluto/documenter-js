@@ -36,11 +36,13 @@ describe('Document', () => {
     expect(h1.link).toBe(undefined)
     expect(h2.link).toBe(undefined)
     expect(h3.link).toBe(undefined)
-    doc.setPath('simple.md')
+    doc.path = 'simple.md'
+    doc.generateIDs()
     expect(h1.link).toBe('simple.md#example-1')
     expect(h2.link).toBe('simple.md#example')
     expect(h3.link).toBe('simple.md#hello-world')
-    doc.setPath()
+    doc.path = ''
+    doc.generateIDs()
     expect(h1.link).toBe(undefined)
     expect(h2.link).toBe(undefined)
     expect(h3.link).toBe(undefined)

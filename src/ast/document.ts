@@ -21,20 +21,22 @@ import { Node, Block } from './node'
 import { Heading } from './heading'
 import toId from '../utils/to-id'
 
+function * traverse (node: Node): IterableIterator<Node> {
+  yield node
+  if (node instanceof Block) {
+    for (const cnode of node.children) {
+      yield * traverse(cnode)
+    }
+  }
+}
+
 /* code */
 /**
  * A document.
  */
 export class Document extends Block {
   private pPath?: string
-  private static * traverse (node: Node): IterableIterator<Node> {
-    yield node
-    if (node instanceof Block) {
-      for (const cnode of node.children) {
-        yield * Document.traverse(cnode)
-      }
-    }
-  }
+  public readonly subDocuments: Document[] = []
 
   public get kind (): string {
     return 'DOCUMENT'
@@ -44,34 +46,35 @@ export class Document extends Block {
     return this.pPath
   }
 
-  public setPath (fpath?: string): void {
-    this.pPath = fpath
-    this.generateIDs()
+  public set path (value: string | undefined) {
+    this.pPath = value || undefined
   }
 
-  public generateIDs (): void {
+  public generateIDs (idCount: { [id: string]: number } = {}): void {
     const { pPath: fpath } = this
-    const idCount: { [id: string]: number } = {}
     if (fpath === undefined) {
-      for (const node of Document.traverse(this)) {
+      for (const node of traverse(this)) {
         if (node instanceof Heading) {
           node.link = undefined
         }
       }
-      return
-    }
-    for (const node of Document.traverse(this)) {
-      if (node instanceof Heading) {
-        const id = toId(node.text)
-        let count = 0
-        if (idCount[id] === undefined) {
-          idCount[id] = 1
-        } else {
-          count = idCount[id]++
+    } else {
+      for (const node of traverse(this)) {
+        if (node instanceof Heading) {
+          const id = toId(node.text)
+          let count = 0
+          if (idCount[id] === undefined) {
+            idCount[id] = 1
+          } else {
+            count = idCount[id]++
+          }
+          node.link = `${fpath}#${toId(node.text)}` +
+            (count > 0 ? ('-' + count) : '')
         }
-        node.link = `${fpath}#${toId(node.text)}` +
-          (count > 0 ? ('-' + count) : '')
       }
+    }
+    for (const doc of this.subDocuments) {
+      doc.generateIDs(idCount)
     }
   }
 }
