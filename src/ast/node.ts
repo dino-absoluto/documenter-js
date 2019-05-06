@@ -50,12 +50,17 @@ export interface ParentNode {
 /**
  * A basic node.
  */
-export class Node implements ChildNode {
+export abstract class Node implements ChildNode {
   public get kind (): string {
     return 'NODE'
   }
 
   private pParentPointer?: ParentPointer = undefined
+  public constructor () {
+    Object.defineProperty(this, 'pParentPointer', {
+      enumerable: false
+    })
+  }
   private getParent (): ParentPointer {
     if (!this.pParentPointer) {
       throw new Error('This node does not belong to any ParentNode.')
