@@ -112,6 +112,7 @@ export class Page {
 
 export class Parser {
   public readonly model = new ApiModel()
+  public readonly map = new Map<ApiItem, Page>()
   public loadPackage (filename: string): void {
     this.model.loadPackage(filename)
   }
@@ -179,7 +180,13 @@ export class Parser {
           const dest = this.resolveDeclaration(item, typed.codeDestination)
           return new Link(
             new PlainText(typed.linkText || dest.displayName),
-            new PlainText(dest.getScopedNameWithinPackage())
+            new DynamicText((): string => {
+              const page = this.map.get(dest)
+              if (page) {
+                return page.header.link
+              }
+              return '#'
+            })
           )
         } else {
           return new PlainText()
@@ -229,6 +236,7 @@ export class Parser {
       const memPage = this.parseItem(mem)
       page.references.push(memPage)
     }
+    this.map.set(item, page)
     return page
   }
 
