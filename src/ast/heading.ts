@@ -21,5 +21,23 @@ import { Span } from './node'
 /* code */
 
 export class Heading extends Span {
+  private pLevel: number = 4
   public link?: string
+
+  public constructor (text: string, level: number = 4) {
+    super(text)
+    this.level = level
+  }
+
+  public get level (): number {
+    return this.pLevel
+  }
+
+  public set level (value: number) {
+    if (Number.isInteger(value)) {
+      this.pLevel = Math.max(1, Math.min(6, value))
+    } else {
+      this.pLevel = 4
+    }
+  }
 }
