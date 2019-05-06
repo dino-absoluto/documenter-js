@@ -110,6 +110,26 @@ export class Page {
   }
 }
 
+const trimNodes = (nodes: Node[]): Node[] => {
+  let begin = 0
+  for (const node of nodes) {
+    if (node instanceof SoftBreak) {
+      begin++
+      continue
+    }
+    break
+  }
+  let end = nodes.length
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    if (nodes[i] instanceof SoftBreak) {
+      end = i
+      continue
+    }
+    break
+  }
+  return nodes.slice(begin, end)
+}
+
 export class Parser {
   public readonly model = new ApiModel()
   public readonly map = new Map<ApiItem, Page>()
@@ -140,18 +160,18 @@ export class Parser {
       }
       case DocNodeKind.Paragraph: {
         const children = node.getChildNodes().map((n) => this.parseDocNode(item, n))
-        return new Paragraph(children)
+        return new Paragraph(trimNodes(children))
       }
       case DocNodeKind.Section: {
         const children = node.getChildNodes().map((n) => this.parseDocNode(item, n))
-        return new Section(children)
+        return new Section(trimNodes(children))
       }
       case DocNodeKind.Block: {
         const typed = node as DocBlock
         const children = typed.content.getChildNodes().map((n) => this.parseDocNode(item, n))
         const nodes = [
           new Heading(4, new PlainText(typed.blockTag.tagName.substr(1))),
-          ...children
+          ...trimNodes(children)
         ]
         return new Section(nodes)
       }
@@ -164,11 +184,11 @@ export class Parser {
           ]
         })
         if (params.length) {
-          const rs = new Table([ 'Name', 'Description' ].map(s => new PlainText(s)))
-          rs.addRows(...params)
+          const table = new Table([ 'Name', 'Description' ].map(s => new PlainText(s)))
+          table.addRows(...params)
           return new Section([
             new Heading(4, new PlainText('parameters')),
-            rs
+            table
           ])
         } else {
           return new PlainText()
