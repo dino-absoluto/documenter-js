@@ -38,6 +38,7 @@ export class Document extends Block {
   public get kind (): string {
     return 'DOCUMENT'
   }
+
   private pPath?: string
 
   public get parent (): Document | undefined {

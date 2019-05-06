@@ -30,7 +30,6 @@ export class Heading extends Span {
 
   private pLevel: number = 4
   public link?: string
-
   public constructor (text: string, level: number = 4) {
     super(text)
     this.level = level
