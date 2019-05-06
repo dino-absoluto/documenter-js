@@ -18,8 +18,11 @@
  */
 /* imports */
 import { Span } from './node'
-/* code */
 
+/* code */
+/**
+ * A heading.
+ */
 export class Heading extends Span {
   private pLevel: number = 4
   public link?: string

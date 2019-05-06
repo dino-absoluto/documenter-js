@@ -20,8 +20,11 @@
 import { Node, Block } from './node'
 import { Heading } from './heading'
 import toId from '../utils/to-id'
-/* code */
 
+/* code */
+/**
+ * A document.
+ */
 export class Document extends Block {
   private pPath?: string
   private static * traverse (node: Node): IterableIterator<Node> {

@@ -17,12 +17,16 @@
  *
  */
 /* imports */
+
 /* code */
 interface Location {
   index: number
   parent: ParentNode
 }
 
+/**
+ * Describe a child node.
+ */
 export interface ChildNode {
   location?: Location
   index?: number
@@ -33,6 +37,9 @@ export interface ChildNode {
   replaceWith (...nodes: Node[]): void
 }
 
+/**
+ * Describe a parent node.
+ */
 export interface ParentNode {
   children: Node[]
   refreshIndex (start?: number, end?: number): void
@@ -40,6 +47,9 @@ export interface ParentNode {
   prepend (...nodes: Node[]): void
 }
 
+/**
+ * A basic node.
+ */
 export class Node implements ChildNode {
   public location?: Location = undefined
   private getLocation (): Location {
@@ -90,6 +100,9 @@ export class Node implements ChildNode {
   }
 }
 
+/**
+ * A text block node.
+ */
 export class Block extends Node implements ParentNode {
   public children: Node[] = []
   public constructor (children: Node[] = []) {
@@ -130,6 +143,9 @@ export class Block extends Node implements ParentNode {
   }
 }
 
+/**
+ * A text span node.
+ */
 export class Span extends Node {
   public text: string
   public constructor (text: string) {
