@@ -23,7 +23,7 @@ import { Heading } from '../heading'
 
 /* code */
 describe('Document', () => {
-  test('setPath()', () => {
+  test('path', () => {
     const doc = new Document()
     const group = new Block()
     const h1 = new Heading('example')

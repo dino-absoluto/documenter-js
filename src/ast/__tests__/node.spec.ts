@@ -45,36 +45,36 @@ describe('ParentNode', () => {
     p.append(new CNode('a'))
     p.append(new CNode('b'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'a' },
-      { location: { index: 1 }, id: 'b' }
-    ])
+      { index: 0, id: 'a' },
+      { index: 1, id: 'b' }
+    ].map(expect.objectContaining))
     p.append(
       new CNode('c'),
       new CNode('d'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'a' },
-      { location: { index: 1 }, id: 'b' },
-      { location: { index: 2 }, id: 'c' },
-      { location: { index: 3 }, id: 'd' }
-    ])
+      { index: 0, id: 'a' },
+      { index: 1, id: 'b' },
+      { index: 2, id: 'c' },
+      { index: 3, id: 'd' }
+    ].map(expect.objectContaining))
   })
   test('prepend', () => {
     const p = new PNode('parent')
     p.prepend(new CNode('d'))
     p.prepend(new CNode('c'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'c' },
-      { location: { index: 1 }, id: 'd' }
-    ])
+      { index: 0, id: 'c' },
+      { index: 1, id: 'd' }
+    ].map(expect.objectContaining))
     p.prepend(
       new CNode('a'),
       new CNode('b'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'a' },
-      { location: { index: 1 }, id: 'b' },
-      { location: { index: 2 }, id: 'c' },
-      { location: { index: 3 }, id: 'd' }
-    ])
+      { index: 0, id: 'a' },
+      { index: 1, id: 'b' },
+      { index: 2, id: 'c' },
+      { index: 3, id: 'd' }
+    ].map(expect.objectContaining))
   })
 })
 
@@ -92,130 +92,130 @@ describe('Node', () => {
   })
   test('init', () => {
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 's' },
-      { location: { index: 1 }, id: 'a' },
-      { location: { index: 2 }, id: 'b' },
-      { location: { index: 3 }, id: 'c' },
-      { location: { index: 4 }, id: 'd' }
-    ])
+      { index: 0, id: 's' },
+      { index: 1, id: 'a' },
+      { index: 2, id: 'b' },
+      { index: 3, id: 'c' },
+      { index: 4, id: 'd' }
+    ].map(expect.objectContaining))
   })
   test('remove', () => {
     {
       const remove = p.children[3]
       remove.remove()
-      expect(remove.location).toBe(undefined)
+      expect(remove.parentPointer).toBe(undefined)
     }
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 's' },
-      { location: { index: 1 }, id: 'a' },
-      { location: { index: 2 }, id: 'b' },
-      { location: { index: 3 }, id: 'd' }
-    ])
+      { index: 0, id: 's' },
+      { index: 1, id: 'a' },
+      { index: 2, id: 'b' },
+      { index: 3, id: 'd' }
+    ].map(expect.objectContaining))
     p.children[3].remove()
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 's' },
-      { location: { index: 1 }, id: 'a' },
-      { location: { index: 2 }, id: 'b' }
-    ])
+      { index: 0, id: 's' },
+      { index: 1, id: 'a' },
+      { index: 2, id: 'b' }
+    ].map(expect.objectContaining))
     p.children[0].remove()
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'a' },
-      { location: { index: 1 }, id: 'b' }
-    ])
+      { index: 0, id: 'a' },
+      { index: 1, id: 'b' }
+    ].map(expect.objectContaining))
   })
   test('before', () => {
     p.children[0].before(new CNode('ss'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'ss' },
-      { location: { index: 1 }, id: 's' },
-      { location: { index: 2 }, id: 'a' },
-      { location: { index: 3 }, id: 'b' },
-      { location: { index: 4 }, id: 'c' },
-      { location: { index: 5 }, id: 'd' }
-    ])
+      { index: 0, id: 'ss' },
+      { index: 1, id: 's' },
+      { index: 2, id: 'a' },
+      { index: 3, id: 'b' },
+      { index: 4, id: 'c' },
+      { index: 5, id: 'd' }
+    ].map(expect.objectContaining))
     p.children[3].before(new CNode('a-'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'ss' },
-      { location: { index: 1 }, id: 's' },
-      { location: { index: 2 }, id: 'a' },
-      { location: { index: 3 }, id: 'a-' },
-      { location: { index: 4 }, id: 'b' },
-      { location: { index: 5 }, id: 'c' },
-      { location: { index: 6 }, id: 'd' }
-    ])
+      { index: 0, id: 'ss' },
+      { index: 1, id: 's' },
+      { index: 2, id: 'a' },
+      { index: 3, id: 'a-' },
+      { index: 4, id: 'b' },
+      { index: 5, id: 'c' },
+      { index: 6, id: 'd' }
+    ].map(expect.objectContaining))
     p.children[6].before(new CNode('c-'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'ss' },
-      { location: { index: 1 }, id: 's' },
-      { location: { index: 2 }, id: 'a' },
-      { location: { index: 3 }, id: 'a-' },
-      { location: { index: 4 }, id: 'b' },
-      { location: { index: 5 }, id: 'c' },
-      { location: { index: 6 }, id: 'c-' },
-      { location: { index: 7 }, id: 'd' }
-    ])
+      { index: 0, id: 'ss' },
+      { index: 1, id: 's' },
+      { index: 2, id: 'a' },
+      { index: 3, id: 'a-' },
+      { index: 4, id: 'b' },
+      { index: 5, id: 'c' },
+      { index: 6, id: 'c-' },
+      { index: 7, id: 'd' }
+    ].map(expect.objectContaining))
   })
   test('after', () => {
     p.children[0].after(new CNode('ss'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 's' },
-      { location: { index: 1 }, id: 'ss' },
-      { location: { index: 2 }, id: 'a' },
-      { location: { index: 3 }, id: 'b' },
-      { location: { index: 4 }, id: 'c' },
-      { location: { index: 5 }, id: 'd' }
-    ])
+      { index: 0, id: 's' },
+      { index: 1, id: 'ss' },
+      { index: 2, id: 'a' },
+      { index: 3, id: 'b' },
+      { index: 4, id: 'c' },
+      { index: 5, id: 'd' }
+    ].map(expect.objectContaining))
     p.children[3].after(new CNode('a-'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 's' },
-      { location: { index: 1 }, id: 'ss' },
-      { location: { index: 2 }, id: 'a' },
-      { location: { index: 3 }, id: 'b' },
-      { location: { index: 4 }, id: 'a-' },
-      { location: { index: 5 }, id: 'c' },
-      { location: { index: 6 }, id: 'd' }
-    ])
+      { index: 0, id: 's' },
+      { index: 1, id: 'ss' },
+      { index: 2, id: 'a' },
+      { index: 3, id: 'b' },
+      { index: 4, id: 'a-' },
+      { index: 5, id: 'c' },
+      { index: 6, id: 'd' }
+    ].map(expect.objectContaining))
     p.children[6].after(new CNode('c-'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 's' },
-      { location: { index: 1 }, id: 'ss' },
-      { location: { index: 2 }, id: 'a' },
-      { location: { index: 3 }, id: 'b' },
-      { location: { index: 4 }, id: 'a-' },
-      { location: { index: 5 }, id: 'c' },
-      { location: { index: 6 }, id: 'd' },
-      { location: { index: 7 }, id: 'c-' }
-    ])
+      { index: 0, id: 's' },
+      { index: 1, id: 'ss' },
+      { index: 2, id: 'a' },
+      { index: 3, id: 'b' },
+      { index: 4, id: 'a-' },
+      { index: 5, id: 'c' },
+      { index: 6, id: 'd' },
+      { index: 7, id: 'c-' }
+    ].map(expect.objectContaining))
   })
   test('replaceWith', () => {
     {
       const remove = p.children[0]
       remove.replaceWith(new CNode('ss'))
-      expect(remove.location).toBe(undefined)
+      expect(remove.parentPointer).toBe(undefined)
     }
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'ss' },
-      { location: { index: 1 }, id: 'a' },
-      { location: { index: 2 }, id: 'b' },
-      { location: { index: 3 }, id: 'c' },
-      { location: { index: 4 }, id: 'd' }
-    ])
+      { index: 0, id: 'ss' },
+      { index: 1, id: 'a' },
+      { index: 2, id: 'b' },
+      { index: 3, id: 'c' },
+      { index: 4, id: 'd' }
+    ].map(expect.objectContaining))
     p.children[2].replaceWith(new CNode('a-'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'ss' },
-      { location: { index: 1 }, id: 'a' },
-      { location: { index: 2 }, id: 'a-' },
-      { location: { index: 3 }, id: 'c' },
-      { location: { index: 4 }, id: 'd' }
-    ])
+      { index: 0, id: 'ss' },
+      { index: 1, id: 'a' },
+      { index: 2, id: 'a-' },
+      { index: 3, id: 'c' },
+      { index: 4, id: 'd' }
+    ].map(expect.objectContaining))
     p.children[2].replaceWith(new CNode('b'), new CNode('b-'))
     expect(p.children).toMatchObject([
-      { location: { index: 0 }, id: 'ss' },
-      { location: { index: 1 }, id: 'a' },
-      { location: { index: 2 }, id: 'b' },
-      { location: { index: 3 }, id: 'b-' },
-      { location: { index: 4 }, id: 'c' },
-      { location: { index: 5 }, id: 'd' }
-    ])
+      { index: 0, id: 'ss' },
+      { index: 1, id: 'a' },
+      { index: 2, id: 'b' },
+      { index: 3, id: 'b-' },
+      { index: 4, id: 'c' },
+      { index: 5, id: 'd' }
+    ].map(expect.objectContaining))
   })
 })

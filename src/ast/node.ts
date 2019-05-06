@@ -19,7 +19,7 @@
 /* imports */
 
 /* code */
-interface Location {
+export interface ParentPointer {
   index: number
   parent: ParentNode
 }
@@ -28,7 +28,7 @@ interface Location {
  * Describe a child node.
  */
 export interface ChildNode {
-  location?: Location
+  parentPointer?: ParentPointer
   index?: number
   parent?: ParentNode
   remove (): void
@@ -51,12 +51,20 @@ export interface ParentNode {
  * A basic node.
  */
 export class Node implements ChildNode {
-  public location?: Location = undefined
-  private getLocation (): Location {
-    if (!this.location) {
+  private pParentPointer?: ParentPointer = undefined
+  private getParent (): ParentPointer {
+    if (!this.pParentPointer) {
       throw new Error('This node does not belong to any ParentNode.')
     }
-    return this.location
+    return this.pParentPointer
+  }
+
+  public get parentPointer (): ParentPointer | undefined {
+    return this.pParentPointer
+  }
+
+  public set parentPointer (loc: ParentPointer | undefined) {
+    this.pParentPointer = loc
   }
 
   public get kind (): string {
@@ -64,43 +72,43 @@ export class Node implements ChildNode {
   }
 
   public get index (): number | undefined {
-    if (this.location) {
-      return this.location.index
+    if (this.parentPointer) {
+      return this.parentPointer.index
     }
     return undefined
   }
 
   public get parent (): ParentNode | undefined {
-    if (this.location) {
-      return this.location.parent
+    if (this.parentPointer) {
+      return this.parentPointer.parent
     }
     return undefined
   }
 
   public remove (): void {
-    const { parent, index } = this.getLocation()
+    const { parent, index } = this.getParent()
     parent.children.splice(index, 1)
     parent.refreshIndex(index)
-    this.location = undefined
+    this.parentPointer = undefined
   }
 
   public before (...nodes: Node[]): void {
-    const { parent, index } = this.getLocation()
+    const { parent, index } = this.getParent()
     parent.children.splice(index, 0, ...nodes)
     parent.refreshIndex(index)
   }
 
   public after (...nodes: Node[]): void {
-    const { parent, index } = this.getLocation()
+    const { parent, index } = this.getParent()
     parent.children.splice(index + 1, 0, ...nodes)
     parent.refreshIndex(index + 1)
   }
 
   public replaceWith (...nodes: Node[]): void {
-    const { parent, index } = this.getLocation()
+    const { parent, index } = this.getParent()
     parent.children.splice(index, 1, ...nodes)
     parent.refreshIndex(index)
-    this.location = undefined
+    this.parentPointer = undefined
   }
 }
 
@@ -121,7 +129,7 @@ export class Block extends Node implements ParentNode {
 
   public append (...nodes: Node[]): void {
     for (const node of nodes) {
-      node.location = {
+      node.parentPointer = {
         parent: this,
         index: this.children.length
       }
@@ -131,7 +139,7 @@ export class Block extends Node implements ParentNode {
 
   public prepend (...nodes: Node[]): void {
     for (const [index, node] of nodes.entries()) {
-      node.location = {
+      node.parentPointer = {
         parent: this,
         index
       }
@@ -143,7 +151,7 @@ export class Block extends Node implements ParentNode {
   public refreshIndex (begin = 0, end = this.children.length): void {
     const { children } = this
     for (let i = begin; i < end; ++i) {
-      children[i].location = {
+      children[i].parentPointer = {
         parent: this,
         index: i
       }

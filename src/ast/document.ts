@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Node, Block } from './node'
+import { Node, Block, ParentPointer } from './node'
 import { Heading } from './heading'
 import toId from '../utils/to-id'
 
@@ -36,31 +36,43 @@ function * traverse (node: Node): IterableIterator<Node> {
  */
 export class Document extends Block {
   private pPath?: string
-  public readonly subDocuments: Document[] = []
 
   public get kind (): string {
     return 'DOCUMENT'
+  }
+
+  public get parentPointer (): ParentPointer | undefined {
+    return super.parentPointer
+  }
+
+  public set parentPointer (loc: ParentPointer | undefined) {
+    super.parentPointer = loc
   }
 
   public get path (): string | undefined {
     return this.pPath
   }
 
-  public set path (value: string | undefined) {
-    this.pPath = value || undefined
+  public set path (path: string | undefined) {
+    path = path || undefined
+    this.pPath = path
   }
 
   public generateIDs (idCount: { [id: string]: number } = {}): void {
     const { pPath: fpath } = this
     if (fpath === undefined) {
       for (const node of traverse(this)) {
-        if (node instanceof Heading) {
+        if (node !== this && node instanceof Document) {
+          node.generateIDs(idCount)
+        } else if (node instanceof Heading) {
           node.link = undefined
         }
       }
     } else {
       for (const node of traverse(this)) {
-        if (node instanceof Heading) {
+        if (node !== this && node instanceof Document) {
+          node.generateIDs(idCount)
+        } else if (node instanceof Heading) {
           const id = toId(node.text)
           let count = 0
           if (idCount[id] === undefined) {
@@ -72,9 +84,6 @@ export class Document extends Block {
             (count > 0 ? ('-' + count) : '')
         }
       }
-    }
-    for (const doc of this.subDocuments) {
-      doc.generateIDs(idCount)
     }
   }
 }
