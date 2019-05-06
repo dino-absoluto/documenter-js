@@ -32,8 +32,7 @@ import {
   ApiItem,
   ApiDocumentedItem,
   ApiPackage,
-  ApiDeclaredItem,
-  ApiClass
+  ApiDeclaredItem
 } from '@microsoft/api-extractor-model'
 
 import {
@@ -62,7 +61,7 @@ export class HeadingAnchor extends Heading {
   }
 
   public get text (): string {
-    return this.text
+    return this.title
   }
 
   public get link (): string {
@@ -71,23 +70,43 @@ export class HeadingAnchor extends Heading {
 }
 
 export class Page {
-  public filename: string
+  public parent?: Page
+  public header: HeadingAnchor = new HeadingAnchor(this)
   public sections: Section[] = []
   public subPages: Page[] = []
+  public references: Page[] = []
+  private pFilename: string
   public constructor (filename: string) {
-    this.filename = filename
+    this.pFilename = filename
+  }
+
+  public get filename (): string {
+    if (this.parent) {
+      return this.parent.filename
+    } else {
+      return this.pFilename
+    }
   }
 
   public toString (): string {
-    return this.sections.map(s => s.toString()).join('\n\n')
+    let text = ''
+    if (this.header.title) {
+      text += this.header.toString() + `<a href="${this.header.link}"/>\n`
+    }
+    text += this.sections.map(s => s.toString()).join('\n\n')
+    if (this.subPages.length) {
+      text += '\n\n' + this.subPages.map(s => s.toString()).join('\n\n')
+    }
+    return text
   }
 
-  public flatten (): void {
-    for (const pg of this.subPages) {
-      pg.flatten()
-      this.sections.push(...pg.sections)
+  public flat (): void {
+    for (const pg of this.references) {
+      pg.parent = this
+      pg.flat()
     }
-    this.subPages = []
+    this.subPages.push(...this.references)
+    this.references = []
   }
 }
 
@@ -180,12 +199,12 @@ export class Parser {
       (pkgName || '') + (scopedName ? '.' + scopedName : '') + '.md')
     const children: Node[] = []
     if (item instanceof ApiPackage) {
-      children.push(new Heading(1, new PlainText(
-        pkgName + ' package')))
+      page.header.title =
+        pkgName + ' package'
+      page.header.level = 1
     }
     if (scopedName) {
-      children.push(new Heading(2, new PlainText(
-        scopedName + ' ' + item.kind.toLowerCase())))
+      page.header.title = scopedName + ' ' + item.kind.toLowerCase()
     }
     if (item instanceof ApiDeclaredItem) {
       children.push(new CodeBlock([
@@ -208,7 +227,7 @@ export class Parser {
     page.sections.push(new Section(children))
     for (const mem of item.members) {
       const memPage = this.parseItem(mem)
-      page.subPages.push(memPage)
+      page.references.push(memPage)
     }
     return page
   }
@@ -220,7 +239,7 @@ export class Parser {
       pages.push(page)
     }
     for (const pg of pages) {
-      pg.flatten()
+      pg.flat()
     }
     console.log(
       '------\n' +

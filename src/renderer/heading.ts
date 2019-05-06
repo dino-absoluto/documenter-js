@@ -22,14 +22,20 @@ import { Node } from './node'
 /* code */
 export class Heading extends Node {
   private data: Node
-  private level: number
+  private pLevel: number = 4
   public constructor (level: number, data: Node) {
     super()
-    level = Number.isInteger(level)
-      ? Math.min(6, Math.max(0, level))
-      : 6
     this.level = level
     this.data = data
+  }
+
+  public get level (): number {
+    return this.pLevel
+  }
+  public set level (level: number) {
+    this.pLevel = Number.isInteger(level)
+      ? Math.min(6, Math.max(0, level))
+      : 4
   }
 
   public toString (): string {
