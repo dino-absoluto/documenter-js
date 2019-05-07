@@ -17,18 +17,3 @@
  *
  */
 /* imports */
-import { Node } from './node'
-
-/* code */
-type DynamicTextCallback = () => string
-export class DynamicText extends Node {
-  private callback: DynamicTextCallback
-  public constructor (callback: DynamicTextCallback) {
-    super()
-    this.callback = callback
-  }
-
-  public toString (): string {
-    return this.callback()
-  }
-}
