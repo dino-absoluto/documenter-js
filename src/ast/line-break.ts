@@ -16,21 +16,16 @@
  * limitations under the License.
  *
  */
-/* reexports */
-export { Document } from './document'
-export { FormattedSpan } from './formatted-span'
-export { FormattedBlock, BlockType } from './formatted-block'
-export { Heading } from './heading'
-export { LineBreak } from './line-break'
-export {
-  Reference,
-  Link,
-  Image
-} from './link'
-export { Node, Span, Block } from './node'
-export {
-  Table,
-  TableRow,
-  TableHeader,
-  TableCell
-} from './table'
+/* imports */
+import { Span } from './node'
+
+/* code */
+export class LineBreak extends Span {
+  public get kind (): string {
+    return 'LINE_BREAK'
+  }
+
+  public constructor () {
+    super('')
+  }
+}
