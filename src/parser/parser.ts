@@ -85,6 +85,10 @@ export class Parser {
         return new Span(typed.text)
       case DocNodeKind.SoftBreak:
         return new LineBreak()
+      case DocNodeKind.Paragraph:
+        const children = trimNodes(node.getChildNodes())
+          .map((n) => this.parseDoc(item, n))
+        return new FormattedBlock(children)
       default:
         return new Span(node.kind)
     }
