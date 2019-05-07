@@ -159,6 +159,10 @@ export abstract class Block extends Node implements ParentNode {
     this.refreshIndex()
   }
 
+  public get isParagraph (): boolean {
+    return false
+  }
+
   public append (...nodes: Node[]): void {
     const lastIndex = this.children.length
     this.children.push(...nodes)

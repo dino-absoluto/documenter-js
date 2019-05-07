@@ -19,6 +19,7 @@
 /* imports */
 import {
   Node,
+  Block,
   Document,
   Heading,
   FormattedBlock,
@@ -36,6 +37,26 @@ export class Renderer {
   public docs: Set<Document>
   public constructor (docs: Set<Document>) {
     this.docs = docs
+  }
+
+  public renderBlock (nodes: Node[]): string {
+    let blocks: string[] = []
+    let lastSpan: string | undefined
+    for (const node of nodes) {
+      if (node instanceof Block && node.isParagraph) {
+        if (lastSpan) {
+          blocks.push(lastSpan)
+        }
+        lastSpan = undefined
+        blocks.push(this.renderNode(node))
+      } else {
+        lastSpan = (lastSpan || '') + this.renderNode(node)
+      }
+    }
+    if (lastSpan) {
+      blocks.push(lastSpan)
+    }
+    return blocks.join('\n\n')
   }
 
   public renderNode (node: Node): string {
@@ -62,7 +83,7 @@ export class Renderer {
         return '\n'
       case 'FORMATTED_BLOCK': {
         const typed = node as FormattedBlock
-        let text = typed.children.map((i) => this.renderNode(i)).join('')
+        let text = this.renderBlock(typed.children)
         switch (typed.type) {
           case BlockType.Info:
           case BlockType.Warning:
@@ -87,7 +108,7 @@ export class Renderer {
       }
       case 'DOCUMENT': {
         const typed = node as Document
-        let text = typed.children.map((i) => this.renderNode(i)).join('\n\n')
+        let text = this.renderBlock(typed.children)
         return text
       }
       case 'LINK': {

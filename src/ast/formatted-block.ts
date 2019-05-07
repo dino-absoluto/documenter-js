@@ -53,4 +53,8 @@ export class FormattedBlock extends Block implements FormattedBlockAttribute {
       this.subType = opts.subType
     }
   }
+
+  public get isParagraph (): boolean {
+    return true
+  }
 }

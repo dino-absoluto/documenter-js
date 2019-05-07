@@ -211,6 +211,19 @@ export class Parser {
         })
       )
     }
+    if (item instanceof ApiDocumentedItem && item.tsdocComment) {
+      const comment = item.tsdocComment
+      if (comment.remarksBlock) {
+        const block = comment.remarksBlock
+        const children = trimNodes(block.content.getChildNodes()).map(
+          (docItem) => this.parseDoc(item, docItem)
+        )
+        children.unshift(new Heading('Remarks', 4))
+        doc.append(new FormattedBlock(
+          children
+        ))
+      }
+    }
     switch (item.kind) {
       case ApiItemKind.Class:
       case ApiItemKind.Enum:

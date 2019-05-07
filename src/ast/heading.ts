@@ -17,22 +17,28 @@
  *
  */
 /* imports */
-import { Span } from './node'
+import { Block } from './node'
 
 /* code */
 /**
  * A heading.
  */
-export class Heading extends Span {
+export class Heading extends Block {
   public get kind (): string {
     return 'HEADING'
   }
 
   private pLevel: number = 4
   public link?: string
+  public text: string
   public constructor (text: string, level: number = 4) {
     super(text)
     this.level = level
+    this.text = text
+  }
+
+  public get isParagraph (): boolean {
+    return true
   }
 
   public get level (): number {

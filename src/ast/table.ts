@@ -47,6 +47,10 @@ export class Table extends Block {
     )
   }
 
+  public get isParagraph (): boolean {
+    return true
+  }
+
   public get header (): TableHeader {
     return this.children[0] as TableHeader
   }

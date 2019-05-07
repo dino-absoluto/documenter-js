@@ -58,6 +58,10 @@ export class Document extends Block {
     super.parentPointer = loc
   }
 
+  public get isParagraph (): boolean {
+    return true
+  }
+
   public get path (): string | undefined {
     if (this.parent) {
       return this.parent.path
