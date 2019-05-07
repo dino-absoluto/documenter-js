@@ -75,6 +75,9 @@ export class Document extends Block {
   }
 
   public generateIDs (): void {
+    if (this.parent) {
+      throw new Error('Document.generateIDs cannot be called from sub document.')
+    }
     const { path: fpath } = this
     const idCount: { [id: string]: number } = {}
     if (fpath === undefined) {
