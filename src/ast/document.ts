@@ -74,8 +74,9 @@ export class Document extends Block {
     this.pPath = path
   }
 
-  public generateIDs (idCount: { [id: string]: number } = {}): void {
+  public generateIDs (): void {
     const { path: fpath } = this
+    const idCount: { [id: string]: number } = {}
     if (fpath === undefined) {
       for (const node of traverse(this)) {
         if (node instanceof Heading) {
