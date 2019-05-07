@@ -28,6 +28,11 @@
  * @public
  */
 export class Hello {
+  private zero = 0
+  /**
+   * Number one.
+   */
+  public one: number = 1
   /**
    * Print a message.
    *
