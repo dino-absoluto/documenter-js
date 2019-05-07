@@ -188,12 +188,19 @@ export class Parser {
     if (item instanceof ApiDocumentedItem && item.tsdocComment) {
       const comment = item.tsdocComment
       if (comment.deprecatedBlock) {
+        const block = comment.deprecatedBlock
+        const children = trimNodes(block.getChildNodes()).map(
+          (docItem) => this.parseDoc(item, docItem)
+        )
+        doc.append(new FormattedBlock(
+          children, {
+            type: BlockType.Error
+          }
+        ))
       }
-      const nodes = trimNodes(comment.summarySection.nodes).map(
+      const children = trimNodes(comment.summarySection.nodes).map(
         (docItem) => this.parseDoc(item, docItem))
-      doc.append(
-        new FormattedBlock(nodes)
-      )
+      doc.append(new FormattedBlock(children))
     }
     if (item instanceof ApiDeclaredItem) {
       doc.append(
