@@ -111,7 +111,7 @@ export class Parser {
         if (link.codeDestination) {
           const dest = link.codeDestination
           const ref = this.resolveDeclaration(item, dest)
-          return new Link(link.tagName || '', (): string => {
+          return new Link(link.linkText || dest.emitAsTsdoc() || '', (): string => {
             const heading = this.pHeadings.get(ref)
             if (heading) {
               if (!heading.link) {
