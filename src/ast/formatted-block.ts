@@ -50,7 +50,7 @@ export class FormattedBlock extends Block implements FormattedBlockAttribute {
       this.type = opts.type
     }
     if (opts.subType !== undefined) {
-      this.subType = this.subType
+      this.subType = opts.subType
     }
   }
 }
