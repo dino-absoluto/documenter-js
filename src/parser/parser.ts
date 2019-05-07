@@ -25,7 +25,8 @@ import {
   ApiDeclaredItem,
   ApiDocumentedItem,
   ApiClass,
-  ApiProperty
+  ApiProperty,
+  ApiMethod
 } from '@microsoft/api-extractor-model'
 
 import {
@@ -292,14 +293,26 @@ export class Parser {
   private generateClassTable (item: ApiClass): Node {
     const block = new FormattedBlock()
     const propsTable = new Table([ 'Property', 'Type', 'Description' ])
+    const methodsTable = new Table([ 'Method', 'Description' ])
     for (const mem of item.members) {
       switch (mem.kind) {
         case ApiItemKind.Property: {
           const typed = mem as ApiProperty
+          const nameField = new FormattedBlock(typed.name)
           const cells: (string | Node)[] = [
-            typed.displayName,
+            nameField,
             new FormattedSpan(typed.propertyTypeExcerpt.text, { code: true })
           ]
+          if (typed.isStatic) {
+            nameField.append(
+              new FormattedSpan('static', { code: true })
+            )
+          }
+          if (typed.isEventProperty) {
+            nameField.append(
+              new FormattedSpan('event', { code: true })
+            )
+          }
           if (typed.tsdocComment) {
             const comment = typed.tsdocComment
             const children = trimNodes(comment.summarySection.nodes).map(
@@ -307,13 +320,41 @@ export class Parser {
             cells.push(new FormattedBlock(children))
           }
           propsTable.addRow(cells)
+          break
+        }
+        case ApiItemKind.Method: {
+          const typed = mem as ApiMethod
+          const nameField = new FormattedBlock(
+            typed.excerpt.text.replace(/;$/, ''))
+          const cells: (string | Node)[] = [
+            nameField
+          ]
+          if (typed.isStatic) {
+            nameField.append(
+              new FormattedSpan('static', { code: true })
+            )
+          }
+          if (typed.tsdocComment) {
+            const comment = typed.tsdocComment
+            const children = trimNodes(comment.summarySection.nodes).map(
+              (docItem) => this.parseDoc(item, docItem))
+            cells.push(new FormattedBlock(children))
+          }
+          methodsTable.addRow(cells)
+          break
         }
       }
     }
     if (propsTable.rows) {
-      block.append(propsTable)
+      block.append(
+        new Heading('Properties', 4),
+        propsTable)
     }
-    console.log(block, propsTable.rows)
+    if (methodsTable.rows) {
+      block.append(
+        new Heading('Methods', 4),
+        methodsTable)
+    }
     return block
   }
 
