@@ -176,6 +176,19 @@ export class Parser {
         throw new Error('Unsupported ApiItem kind: ' + item.kind)
       }
     }
+    const members = (function * () {
+      for (const mem of item.members) {
+        if (mem.kind === ApiItemKind.EntryPoint) {
+          yield * mem.members
+        } else {
+          yield mem
+        }
+      }
+    })()
+    for (const mem of members) {
+      const memDoc = this.parseItem(mem)
+      doc.append(memDoc)
+    }
     return doc
   }
 
