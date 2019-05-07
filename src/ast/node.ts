@@ -55,7 +55,7 @@ export abstract class Block extends Node implements Tree.ParentNode {
     return 'BLOCK'
   }
 
-  public children: Tree.NodeArray<Node> = new Tree.NodeArray(this)
+  public children: Readonly<Tree.NodeArray<Node>> = new Tree.NodeArray(this)
   public constructor (children: Node[] | string = []) {
     super()
     this.children.push(...(

@@ -34,7 +34,7 @@ class CNode extends Node {
 
 class PNode extends Node implements ParentNode {
   public id: unknown
-  public readonly children: NodeArray<CNode> = new NodeArray(this)
+  public readonly children: Readonly<NodeArray<CNode>> = new NodeArray(this)
   public constructor (id: unknown) {
     super()
     this.id = id

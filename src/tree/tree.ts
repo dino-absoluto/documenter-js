@@ -44,7 +44,7 @@ export interface ChildNode {
  * Describe a parent node.
  */
 export interface ParentNode {
-  children: ChildNode[]
+  children: Readonly<NodeArray<ChildNode>>
   append (...nodes: ChildNode[]): void
   prepend (...nodes: ChildNode[]): void
 }
@@ -126,6 +126,9 @@ export class NodeArray<T extends ChildNode> extends Array<T> {
   private updateIndex (begin = 0, end = this.length): void {
     const { parent } = this
     for (let i = begin; i < end; ++i) {
+      if (!this[i]) {
+        continue
+      }
       this[i].setParent({
         parent,
         index: i
@@ -141,6 +144,9 @@ export class NodeArray<T extends ChildNode> extends Array<T> {
     const length = this.length
     if (newLength >= 0 && newLength < length) {
       for (let i = newLength; i < length; ++i) {
+        if (!this[i]) {
+          continue
+        }
         this[i].setParent(undefined)
       }
     }
