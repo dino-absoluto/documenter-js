@@ -98,7 +98,16 @@ export class Parser {
 
   private parseItem (item: ApiItem): Document {
     const doc = new Document()
+    const pkgName = (() => {
+      const pkg = item.getAssociatedPackage()
+      if (pkg) {
+        return pkg.displayName
+      }
+      return 'unknown'
+    })()
     const scopedName = item.getScopedNameWithinPackage()
+    doc.path = pkgName + '.md' +
+      (scopedName ? ('#' + scopedName) : '')
     /* Heading */
     let heading
     switch (item.kind) {
@@ -199,7 +208,6 @@ export class Parser {
     const docs = new Set<Document>()
     for (const entry of this.model.members) {
       const doc = this.parseItem(entry)
-      console.log(doc)
       docs.add(doc)
     }
     return docs
