@@ -100,23 +100,23 @@ export class Node implements ChildNode {
     parent.children.splice(index, 1)
   }
 
-  public before (...nodes: ChildNode[]): void {
+  public before (...nodes: Node[]): void {
     const { parent, index } = this.getParent()
     parent.children.splice(index, 0, ...nodes)
   }
 
-  public after (...nodes: ChildNode[]): void {
+  public after (...nodes: Node[]): void {
     const { parent, index } = this.getParent()
     parent.children.splice(index + 1, 0, ...nodes)
   }
 
-  public replaceWith (...nodes: ChildNode[]): void {
+  public replaceWith (...nodes: Node[]): void {
     const { parent, index } = this.getParent()
     parent.children.splice(index, 1, ...nodes)
   }
 }
 
-export class NodeArray extends Array<ChildNode> {
+export class NodeArray<T extends ChildNode> extends Array<T> {
   private parent: ParentNode
   public constructor (parent: ParentNode) {
     super()
@@ -148,14 +148,14 @@ export class NodeArray extends Array<ChildNode> {
     super.length = newLength
   }
 
-  public push (...nodes: ChildNode[]): number {
+  public push (...nodes: T[]): number {
     const lastLength = this.length
     const length = super.push(...nodes)
     this.updateIndex(lastLength)
     return length
   }
 
-  public pop (): ChildNode | undefined {
+  public pop (): T | undefined {
     const node = super.pop()
     if (node) {
       node.setParent(undefined)
@@ -163,7 +163,7 @@ export class NodeArray extends Array<ChildNode> {
     return node
   }
 
-  public shift (): ChildNode | undefined {
+  public shift (): T | undefined {
     const node = super.shift()
     if (node) {
       node.setParent(undefined)
@@ -172,13 +172,13 @@ export class NodeArray extends Array<ChildNode> {
     return node
   }
 
-  public unshift (...nodes: ChildNode[]): number {
+  public unshift (...nodes: T[]): number {
     const length = super.unshift(...nodes)
     this.updateIndex()
     return length
   }
 
-  public sort (compareFn?: (a: ChildNode, b: ChildNode) => number): this {
+  public sort (compareFn?: (a: T, b: T) => number): this {
     super.sort(compareFn)
     this.updateIndex()
     return this
@@ -193,7 +193,7 @@ export class NodeArray extends Array<ChildNode> {
   public splice (
     start: number,
     deleteCount?: number,
-    ...nodes: ChildNode[]): ChildNode[] {
+    ...nodes: T[]): T[] {
     const result = super.splice(start, deleteCount || 0, ...nodes)
     if (start < 0) {
       start = Math.max(0, this.length + start)

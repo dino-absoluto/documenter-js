@@ -34,15 +34,15 @@ class CNode extends Node {
 
 class PNode extends Node implements ParentNode {
   public id: unknown
-  public readonly children: NodeArray = new NodeArray(this)
+  public readonly children: NodeArray<CNode> = new NodeArray(this)
   public constructor (id: unknown) {
     super()
     this.id = id
   }
-  public append (...nodes: Node[]): void {
+  public append (...nodes: CNode[]): void {
     this.children.push(...nodes)
   }
-  public prepend (...nodes: Node[]): void {
+  public prepend (...nodes: CNode[]): void {
     this.children.unshift(...nodes)
   }
 }

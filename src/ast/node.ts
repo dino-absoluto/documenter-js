@@ -17,113 +17,18 @@
  *
  */
 /* imports */
+import * as Tree from '../tree/tree'
+
+/* reexports */
+export { ParentPointer } from '../tree/tree'
 
 /* code */
-export interface ParentPointer {
-  index: number
-  parent: ParentNode
-}
-
-/**
- * Describe a child node.
- */
-export interface ChildNode {
-  parentPointer?: ParentPointer
-  index?: number
-  parent?: ParentNode
-  remove (): void
-  before (...nodes: Node[]): void
-  after (...nodes: Node[]): void
-  replaceWith (...nodes: Node[]): void
-}
-
-/**
- * Describe a parent node.
- */
-export interface ParentNode {
-  children: Node[]
-  refreshIndex (start?: number, end?: number): void
-  append (...nodes: Node[]): void
-  prepend (...nodes: Node[]): void
-}
-
 /**
  * A basic node.
  */
-export abstract class Node implements ChildNode {
+export abstract class Node extends Tree.Node {
   public get kind (): string {
     return 'NODE'
-  }
-
-  private pParentPointer?: ParentPointer = undefined
-  public constructor () {
-    Object.defineProperty(this, 'pParentPointer', {
-      enumerable: false
-    })
-  }
-  private getParent (): ParentPointer {
-    if (!this.pParentPointer) {
-      throw new Error('This node does not belong to any ParentNode.')
-    }
-    return this.pParentPointer
-  }
-
-  public get parentPointer (): ParentPointer | undefined {
-    return this.pParentPointer
-  }
-
-  public set parentPointer (loc: ParentPointer | undefined) {
-    const { pParentPointer } = this
-    if (pParentPointer && loc) {
-      if (loc.parent === pParentPointer.parent) {
-        pParentPointer.index = loc.index
-      } else {
-        this.remove()
-        this.pParentPointer = loc
-      }
-      return
-    }
-    this.pParentPointer = loc
-  }
-
-  public get index (): number | undefined {
-    if (this.parentPointer) {
-      return this.parentPointer.index
-    }
-    return undefined
-  }
-
-  public get parent (): ParentNode | undefined {
-    if (this.parentPointer) {
-      return this.parentPointer.parent
-    }
-    return undefined
-  }
-
-  public remove (): void {
-    const { parent, index } = this.getParent()
-    parent.children.splice(index, 1)
-    parent.refreshIndex(index)
-    this.parentPointer = undefined
-  }
-
-  public before (...nodes: Node[]): void {
-    const { parent, index } = this.getParent()
-    parent.children.splice(index, 0, ...nodes)
-    parent.refreshIndex(index)
-  }
-
-  public after (...nodes: Node[]): void {
-    const { parent, index } = this.getParent()
-    parent.children.splice(index + 1, 0, ...nodes)
-    parent.refreshIndex(index + 1)
-  }
-
-  public replaceWith (...nodes: Node[]): void {
-    const { parent, index } = this.getParent()
-    parent.children.splice(index, 1, ...nodes)
-    parent.refreshIndex(index)
-    this.parentPointer = undefined
   }
 }
 
@@ -145,18 +50,19 @@ export class Span extends Node {
 /**
  * A text block node.
  */
-export abstract class Block extends Node implements ParentNode {
+export abstract class Block extends Node implements Tree.ParentNode {
   public get kind (): string {
     return 'BLOCK'
   }
 
-  public children: Node[] = []
+  public children: Tree.NodeArray<Node> = new Tree.NodeArray(this)
   public constructor (children: Node[] | string = []) {
     super()
-    this.children = typeof children === 'string'
-      ? [ new Span(children) ]
-      : Array.from(children)
-    this.refreshIndex()
+    this.children.push(...(
+      typeof children === 'string'
+        ? [ new Span(children) ]
+        : Array.from(children)
+    ))
   }
 
   public get isParagraph (): boolean {
@@ -164,23 +70,10 @@ export abstract class Block extends Node implements ParentNode {
   }
 
   public append (...nodes: Node[]): void {
-    const lastIndex = this.children.length
     this.children.push(...nodes)
-    this.refreshIndex(lastIndex)
   }
 
   public prepend (...nodes: Node[]): void {
     this.children.unshift(...nodes)
-    this.refreshIndex()
-  }
-
-  public refreshIndex (begin = 0, end = this.children.length): void {
-    const { children } = this
-    for (let i = begin; i < end; ++i) {
-      children[i].parentPointer = {
-        parent: this,
-        index: i
-      }
-    }
   }
 }

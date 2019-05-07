@@ -45,17 +45,11 @@ export class Document extends Block {
     return super.parent as Document
   }
 
-  public get parentPointer (): ParentPointer | undefined {
-    return super.parentPointer
-  }
-
-  public set parentPointer (loc: ParentPointer | undefined) {
-    if (loc) {
-      if (!(loc.parent instanceof Document)) {
-        throw new Error('Document can only be added to other Document')
-      }
+  public setParent (loc?: ParentPointer): void {
+    if (loc && !(loc.parent instanceof Document)) {
+      throw new Error('Document can only be added to other Document')
     }
-    super.parentPointer = loc
+    super.setParent(loc)
   }
 
   public get isParagraph (): boolean {

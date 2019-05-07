@@ -76,17 +76,11 @@ export class TableRow extends Block {
     return super.parent as Table
   }
 
-  public get parentPointer (): ParentPointer | undefined {
-    return super.parentPointer
-  }
-
-  public set parentPointer (loc: ParentPointer | undefined) {
-    if (loc) {
-      if (!(loc.parent instanceof Table)) {
-        throw new Error('TableRow can only be added to Table')
-      }
+  public setParent (loc?: ParentPointer): void {
+    if (loc && !(loc.parent instanceof Table)) {
+      throw new Error('TableRow can only be added to Table')
     }
-    super.parentPointer = loc
+    super.setParent(loc)
   }
 }
 
@@ -102,17 +96,11 @@ export class TableCell extends Block {
     return super.parent as TableRow
   }
 
-  public get parentPointer (): ParentPointer | undefined {
-    return super.parentPointer
-  }
-
-  public set parentPointer (loc: ParentPointer | undefined) {
-    if (loc) {
-      if (!(loc.parent instanceof TableRow)) {
-        throw new Error('TableCell can only be added to TableRow')
-      }
+  public setParent (loc?: ParentPointer): void {
+    if (loc && !(loc.parent instanceof TableRow)) {
+      throw new Error('TableCell can only be added to TableRow')
     }
-    super.parentPointer = loc
+    super.setParent(loc)
   }
 }
 

@@ -18,7 +18,6 @@
  */
 /* imports */
 import { Span } from './node'
-import { Heading } from './heading'
 
 interface RefStatic {
   kind: 'static'

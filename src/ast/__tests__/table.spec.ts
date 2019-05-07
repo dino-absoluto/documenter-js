@@ -23,7 +23,7 @@ import {
   TableRow,
   TableCell
 } from '../table'
-import { Block } from '../node'
+import { FormattedBlock } from '../formatted-block'
 
 /* code */
 describe('Table', () => {
@@ -31,16 +31,16 @@ describe('Table', () => {
     const table = new Table(['Name', 'Description'])
     expect(table.children.length).toBe(1)
     expect(table.header instanceof TableHeader).toBe(true)
-    expect(table.header.children).toMatchObject([
+    expect(JSON.stringify(table.header.children)).toBe(JSON.stringify([
       { children: [ { text: 'Name' } ] },
       { children: [ { text: 'Description' } ] }
-    ])
+    ]))
   })
 })
 
 describe('TableRow', () => {
   test('parent', () => {
-    const block = new Block()
+    const block = new FormattedBlock()
     const row = new TableRow(['Abc', 'Welcome!'])
     expect(() => block.append(row)).toThrow('TableRow')
   })
@@ -48,7 +48,7 @@ describe('TableRow', () => {
 
 describe('TableCell', () => {
   test('parent', () => {
-    const block = new Block()
+    const block = new FormattedBlock()
     const cell = new TableCell('Abc')
     expect(() => block.append(cell)).toThrow('TableCell')
   })
