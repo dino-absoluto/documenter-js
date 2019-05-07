@@ -123,9 +123,8 @@ export class NodeArray<T extends ChildNode> extends Array<T> {
     this.parent = parent
   }
 
-  private updateIndex (begin = 0): void {
+  private updateIndex (begin = 0, end = this.length): void {
     const { parent } = this
-    const end = this.length
     for (let i = begin; i < end; ++i) {
       this[i].setParent({
         parent,
@@ -197,8 +196,10 @@ export class NodeArray<T extends ChildNode> extends Array<T> {
     const result = super.splice(start, deleteCount || 0, ...nodes)
     if (start < 0) {
       start = Math.max(0, this.length + start)
-      this.updateIndex(start)
-    } else if (start >= 0) {
+    }
+    if (deleteCount === nodes.length) {
+      this.updateIndex(start, start + deleteCount)
+    } else {
       this.updateIndex(start)
     }
     for (const node of result) {
