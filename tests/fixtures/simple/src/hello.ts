@@ -42,6 +42,10 @@ export class Hello {
   public print (i: number): void {
     console.log('Hello World!', i + '!')
   }
+
+  public sayHello (i?: number, ...texts: string[]): void {
+    console.log(i, texts)
+  }
 }
 
 /**
