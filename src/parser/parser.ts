@@ -27,14 +27,44 @@ import {
 } from '@microsoft/api-extractor-model'
 
 import {
+  DocNode,
+  DocNodeKind,
+  DocPlainText,
+  DocSoftBreak
+} from '@microsoft/tsdoc'
+
+import {
+  Node,
   Document,
   Heading,
   FormattedBlock,
   FormattedSpan,
-  BlockType
+  BlockType,
+  Span,
+  LineBreak
 } from '../ast'
 
 /* code */
+
+const trimNodes = (nodes: readonly DocNode[]): DocNode[] => {
+  let start = 0
+  for (const node of nodes) {
+    if (node instanceof DocSoftBreak) {
+      start++
+      continue
+    }
+    break
+  }
+  let end = nodes.length
+  for (let i = nodes.length - 1; i >= 0; --i) {
+    if (nodes[i] instanceof DocSoftBreak) {
+      end = i
+      continue
+    }
+    break
+  }
+  return nodes.slice(start, end)
+}
 
 /**
  * The Parser.
@@ -46,6 +76,18 @@ export class Parser {
 
   public loadPackage (filename: string): void {
     this.model.loadPackage(filename)
+  }
+
+  private parseDoc (item: ApiItem, node: DocNode): Node {
+    switch (node.kind) {
+      case DocNodeKind.PlainText:
+        const typed = node as DocPlainText
+        return new Span(typed.text)
+      case DocNodeKind.SoftBreak:
+        return new LineBreak()
+      default:
+        return new Span(node.kind)
+    }
   }
 
   private parseItem (item: ApiItem): Document {
@@ -96,6 +138,11 @@ export class Parser {
       const comment = item.tsdocComment
       if (comment.deprecatedBlock) {
       }
+      const nodes = trimNodes(comment.summarySection.nodes).map(
+        (docItem) => this.parseDoc(item, docItem))
+      doc.append(
+        new FormattedBlock(nodes)
+      )
     }
     if (item instanceof ApiDeclaredItem) {
       doc.append(
