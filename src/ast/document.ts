@@ -74,17 +74,13 @@ export class Document extends Block {
     const { path: fpath } = this
     if (fpath === undefined) {
       for (const node of traverse(this)) {
-        if (node !== this && node instanceof Document) {
-          node.generateIDs(idCount)
-        } else if (node instanceof Heading) {
+        if (node instanceof Heading) {
           node.link = undefined
         }
       }
     } else {
       for (const node of traverse(this)) {
-        if (node !== this && node instanceof Document) {
-          node.generateIDs(idCount)
-        } else if (node instanceof Heading) {
+        if (node instanceof Heading) {
           const id = toId(node.text)
           let count = 0
           if (idCount[id] === undefined) {

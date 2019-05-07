@@ -47,6 +47,19 @@ describe('Document', () => {
     expect(h2.link).toBe(undefined)
     expect(h3.link).toBe(undefined)
   })
+  test('path 2', () => {
+    const doc1 = new Document()
+    const doc2 = new Document()
+    const h1 = new Heading('example')
+    const h2 = new Heading('example')
+    doc1.path = 'simple.md'
+    doc1.append(h1)
+    doc1.append(doc2)
+    doc2.append(h2)
+    doc1.generateIDs()
+    expect(h1.link).toBe('simple.md#example')
+    expect(h2.link).toBe('simple.md#example-1')
+  })
   test('parent', () => {
     const doc = new Document()
     const doc1 = new Document()
