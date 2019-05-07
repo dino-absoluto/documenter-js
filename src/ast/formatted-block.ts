@@ -21,12 +21,12 @@ import { Block, Node } from './node'
 
 /* code */
 export const enum BlockType {
-  Default = 0,
-  Info,
-  Warning,
-  Error,
-  Code,
-  Blockquote
+  Default = '',
+  Info = 'info',
+  Warning = 'warning',
+  Error = 'error',
+  Code = 'code',
+  Blockquote = 'blockquote'
 }
 
 export interface FormattedBlockAttribute {
@@ -43,10 +43,14 @@ export class FormattedBlock extends Block implements FormattedBlockAttribute {
   }
 
   public type: BlockType = BlockType.Default
+  public subType: string = ''
   public constructor (children: Node[] | string, opts: FormattedBlockAttribute = {}) {
     super(children)
     if (opts.type !== undefined) {
       this.type = opts.type
+    }
+    if (opts.subType !== undefined) {
+      this.subType = this.subType
     }
   }
 }
