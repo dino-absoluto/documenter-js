@@ -80,15 +80,17 @@ export class Parser {
 
   private parseDoc (item: ApiItem, node: DocNode): Node {
     switch (node.kind) {
-      case DocNodeKind.PlainText:
+      case DocNodeKind.PlainText: {
         const typed = node as DocPlainText
         return new Span(typed.text)
+      }
       case DocNodeKind.SoftBreak:
         return new LineBreak()
-      case DocNodeKind.Paragraph:
+      case DocNodeKind.Paragraph: {
         const children = trimNodes(node.getChildNodes())
           .map((n) => this.parseDoc(item, n))
         return new FormattedBlock(children)
+      }
       default:
         return new Span(node.kind)
     }
@@ -119,10 +121,11 @@ export class Parser {
       case ApiItemKind.Namespace:
         heading = new Heading(`${scopedName} namespace`, 2)
         break
-      case ApiItemKind.Package:
+      case ApiItemKind.Package: {
         const pkg = item as ApiPackage
         heading = new Heading(`${pkg.displayName} package`, 1)
         break
+      }
       case ApiItemKind.Property:
       case ApiItemKind.PropertySignature:
         heading = new Heading(`${scopedName} property`, 2)
