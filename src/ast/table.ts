@@ -17,21 +17,23 @@
  *
  */
 /* imports */
-import { Block, ParentPointer } from './node'
+import { Node, Block, ParentPointer } from './node'
 
 /* code */
 /**
  * Set alignment of column.
  */
-const enum TableColumnAlignment {
+export const enum TableColumnAlignment {
   Left = 1,
   Center = 2,
   Right = 3
 }
 
-let initCells: (children: (TableCell | string)[]) => TableCell[]
+type TableCellData = TableCell | Node | string
+
+let initCells: (children: TableCellData[]) => TableCell[]
 let initHeader: (header: TableHeader | string[]) => TableHeader
-let initRow: (row: TableRow | string[]) => TableRow
+let initRow: (row: TableRow | TableCellData[]) => TableRow
 
 /**
  * A table.
@@ -55,8 +57,12 @@ export class Table extends Block {
     return this.children[0] as TableHeader
   }
 
-  public addRow (...rows: (TableRow | string[])[]): void {
+  public addRow (...rows: (TableRow | TableCellData[])[]): void {
     this.append(...rows.map(initRow))
+  }
+
+  public get rows (): number {
+    return this.children.length - 1
   }
 }
 
@@ -68,7 +74,7 @@ export class TableRow extends Block {
     return 'TABLE_ROW'
   }
 
-  public constructor (children: (TableCell | string)[]) {
+  public constructor (children: TableCellData[]) {
     super(initCells(children))
   }
 
@@ -114,7 +120,7 @@ export class TableHeader extends TableRow {
 
   public aligns: TableColumnAlignment[]
   public constructor (
-    children: (TableCell | string)[],
+    children: TableCellData[],
     aligns: TableColumnAlignment[] = []
   ) {
     super(children)
@@ -122,7 +128,7 @@ export class TableHeader extends TableRow {
   }
 }
 
-initHeader = (header: TableHeader | string[]): TableHeader => {
+initHeader = (header: TableHeader | TableCellData[]): TableHeader => {
   if (header instanceof TableHeader) {
     return header
   } else {
@@ -130,7 +136,7 @@ initHeader = (header: TableHeader | string[]): TableHeader => {
   }
 }
 
-initRow = (row: TableRow | string[]): TableRow => {
+initRow = (row: TableRow | TableCellData[]): TableRow => {
   if (row instanceof TableRow) {
     return row
   } else {
@@ -138,10 +144,12 @@ initRow = (row: TableRow | string[]): TableRow => {
   }
 }
 
-initCells = (children: (TableCell | string)[]): TableCell[] => {
+initCells = (children: (TableCellData)[]): TableCell[] => {
   return children.map(cell => {
     if (cell instanceof TableCell) {
       return cell
+    } else if (cell instanceof Node) {
+      return new TableCell([ cell ])
     } else {
       return new TableCell(cell)
     }

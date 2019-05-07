@@ -32,5 +32,6 @@ export {
   Table,
   TableRow,
   TableHeader,
-  TableCell
+  TableCell,
+  TableColumnAlignment
 } from './table'

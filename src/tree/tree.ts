@@ -44,7 +44,7 @@ export interface ChildNode {
  * Describe a parent node.
  */
 export interface ParentNode {
-  children: Readonly<NodeArray<ChildNode>>
+  children: ChildNode[]
   append (...nodes: ChildNode[]): void
   prepend (...nodes: ChildNode[]): void
 }

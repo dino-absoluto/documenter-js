@@ -26,7 +26,12 @@ import {
   FormattedSpan,
   BlockType,
   Span,
-  Link
+  Link,
+  Table,
+  TableRow,
+  TableHeader,
+  TableCell,
+  TableColumnAlignment
 } from '../ast'
 
 /* code */
@@ -39,7 +44,7 @@ export class Renderer {
     this.docs = docs
   }
 
-  public renderBlock (nodes: Node[]): string {
+  public renderBlock (nodes: Readonly<Node[]>): string {
     let blocks: string[] = []
     let lastSpan: string | undefined
     for (const node of nodes) {
@@ -114,6 +119,46 @@ export class Renderer {
       case 'LINK': {
         const typed = node as Link
         return `[${typed.text}](${typed.href.toString()})`
+      }
+      case 'TABLE_CELL': {
+        const typed = node as TableCell
+        let text = this.renderBlock(typed.children).trim()
+        return text.replace(/\n/g, '<br>').replace(/\|/g, '\\|')
+      }
+      case 'TABLE_ROW': {
+        const typed = node as TableRow
+        return typed.children.map((cell) =>
+          this.renderNode(cell)).join(' | ')
+      }
+      case 'TABLE_HEADER': {
+        const typed = node as TableHeader
+        let row1: string[] = []
+        let row2: string[] = []
+        for (const [index, cell] of typed.children.entries()) {
+          const align = typed.aligns[index]
+          const text = this.renderNode(cell)
+          row1.push(text)
+          switch (align) {
+            case TableColumnAlignment.Left:
+              row2.push(':' + '-'.repeat(Math.max(1, text.length - 1)))
+              break
+            case TableColumnAlignment.Right:
+              row2.push('-'.repeat(Math.max(1, text.length - 1)) + ':')
+              break
+            case TableColumnAlignment.Center:
+              row2.push(':' + '-'.repeat(Math.max(1, text.length - 2)) + ':')
+              break
+            default:
+              row2.push('-'.repeat(text.length))
+              break
+          }
+        }
+        return row1.join(' | ') + '\n' + row2.join(' | ')
+      }
+      case 'TABLE': {
+        const typed = node as Table
+        return typed.children.map((cell) =>
+          this.renderNode(cell)).join('\n')
       }
       default:
         throw new Error('Unsupported Node type: ' + node.kind)

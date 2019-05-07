@@ -23,7 +23,9 @@ import {
   ApiItem,
   ApiItemKind,
   ApiDeclaredItem,
-  ApiDocumentedItem
+  ApiDocumentedItem,
+  ApiClass,
+  ApiProperty
 } from '@microsoft/api-extractor-model'
 
 import {
@@ -44,7 +46,8 @@ import {
   BlockType,
   Span,
   LineBreak,
-  Link
+  Link,
+  Table
 } from '../ast'
 
 /* code */
@@ -192,6 +195,9 @@ export class Parser {
         const children = trimNodes(block.getChildNodes()).map(
           (docItem) => this.parseDoc(item, docItem)
         )
+        children.unshift(new FormattedSpan('Deprecated:', {
+          strong: true
+        }))
         doc.append(new FormattedBlock(
           children, {
             type: BlockType.Error
@@ -222,6 +228,30 @@ export class Parser {
         doc.append(new FormattedBlock(
           children
         ))
+      }
+    }
+    /* Table */
+    switch (item.kind) {
+      case ApiItemKind.Class: {
+        const typed = item as ApiClass
+        doc.append(this.generateClassTable(typed))
+        break
+      }
+      case ApiItemKind.Enum:
+      case ApiItemKind.Interface:
+      case ApiItemKind.Method:
+      case ApiItemKind.MethodSignature:
+      case ApiItemKind.Function:
+      case ApiItemKind.Namespace:
+      case ApiItemKind.Package:
+      case ApiItemKind.Property:
+      case ApiItemKind.PropertySignature:
+      case ApiItemKind.TypeAlias:
+      case ApiItemKind.Variable: {
+        break
+      }
+      default: {
+        throw new Error('Unsupported ApiItem kind: ' + item.kind)
       }
     }
     switch (item.kind) {
@@ -257,6 +287,34 @@ export class Parser {
       doc.append(memDoc)
     }
     return doc
+  }
+
+  private generateClassTable (item: ApiClass): Node {
+    const block = new FormattedBlock()
+    const propsTable = new Table([ 'Property', 'Type', 'Description' ])
+    for (const mem of item.members) {
+      switch (mem.kind) {
+        case ApiItemKind.Property: {
+          const typed = mem as ApiProperty
+          const cells: (string | Node)[] = [
+            typed.displayName,
+            new FormattedSpan(typed.propertyTypeExcerpt.text, { code: true })
+          ]
+          if (typed.tsdocComment) {
+            const comment = typed.tsdocComment
+            const children = trimNodes(comment.summarySection.nodes).map(
+              (docItem) => this.parseDoc(item, docItem))
+            cells.push(new FormattedBlock(children))
+          }
+          propsTable.addRow(cells)
+        }
+      }
+    }
+    if (propsTable.rows) {
+      block.append(propsTable)
+    }
+    console.log(block, propsTable.rows)
+    return block
   }
 
   public parse (): Set<Document> {
