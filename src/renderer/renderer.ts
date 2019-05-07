@@ -24,7 +24,8 @@ import {
   FormattedBlock,
   FormattedSpan,
   BlockType,
-  Span
+  Span,
+  Link
 } from '../ast'
 
 /* code */
@@ -88,6 +89,10 @@ export class Renderer {
         const typed = node as Document
         let text = typed.children.map((i) => this.renderNode(i)).join('\n\n')
         return text
+      }
+      case 'LINK': {
+        const typed = node as Link
+        return `[${typed.text}](${typed.href.toString()})`
       }
       default:
         throw new Error('Unsupported Node type: ' + node.kind)

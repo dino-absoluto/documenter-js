@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Block } from '../node'
+import { FormattedBlock } from '../formatted-block'
 import { Document } from '../document'
 import { Heading } from '../heading'
 
@@ -25,7 +25,7 @@ import { Heading } from '../heading'
 describe('Document', () => {
   test('path', () => {
     const doc = new Document()
-    const group = new Block()
+    const group = new FormattedBlock()
     const h1 = new Heading('example')
     const h2 = new Heading('example')
     const h3 = new Heading('Hello World!')
@@ -50,7 +50,7 @@ describe('Document', () => {
   test('parent', () => {
     const doc = new Document()
     const doc1 = new Document()
-    const group = new Block()
+    const group = new FormattedBlock()
     expect(() => group.append(doc1)).toThrow()
     doc.append(doc1)
     doc.path = 'simple.md'

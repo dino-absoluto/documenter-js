@@ -44,7 +44,7 @@ export class FormattedBlock extends Block implements FormattedBlockAttribute {
 
   public type: BlockType = BlockType.Default
   public subType: string = ''
-  public constructor (children: Node[] | string, opts: FormattedBlockAttribute = {}) {
+  public constructor (children: Node[] | string = [], opts: FormattedBlockAttribute = {}) {
     super(children)
     if (opts.type !== undefined) {
       this.type = opts.type

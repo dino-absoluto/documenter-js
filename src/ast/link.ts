@@ -20,11 +20,6 @@
 import { Span } from './node'
 import { Heading } from './heading'
 
-interface RefHeading {
-  kind: 'heading'
-  ref: Heading
-}
-
 interface RefStatic {
   kind: 'static'
   ref: string
@@ -36,8 +31,8 @@ interface RefFn {
   ref: RefCallbackFn
 }
 
-type Ref = RefHeading | RefStatic | RefFn
-type ReferenceInit = Heading | string | RefCallbackFn
+type Ref = RefStatic | RefFn
+type ReferenceInit = string | RefCallbackFn
 
 /**
  * A reference.
@@ -45,12 +40,7 @@ type ReferenceInit = Heading | string | RefCallbackFn
 export class Reference {
   private ref: Ref
   public constructor (ref: ReferenceInit) {
-    if (ref instanceof Heading) {
-      this.ref = {
-        kind: 'heading',
-        ref: ref
-      }
-    } else if (typeof ref === 'string') {
+    if (typeof ref === 'string') {
       this.ref = {
         kind: 'static',
         ref: ref
@@ -68,12 +58,6 @@ export class Reference {
   public toString (): string {
     const { ref } = this
     switch (ref.kind) {
-      case 'heading': {
-        if (ref.ref.link) {
-          return ref.ref.link
-        }
-        break
-      }
       case 'static': {
         return ref.ref
       }
@@ -87,6 +71,10 @@ export class Reference {
       default: break
     }
     throw new Error('Cannot resolve reference.')
+  }
+
+  public [Symbol.toPrimitive] (): string {
+    return this.toString()
   }
 }
 
@@ -115,7 +103,7 @@ export class Image extends Span {
   }
 
   public href: Reference
-  public constructor (text: string, href: string | RefCallbackFn) {
+  public constructor (text: string, href: ReferenceInit) {
     super(text)
     this.href = new Reference(href)
   }

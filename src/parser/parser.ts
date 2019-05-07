@@ -30,7 +30,9 @@ import {
   DocNode,
   DocNodeKind,
   DocPlainText,
-  DocSoftBreak
+  DocSoftBreak,
+  DocLinkTag,
+  DocDeclarationReference
 } from '@microsoft/tsdoc'
 
 import {
@@ -41,7 +43,8 @@ import {
   FormattedSpan,
   BlockType,
   Span,
-  LineBreak
+  LineBreak,
+  Link
 } from '../ast'
 
 /* code */
@@ -78,6 +81,18 @@ export class Parser {
     this.model.loadPackage(filename)
   }
 
+  public resolveDeclaration (
+    item: ApiItem,
+    ref: DocDeclarationReference
+  ): ApiItem {
+    const result = this.model.resolveDeclarationReference(ref, item)
+    if (result.resolvedApiItem) {
+      return result.resolvedApiItem
+    } else {
+      throw new Error(result.errorMessage)
+    }
+  }
+
   private parseDoc (item: ApiItem, node: DocNode): Node {
     switch (node.kind) {
       case DocNodeKind.PlainText: {
@@ -90,6 +105,26 @@ export class Parser {
         const children = trimNodes(node.getChildNodes())
           .map((n) => this.parseDoc(item, n))
         return new FormattedBlock(children)
+      }
+      case DocNodeKind.LinkTag: {
+        const link = node as DocLinkTag
+        if (link.codeDestination) {
+          const dest = link.codeDestination
+          const ref = this.resolveDeclaration(item, dest)
+          return new Link(link.tagName || '', (): string => {
+            const heading = this.pHeadings.get(ref)
+            if (heading) {
+              if (!heading.link) {
+                throw new Error('Cannot resolve link: ' + dest.emitAsTsdoc())
+              }
+              return heading.link
+            }
+            return ''
+          })
+        } else {
+          const url = String(link.urlDestination)
+          return new Link(link.linkText || url, url)
+        }
       }
       default:
         return new Span(node.kind)
