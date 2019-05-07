@@ -17,16 +17,6 @@
  *
  */
 /* imports */
-import { Parser } from './parser'
-import { Renderer } from './renderer'
-import * as c from 'kleur'
-/* code */
 
-export const documenter = (modelFile: string): void => {
-  const parser = new Parser()
-  parser.loadPackage(modelFile)
-  const renderer = new Renderer(parser.parse())
-  for (const [fpath, content] of renderer.render()) {
-    console.log(c.magenta(fpath) + '\n' + c.green(content))
-  }
-}
+/* reexports */
+export { Renderer } from './renderer'

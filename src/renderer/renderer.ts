@@ -81,17 +81,27 @@ export class Renderer {
       }
       case 'HEADING': {
         const typed = node as Heading
-        return '#'.repeat(typed.level) +
+        return '#'.repeat(typed.level) + ' ' +
           typed.text.replace(/\n/g, '<br>')
+      }
+      case 'DOCUMENT': {
+        const typed = node as Document
+        let text = typed.children.map((i) => this.renderNode(i)).join('\n\n')
+        return text
       }
       default:
         throw new Error('Unsupported Node type: ' + node.kind)
     }
   }
 
-  public render (): void {
+  public render (): Map<string, string> {
     for (const doc of this.docs) {
       doc.generateIDs()
     }
+    const result = new Map<string, string>()
+    for (const doc of this.docs) {
+      result.set(doc.path || '<< undefined >>', this.renderNode(doc))
+    }
+    return result
   }
 }
