@@ -19,7 +19,7 @@
 /* imports */
 import {
   Table,
-  TableHeader,
+  // TableHeader,
   TableRow,
   TableCell
 } from '../table'
@@ -29,12 +29,7 @@ import { FormattedBlock } from '../formatted-block'
 describe('Table', () => {
   test('constructor', () => {
     const table = new Table(['Name', 'Description'])
-    expect(table.children.length).toBe(1)
-    expect(table.header instanceof TableHeader).toBe(true)
-    expect(JSON.stringify(table.header.children)).toBe(JSON.stringify([
-      { children: [ { text: 'Name' } ] },
-      { children: [ { text: 'Description' } ] }
-    ]))
+    expect(table.first).not.toBe(undefined)
   })
 })
 

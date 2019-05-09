@@ -44,7 +44,7 @@ export class Renderer {
     this.docs = docs
   }
 
-  public renderBlock (nodes: Readonly<Node[]>): string {
+  public renderBlock (nodes: Iterable<Node>): string {
     let blocks: string[] = []
     let lastSpan: string | undefined
     for (const node of nodes) {
@@ -127,7 +127,7 @@ export class Renderer {
       }
       case 'TABLE_ROW': {
         const typed = node as TableRow
-        return typed.children.map((cell) =>
+        return [...typed.children].map((cell) =>
           this.renderNode(cell)).join(' | ')
       }
       case 'TABLE_HEADER': {
@@ -157,7 +157,7 @@ export class Renderer {
       }
       case 'TABLE': {
         const typed = node as Table
-        return typed.children.map((cell) =>
+        return [...typed.children].map((cell) =>
           this.renderNode(cell)).join('\n')
       }
       default:

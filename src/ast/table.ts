@@ -17,7 +17,8 @@
  *
  */
 /* imports */
-import { Node, Block, ParentPointer } from './node'
+import { PARENT_CONSTRAINT } from '@dinoabsoluto/tree'
+import { Node, Block } from './node'
 
 /* code */
 /**
@@ -54,15 +55,15 @@ export class Table extends Block {
   }
 
   public get header (): TableHeader {
-    return this.children[0] as TableHeader
+    return this.first as TableHeader
   }
 
   public addRow (...rows: (TableRow | TableCellData[])[]): void {
     this.append(...rows.map(initRow))
   }
 
-  public get rows (): number {
-    return this.children.length - 1
+  public get hasRows (): boolean {
+    return this.first !== this.last
   }
 }
 
@@ -82,11 +83,10 @@ export class TableRow extends Block {
     return super.parent as Table
   }
 
-  public setParent (loc?: ParentPointer): void {
-    if (loc && !(loc.parent instanceof Table)) {
-      throw new Error('TableRow can only be added to Table')
+  [PARENT_CONSTRAINT] (newParent: Node) {
+    if (!(newParent instanceof Table)) {
+      throw new Error('TableRow can only be added to Table.')
     }
-    super.setParent(loc)
   }
 }
 
@@ -102,11 +102,10 @@ export class TableCell extends Block {
     return super.parent as TableRow
   }
 
-  public setParent (loc?: ParentPointer): void {
-    if (loc && !(loc.parent instanceof TableRow)) {
-      throw new Error('TableCell can only be added to TableRow')
+  [PARENT_CONSTRAINT] (newParent: Node) {
+    if (!(newParent instanceof TableRow)) {
+      throw new Error('TableCell can only be added to TableRow.')
     }
-    super.setParent(loc)
   }
 }
 

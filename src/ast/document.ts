@@ -17,7 +17,8 @@
  *
  */
 /* imports */
-import { Node, Block, ParentPointer } from './node'
+import { PARENT_CONSTRAINT } from '@dinoabsoluto/tree'
+import { Node, Block } from './node'
 import { Heading } from './heading'
 import toId from '../utils/to-id'
 
@@ -41,19 +42,18 @@ export class Document extends Block {
 
   private pPath?: string
 
+  public get isParagraph (): boolean {
+    return true
+  }
+
   public get parent (): Document | undefined {
     return super.parent as Document
   }
 
-  public setParent (loc?: ParentPointer): void {
-    if (loc && !(loc.parent instanceof Document)) {
-      throw new Error('Document can only be added to other Document')
+  [PARENT_CONSTRAINT] (newParent: Node) {
+    if (!(newParent instanceof Document)) {
+      throw new Error('Document can only be added to Document.')
     }
-    super.setParent(loc)
-  }
-
-  public get isParagraph (): boolean {
-    return true
   }
 
   public get path (): string | undefined {

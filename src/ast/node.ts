@@ -17,18 +17,65 @@
  *
  */
 /* imports */
-import * as Tree from '../tree/tree'
-
-/* reexports */
-export { ParentPointer } from '../tree/tree'
+import { Linear, Children, ChildNode, ParentNode } from '@dinoabsoluto/tree'
 
 /* code */
 /**
  * A basic node.
  */
-export abstract class Node extends Tree.Node {
+export abstract class Node implements ChildNode, ParentNode {
   public get kind (): string {
     return 'NODE'
+  }
+
+  /* child data */
+
+  public get parent (): Node | undefined {
+    return Linear.parent(this)
+  }
+
+  public get children (): Children<Node> {
+    return Linear.children(this)
+  }
+
+  public get first (): Node | undefined {
+    return Linear.first(this)
+  }
+
+  public get last (): Node | undefined {
+    return Linear.last(this)
+  }
+
+  public get next (): Node | undefined {
+    return Linear.next(this)
+  }
+
+  public get previous (): Node | undefined {
+    return Linear.previous(this)
+  }
+
+  public remove (): void {
+    Linear.remove(this)
+  }
+
+  public before (...nodes: Node[]): void {
+    Linear.before(this, ...nodes)
+  }
+
+  public after (...nodes: Node[]): void {
+    Linear.after(this, ...nodes)
+  }
+
+  public replaceWith (...nodes: Node[]): void {
+    Linear.replaceWith(this, ...nodes)
+  }
+
+  public append (...nodes: Node[]): void {
+    Linear.append(this, ...nodes)
+  }
+
+  public prepend (...nodes: Node[]): void {
+    Linear.prepend(this, ...nodes)
   }
 }
 
@@ -50,15 +97,14 @@ export class Span extends Node {
 /**
  * A text block node.
  */
-export abstract class Block extends Node implements Tree.ParentNode {
+export abstract class Block extends Node {
   public get kind (): string {
     return 'BLOCK'
   }
 
-  public children: Tree.NodeArray<Node> = new Tree.NodeArray(this)
   public constructor (children: Node[] | string = []) {
     super()
-    this.children.push(...(
+    this.append(...(
       typeof children === 'string'
         ? [ new Span(children) ]
         : Array.from(children)
@@ -67,13 +113,5 @@ export abstract class Block extends Node implements Tree.ParentNode {
 
   public get isParagraph (): boolean {
     return false
-  }
-
-  public append (...nodes: Node[]): void {
-    this.children.push(...nodes)
-  }
-
-  public prepend (...nodes: Node[]): void {
-    this.children.unshift(...nodes)
   }
 }

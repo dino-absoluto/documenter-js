@@ -53,7 +53,7 @@ import {
 
 /* code */
 
-const trimNodes = (nodes: readonly DocNode[]): DocNode[] => {
+const trimNodes = (nodes: ReadonlyArray<DocNode>): DocNode[] => {
   let start = 0
   for (const node of nodes) {
     if (node instanceof DocSoftBreak) {
@@ -345,16 +345,17 @@ export class Parser {
         }
       }
     }
-    if (propsTable.rows) {
+    if (propsTable.hasRows) {
       block.append(
         new Heading('Properties', 4),
         propsTable)
     }
-    if (methodsTable.rows) {
+    if (methodsTable.hasRows) {
       block.append(
         new Heading('Methods', 4),
         methodsTable)
     }
+    console.log(block)
     return block
   }
 
