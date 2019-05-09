@@ -355,7 +355,6 @@ export class Parser {
         new Heading('Methods', 4),
         methodsTable)
     }
-    console.log(block)
     return block
   }
 
