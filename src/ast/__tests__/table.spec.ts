@@ -27,9 +27,11 @@ import { FormattedBlock } from '../formatted-block'
 
 /* code */
 describe('Table', () => {
-  test('constructor', () => {
+  test('simple', () => {
     const table = new Table(['Name', 'Description'])
     expect(table.first).not.toBe(undefined)
+    const n = new FormattedBlock()
+    expect(() => table.append(n)).toThrow('Table')
   })
 })
 
@@ -38,6 +40,7 @@ describe('TableRow', () => {
     const block = new FormattedBlock()
     const row = new TableRow(['Abc', 'Welcome!'])
     expect(() => block.append(row)).toThrow('TableRow')
+    expect(() => row.append(block)).toThrow('TableRow')
   })
 })
 

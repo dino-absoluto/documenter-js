@@ -50,6 +50,14 @@ export class Table extends Block {
     )
   }
 
+  protected beforeAdd (newNodes: Node[]): void {
+    for (const node of newNodes) {
+      if (!(node instanceof TableRow)) {
+        throw new Error('Table only accept TableRow')
+      }
+    }
+  }
+
   public get isParagraph (): boolean {
     return true
   }
@@ -77,6 +85,14 @@ export class TableRow extends Block {
 
   public constructor (children: TableCellData[]) {
     super(initCells(children))
+  }
+
+  protected beforeAdd (newNodes: Node[]): void {
+    for (const node of newNodes) {
+      if (!(node instanceof TableCell)) {
+        throw new Error('TableRow only accept TableCell')
+      }
+    }
   }
 
   public get parent (): Table | undefined {

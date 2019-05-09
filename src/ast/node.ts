@@ -30,6 +30,9 @@ export abstract class Node implements ChildNode, ParentNode {
 
   /* child data */
 
+  protected beforeAdd (_newNodes: Node[]): void {
+  }
+
   public get parent (): Node | undefined {
     return Linear.parent(this)
   }
@@ -59,22 +62,27 @@ export abstract class Node implements ChildNode, ParentNode {
   }
 
   public before (...nodes: Node[]): void {
+    this.beforeAdd(nodes)
     Linear.before(this, ...nodes)
   }
 
   public after (...nodes: Node[]): void {
+    this.beforeAdd(nodes)
     Linear.after(this, ...nodes)
   }
 
   public replaceWith (...nodes: Node[]): void {
+    this.beforeAdd(nodes)
     Linear.replaceWith(this, ...nodes)
   }
 
   public append (...nodes: Node[]): void {
+    this.beforeAdd(nodes)
     Linear.append(this, ...nodes)
   }
 
   public prepend (...nodes: Node[]): void {
+    this.beforeAdd(nodes)
     Linear.prepend(this, ...nodes)
   }
 }
