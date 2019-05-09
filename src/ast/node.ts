@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Linear, Children, ChildNode, ParentNode } from '@dinoabsoluto/tree'
+import { Linear as Tree, Children, ChildNode, ParentNode } from '@dinoabsoluto/tree'
 
 /* code */
 /**
@@ -34,56 +34,56 @@ export abstract class Node implements ChildNode, ParentNode {
   }
 
   public get parent (): Node | undefined {
-    return Linear.parent(this)
+    return Tree.parent(this)
   }
 
   public get children (): Children<Node> {
-    return Linear.children(this)
+    return Tree.children(this)
   }
 
   public get first (): Node | undefined {
-    return Linear.first(this)
+    return Tree.first(this)
   }
 
   public get last (): Node | undefined {
-    return Linear.last(this)
+    return Tree.last(this)
   }
 
   public get next (): Node | undefined {
-    return Linear.next(this)
+    return Tree.next(this)
   }
 
   public get previous (): Node | undefined {
-    return Linear.previous(this)
+    return Tree.previous(this)
   }
 
   public remove (): void {
-    Linear.remove(this)
+    Tree.remove(this)
   }
 
   public before (...nodes: Node[]): void {
     this.beforeAdd(nodes)
-    Linear.before(this, ...nodes)
+    Tree.before(this, ...nodes)
   }
 
   public after (...nodes: Node[]): void {
     this.beforeAdd(nodes)
-    Linear.after(this, ...nodes)
+    Tree.after(this, ...nodes)
   }
 
   public replaceWith (...nodes: Node[]): void {
     this.beforeAdd(nodes)
-    Linear.replaceWith(this, ...nodes)
+    Tree.replaceWith(this, ...nodes)
   }
 
   public append (...nodes: Node[]): void {
     this.beforeAdd(nodes)
-    Linear.append(this, ...nodes)
+    Tree.append(this, ...nodes)
   }
 
   public prepend (...nodes: Node[]): void {
     this.beforeAdd(nodes)
-    Linear.prepend(this, ...nodes)
+    Tree.prepend(this, ...nodes)
   }
 }
 
