@@ -125,40 +125,55 @@ export class Renderer {
         let text = this.renderBlock(typed.children).trim()
         return text.replace(/\n/g, '<br>').replace(/\|/g, '\\|')
       }
-      case 'TABLE_ROW': {
-        const typed = node as TableRow
-        return [...typed.children].map((cell) =>
-          this.renderNode(cell)).join(' | ')
-      }
-      case 'TABLE_HEADER': {
-        const typed = node as TableHeader
-        let row1: string[] = []
-        let row2: string[] = []
-        for (const [index, cell] of typed.children.entries()) {
-          const align = typed.aligns[index]
-          const text = this.renderNode(cell)
-          row1.push(text)
-          switch (align) {
-            case TableColumnAlignment.Left:
-              row2.push(':' + '-'.repeat(Math.max(1, text.length - 1)))
-              break
-            case TableColumnAlignment.Right:
-              row2.push('-'.repeat(Math.max(1, text.length - 1)) + ':')
-              break
-            case TableColumnAlignment.Center:
-              row2.push(':' + '-'.repeat(Math.max(1, text.length - 2)) + ':')
-              break
-            default:
-              row2.push('-'.repeat(text.length))
-              break
-          }
-        }
-        return row1.join(' | ') + '\n' + row2.join(' | ')
-      }
       case 'TABLE': {
         const typed = node as Table
-        return [...typed.children].map((cell) =>
-          this.renderNode(cell)).join('\n')
+        const columns: number[] = []
+        const children = [...typed.children]
+        const aligns = (children[0] as TableHeader).aligns
+        const texts: string[][] = []
+        for (const row of children) {
+          const rowData = [...row.children].map(
+            (cell, index) => {
+              return index === 0
+                ? (this.renderNode(cell) + ' ')
+                : (' ' + this.renderNode(cell) + ' ')
+            })
+          for (const [index, cell] of rowData.entries()) {
+            columns[index] = Math.max(columns[index] || 0, cell.length)
+          }
+          texts.push(rowData)
+        }
+        for (const row of texts) {
+          for (const [i, width] of columns.entries()) {
+            const align = aligns[i]
+            if (align === TableColumnAlignment.Right) {
+              row[i] = (row[i] || '').padStart(width, ' ')
+            } else if (align === TableColumnAlignment.Center) {
+              const cell = row[i] || ''
+              const firstWidth =
+                Math.floor((width - cell.length) / 2) + cell.length
+              row[i] = cell.padStart(firstWidth, ' ').padEnd(width, ' ')
+            } else {
+              row[i] = (row[i] || '').padEnd(width, ' ')
+            }
+          }
+        }
+        texts.splice(1, 0, columns.map((width, index) => {
+          const align = aligns[index]
+          switch (align) {
+            case TableColumnAlignment.Left:
+              return ':' + '-'.repeat(Math.max(1, width - 1))
+            case TableColumnAlignment.Right:
+              return '-'.repeat(Math.max(1, width - 1)) + ':'
+            case TableColumnAlignment.Center:
+              return ':' + '-'.repeat(Math.max(1, width - 2)) + ':'
+            default:
+              return '-'.repeat(width)
+          }
+        }))
+        return texts.map((row) => {
+          return row.join('|') + '|'
+        }).join('\n')
       }
       default:
         throw new Error('Unsupported Node type: ' + node.kind)
