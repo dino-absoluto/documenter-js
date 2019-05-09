@@ -23,10 +23,11 @@
   },
   "homepage": "https://github.com/dino-absoluto/documenter-js#readme",
   "devDependencies": {
-    "@microsoft/api-extractor": "^7.1.1",
+    "@microsoft/api-extractor": "^7.1.4",
     "@types/jest": "^24.0.12",
     "@typescript-eslint/eslint-plugin": "^1.7.0",
     "@typescript-eslint/parser": "^1.7.0",
+    "coveralls": "^3.0.3",
     "del": "^4.1.1",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
@@ -35,11 +36,14 @@
     "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
     "jest": "^24.8.0",
+    "lodash": "^4.17.11",
     "make-dir": "^3.0.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "webpack": "^4.31.0"
   },
   "dependencies": {
+    "@dinoabsoluto/tree": "^1.0.0",
     "@microsoft/api-extractor-model": "^7.1.0",
     "kleur": "^3.0.3"
   }
