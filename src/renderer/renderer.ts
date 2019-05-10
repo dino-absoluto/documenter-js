@@ -28,7 +28,6 @@ import {
   Span,
   Link,
   Table,
-  TableRow,
   TableHeader,
   TableCell,
   TableColumnAlignment
