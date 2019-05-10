@@ -139,17 +139,20 @@ export class Parser {
     }
   }
 
+  private parseDocNodes (item: ApiItem, nodes: ReadonlyArray<DocNode>): Node[] {
+    return trimNodes(nodes).map(
+      (docItem) => this.parseDoc(item, docItem)
+    )
+  }
+
   private parseItemConcise (item: ApiItem, remarks = false): FormattedBlock {
     const block = new FormattedBlock()
     if (item instanceof ApiDocumentedItem && item.tsdocComment) {
       const comment = item.tsdocComment
-      const children = trimNodes(comment.summarySection.nodes).map(
-        (docItem) => this.parseDoc(item, docItem))
+      const children = this.parseDocNodes(item, comment.summarySection.nodes)
       if (remarks && comment.remarksBlock) {
         children.push(
-          ...trimNodes(comment.remarksBlock.getChildNodes()).map(
-            (docItem) => this.parseDoc(item, docItem)
-          )
+          ...this.parseDocNodes(item, comment.remarksBlock.getChildNodes())
         )
       }
       block.append(...children)
@@ -401,6 +404,25 @@ export class Parser {
 
   private generateParamsTable (item: ApiParameterListMixin): Node {
     const block = new FormattedBlock()
+    const memTables = new Table([ 'Member', 'Value', 'Description' ])
+    for (const mem of item.parameters) {
+      const cells: (string | Node)[] = [
+        mem.name,
+        mem.parameterTypeExcerpt.text
+      ]
+      if (mem.tsdocParamBlock) {
+        const docBlock = mem.tsdocParamBlock
+        const block = new FormattedBlock(
+          this.parseDocNodes(item, docBlock.content.nodes)
+        )
+        cells.push(block)
+      }
+      memTables.addRow(cells)
+    }
+    block.append(
+      new Heading('Parameters', 4),
+      memTables
+    )
     return block
   }
 
