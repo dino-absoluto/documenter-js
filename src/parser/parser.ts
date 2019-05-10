@@ -256,7 +256,7 @@ export class Parser {
     }
     if (item instanceof ApiDeclaredItem) {
       doc.append(
-        new FormattedBlock([ new FormattedSpan('Signature:', { strong: true }) ]),
+        new Heading('Syntax', 3),
         new FormattedBlock(item.getExcerptWithModifiers(), {
           type: BlockType.Code,
           subType: 'typescript'
@@ -303,12 +303,22 @@ export class Parser {
     }
     if (item instanceof ApiDocumentedItem && item.tsdocComment) {
       const comment = item.tsdocComment
+      if (comment.returnsBlock) {
+        const block = comment.returnsBlock
+        const children = trimNodes(block.content.getChildNodes()).map(
+          (docItem) => this.parseDoc(item, docItem)
+        )
+        children.unshift(new Heading('Return value', 4))
+        doc.append(new FormattedBlock(
+          children
+        ))
+      }
       if (comment.remarksBlock) {
         const block = comment.remarksBlock
         const children = trimNodes(block.content.getChildNodes()).map(
           (docItem) => this.parseDoc(item, docItem)
         )
-        children.unshift(new Heading('Remarks', 4))
+        children.unshift(new Heading('Remarks', 3))
         doc.append(new FormattedBlock(
           children
         ))
@@ -393,12 +403,12 @@ export class Parser {
     }
     if (propsTable.hasRows) {
       block.append(
-        new Heading('Properties', 4),
+        new Heading('Properties', 3),
         propsTable)
     }
     if (methodsTable.hasRows) {
       block.append(
-        new Heading('Methods', 4),
+        new Heading('Methods', 3),
         methodsTable)
     }
     return block
