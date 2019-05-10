@@ -20,6 +20,7 @@
 import {
   ApiModel,
   ApiPackage,
+  ApiNamespace,
   ApiItem,
   ApiItemKind,
   ApiDeclaredItem,
@@ -27,7 +28,9 @@ import {
   ApiClass,
   ApiProperty,
   ApiMethod,
-  ApiEnum
+  ApiEnum,
+  ApiInterface,
+  ApiParameterListMixin
 } from '@microsoft/api-extractor-model'
 
 import {
@@ -240,21 +243,31 @@ export class Parser {
     /* Table */
     switch (item.kind) {
       case ApiItemKind.Class: {
-        const typed = item as ApiClass
-        doc.append(this.generateClassTable(typed))
+        doc.append(this.generateClassTable(item as ApiClass))
         break
       }
       case ApiItemKind.Enum: {
-        const typed = item as ApiEnum
-        doc.append(this.generateEnumTable(typed))
+        doc.append(this.generateEnumTable(item as ApiEnum))
         break
       }
-      case ApiItemKind.Interface:
+      case ApiItemKind.Interface: {
+        doc.append(this.generateClassTable(item as ApiInterface))
+        break
+      }
       case ApiItemKind.Method:
       case ApiItemKind.MethodSignature:
-      case ApiItemKind.Function:
-      case ApiItemKind.Namespace:
-      case ApiItemKind.Package:
+      case ApiItemKind.Function: {
+        doc.append(this.generateParamsTable(item as ApiParameterListMixin))
+        break
+      }
+      case ApiItemKind.Namespace: {
+        doc.append(this.generateNamespaceTable(item as ApiNamespace))
+        break
+      }
+      case ApiItemKind.Package: {
+        doc.append(this.generateNamespaceTable(item as ApiPackage))
+        break
+      }
       case ApiItemKind.Property:
       case ApiItemKind.PropertySignature:
       case ApiItemKind.TypeAlias:
@@ -278,25 +291,25 @@ export class Parser {
         ))
       }
     }
-    switch (item.kind) {
-      case ApiItemKind.Class:
-      case ApiItemKind.Enum:
-      case ApiItemKind.Interface:
-      case ApiItemKind.Method:
-      case ApiItemKind.MethodSignature:
-      case ApiItemKind.Function:
-      case ApiItemKind.Namespace:
-      case ApiItemKind.Package:
-      case ApiItemKind.Property:
-      case ApiItemKind.PropertySignature:
-      case ApiItemKind.TypeAlias:
-      case ApiItemKind.Variable: {
-        break
-      }
-      default: {
-        throw new Error('Unsupported ApiItem kind: ' + item.kind)
-      }
-    }
+    // switch (item.kind) {
+    //   case ApiItemKind.Class:
+    //   case ApiItemKind.Enum:
+    //   case ApiItemKind.Interface:
+    //   case ApiItemKind.Method:
+    //   case ApiItemKind.MethodSignature:
+    //   case ApiItemKind.Function:
+    //   case ApiItemKind.Namespace:
+    //   case ApiItemKind.Package:
+    //   case ApiItemKind.Property:
+    //   case ApiItemKind.PropertySignature:
+    //   case ApiItemKind.TypeAlias:
+    //   case ApiItemKind.Variable: {
+    //     break
+    //   }
+    //   default: {
+    //     throw new Error('Unsupported ApiItem kind: ' + item.kind)
+    //   }
+    // }
     const members = (function * () {
       for (const mem of item.members) {
         if (mem.kind === ApiItemKind.EntryPoint) {
@@ -313,7 +326,7 @@ export class Parser {
     return doc
   }
 
-  private generateClassTable (item: ApiClass): Node {
+  private generateClassTable (item: ApiClass | ApiInterface): Node {
     const block = new FormattedBlock()
     const propsTable = new Table([ 'Property', 'Type', 'Description' ])
     const methodsTable = new Table([ 'Method', 'Description' ])
@@ -383,6 +396,16 @@ export class Parser {
       memTables.addRow(cells)
     }
     block.append(memTables)
+    return block
+  }
+
+  private generateParamsTable (item: ApiParameterListMixin): Node {
+    const block = new FormattedBlock()
+    return block
+  }
+
+  private generateNamespaceTable (item: ApiPackage | ApiNamespace): Node {
+    const block = new FormattedBlock()
     return block
   }
 
