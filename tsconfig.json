@@ -14,9 +14,14 @@
         "src/*"
       ]
     },
+    "outDir": "./__tmp__/built/compiled",
+    "declaration": true,
+    "declarationDir": "./__tmp__/built/dts",
     "tsBuildInfoFile": "./__tmp__/built/cache/tsbuildinfo"
   },
-  "include": [
-    "./src/**/*.ts"
+  "exclude": [
+    "<outDir>",
+    "__tmp__",
+    "examples"
   ]
 }

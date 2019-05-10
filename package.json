@@ -5,7 +5,10 @@
   "main": "dist/index",
   "scripts": {
     "lint": "eslint --ext .js,.ts src",
-    "test": "jest"
+    "test": "jest",
+    "prepublishOnly": "npm run build -- --env.prod && npm run build:api",
+    "build": "webpack",
+    "build:api": "tsc -p tsconfig.build.json -d --emitDeclarationOnly && api-extractor run --local --verbose"
   },
   "repository": {
     "type": "git",
@@ -39,8 +42,11 @@
     "lodash": "^4.17.11",
     "make-dir": "^3.0.0",
     "ts-jest": "^24.0.2",
+    "ts-loader": "^6.0.0",
     "typescript": "^3.4.5",
-    "webpack": "^4.31.0"
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
     "@dinoabsoluto/tree": "^1.0.0",
