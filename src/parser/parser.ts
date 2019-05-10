@@ -348,7 +348,9 @@ export class Parser {
       switch (mem.kind) {
         case ApiItemKind.Property: {
           const typed = mem as ApiProperty
-          const nameField = new FormattedBlock(typed.name)
+          const nameField = new FormattedBlock([
+            new Link(typed.name, this.createLinkGetter(mem))
+          ])
           if (typed.isStatic) {
             nameField.append(
               new FormattedSpan('static', { code: true })
@@ -369,8 +371,12 @@ export class Parser {
         }
         case ApiItemKind.Method: {
           const typed = mem as ApiMethod
-          const nameField = new FormattedBlock(
-            typed.excerpt.text.replace(/;$/, ''))
+          const nameField = new FormattedBlock([
+            new Link(
+              typed.excerpt.text.replace(/;$/, ''),
+              this.createLinkGetter(mem)
+            )
+          ])
           if (typed.isStatic) {
             nameField.append(
               new FormattedSpan('static', { code: true })
@@ -403,7 +409,7 @@ export class Parser {
     const memTables = new Table([ 'Member', 'Value', 'Description' ])
     for (const mem of item.members) {
       const cells: (string | Node)[] = [
-        mem.displayName,
+        new Link(mem.displayName, this.createLinkGetter(mem)),
         mem.initializerExcerpt.text,
         this.parseItemConcise(mem, true)
       ]
@@ -448,7 +454,7 @@ export class Parser {
     const types = new Table([ 'Type Alias', 'Description' ])
     for (const mem of this.getMembers(container)) {
       const row = new TableRow([
-        mem.displayName,
+        new Link(mem.displayName, this.createLinkGetter(mem)),
         this.parseItemConcise(mem)
       ])
       switch (mem.kind) {
