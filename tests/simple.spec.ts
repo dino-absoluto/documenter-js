@@ -54,6 +54,6 @@ beforeAll(async () => {
 /* code */
 describe('simple', () => {
   test('simple', () => {
-    documenter(docModelFile)
+    documenter(docModelFile, path.resolve('output'))
   })
 })

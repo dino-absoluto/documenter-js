@@ -19,14 +19,17 @@
 /* imports */
 import { Parser } from './parser'
 import { Renderer } from './renderer'
-import * as c from 'kleur'
+// import * as c from 'kleur'
+import * as fs from 'fs'
+import * as path from 'path'
 /* code */
 
-export const documenter = (modelFile: string): void => {
+export const documenter = (modelFile: string, dirname: string): void => {
   const parser = new Parser()
   parser.loadPackage(modelFile)
   const renderer = new Renderer(parser.parse())
   for (const [fpath, content] of renderer.render()) {
-    console.log(c.magenta(fpath) + '\n' + c.green(content))
+    fs.writeFileSync(path.join(dirname, fpath), content)
+    // console.log(c.magenta(fpath) + '\n' + c.green(content))
   }
 }
