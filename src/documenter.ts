@@ -22,12 +22,14 @@ import { Renderer } from './renderer'
 // import * as c from 'kleur'
 import * as fs from 'fs'
 import * as path from 'path'
+import makeDir = require('make-dir')
 /* code */
 
 export const documenter = (modelFile: string, dirname: string): void => {
   const parser = new Parser()
   parser.loadPackage(modelFile)
   const renderer = new Renderer(parser.parse())
+  makeDir.sync(dirname)
   for (const [fpath, content] of renderer.render()) {
     fs.writeFileSync(path.join(dirname, fpath), content)
     // console.log(c.magenta(fpath) + '\n' + c.green(content))
