@@ -101,6 +101,19 @@ export class Parser {
     }
   }
 
+  private getMembers (item: ApiItem): IterableIterator<ApiItem> {
+    const members = (function * () {
+      for (const mem of item.members) {
+        if (mem.kind === ApiItemKind.EntryPoint) {
+          yield * mem.members
+        } else {
+          yield mem
+        }
+      }
+    })()
+    return members
+  }
+
   private parseDoc (item: ApiItem, node: DocNode): Node {
     switch (node.kind) {
       case DocNodeKind.PlainText: {
@@ -313,16 +326,7 @@ export class Parser {
     //     throw new Error('Unsupported ApiItem kind: ' + item.kind)
     //   }
     // }
-    const members = (function * () {
-      for (const mem of item.members) {
-        if (mem.kind === ApiItemKind.EntryPoint) {
-          yield * mem.members
-        } else {
-          yield mem
-        }
-      }
-    })()
-    for (const mem of members) {
+    for (const mem of this.getMembers(item)) {
       const memDoc = this.parseItem(mem)
       doc.append(memDoc)
     }
