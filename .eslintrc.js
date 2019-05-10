@@ -30,6 +30,7 @@ module.exports = {
     'plugin:@typescript-eslint/recommended'
   ],
   rules: {
+    '@typescript-eslint/no-unused-vars': 'off',
     '@typescript-eslint/indent': ['error', 2],
     '@typescript-eslint/member-delimiter-style': [
       'error',

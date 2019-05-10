@@ -100,6 +100,10 @@ export class Span extends Node {
     super()
     this.text = text
   }
+
+  protected beforeAdd (): never {
+    throw new Error('Span cannot have children.')
+  }
 }
 
 /**
