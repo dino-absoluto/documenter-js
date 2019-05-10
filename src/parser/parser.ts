@@ -52,7 +52,8 @@ import {
   Span,
   LineBreak,
   Link,
-  Table
+  Table,
+  TableRow
 } from '../ast'
 
 /* code */
@@ -430,8 +431,73 @@ export class Parser {
     return block
   }
 
-  private generateNamespaceTable (item: ApiPackage | ApiNamespace): Node {
+  private generateNamespaceTable (container: ApiPackage | ApiNamespace): Node {
     const block = new FormattedBlock()
+    const classes = new Table([ 'Class', 'Description' ])
+    const enums = new Table([ 'Enumeration', 'Description' ])
+    const functions = new Table([ 'Function', 'Description' ])
+    const interfaces = new Table([ 'Interface', 'Description' ])
+    const namespaces = new Table([ 'Namespace', 'Description' ])
+    const vars = new Table([ 'Variable', 'Description' ])
+    const types = new Table([ 'Type Alias', 'Description' ])
+    for (const mem of this.getMembers(container)) {
+      const row = new TableRow([
+        mem.displayName,
+        this.parseItemConcise(mem)
+      ])
+      switch (mem.kind) {
+        case ApiItemKind.Class:
+          classes.append(row)
+          break
+        case ApiItemKind.Enum:
+          enums.append(row)
+          break
+        case ApiItemKind.Interface:
+          interfaces.append(row)
+          break
+        case ApiItemKind.Method:
+        case ApiItemKind.MethodSignature:
+        case ApiItemKind.Function:
+          functions.append(row)
+          break
+        case ApiItemKind.Namespace:
+        case ApiItemKind.Package:
+          namespaces.append(row)
+          break
+        case ApiItemKind.Property:
+        case ApiItemKind.PropertySignature:
+        case ApiItemKind.Variable: {
+          vars.append(row)
+          break
+        }
+        case ApiItemKind.TypeAlias:
+          types.append(row)
+          break
+        default:
+          break
+      }
+    }
+    if (classes.hasRows) {
+      block.append(classes)
+    }
+    if (enums.hasRows) {
+      block.append(enums)
+    }
+    if (functions.hasRows) {
+      block.append(functions)
+    }
+    if (interfaces.hasRows) {
+      block.append(interfaces)
+    }
+    if (namespaces.hasRows) {
+      block.append(namespaces)
+    }
+    if (vars.hasRows) {
+      block.append(vars)
+    }
+    if (types.hasRows) {
+      block.append(types)
+    }
     return block
   }
 
