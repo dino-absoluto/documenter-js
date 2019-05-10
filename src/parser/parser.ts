@@ -102,6 +102,20 @@ export class Parser {
     }
   }
 
+  private createLinkGetter (item: ApiItem): () => string {
+    return (): string => {
+      const heading = this.pHeadings.get(item)
+      if (heading) {
+        if (!heading.link) {
+          throw new Error('Cannot resolve link: ' +
+            item.getScopedNameWithinPackage())
+        }
+        return heading.link
+      }
+      return ''
+    }
+  }
+
   private getMembers (item: ApiItem): IterableIterator<ApiItem> {
     const members = (function * () {
       for (const mem of item.members) {
@@ -133,16 +147,8 @@ export class Parser {
         if (link.codeDestination) {
           const dest = link.codeDestination
           const ref = this.resolveDeclaration(item, dest)
-          return new Link(link.linkText || dest.emitAsTsdoc() || '', (): string => {
-            const heading = this.pHeadings.get(ref)
-            if (heading) {
-              if (!heading.link) {
-                throw new Error('Cannot resolve link: ' + dest.emitAsTsdoc())
-              }
-              return heading.link
-            }
-            return ''
-          })
+          return new Link(link.linkText || dest.emitAsTsdoc() || '',
+            this.createLinkGetter(ref))
         } else {
           const url = String(link.urlDestination)
           return new Link(link.linkText || url, url)
