@@ -478,25 +478,39 @@ export class Parser {
       }
     }
     if (classes.hasRows) {
-      block.append(classes)
+      block.append(
+        new Heading('Classes', 2),
+        classes)
     }
     if (enums.hasRows) {
-      block.append(enums)
+      block.append(
+        new Heading('Enumerations', 2),
+        enums)
     }
     if (functions.hasRows) {
-      block.append(functions)
+      block.append(
+        new Heading('Functions', 2),
+        functions)
     }
     if (interfaces.hasRows) {
-      block.append(interfaces)
+      block.append(
+        new Heading('Interfaces', 2),
+        interfaces)
     }
     if (namespaces.hasRows) {
-      block.append(namespaces)
+      block.append(
+        new Heading('Namespaces', 2),
+        namespaces)
     }
     if (vars.hasRows) {
-      block.append(vars)
+      block.append(
+        new Heading('Variables', 2),
+        vars)
     }
     if (types.hasRows) {
-      block.append(types)
+      block.append(
+        new Heading('Type Aliases', 2),
+        types)
     }
     return block
   }
