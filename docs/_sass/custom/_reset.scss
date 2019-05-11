@@ -30,9 +30,7 @@ $white: #dcd8d5;
 $main: $blue;
 $foreground: $black;
 $background: lighten($white, 14%);
-
 $border: mix($foreground, $background, 10%);
-$code-background: mix($foreground, $background, 8%);
 
 html, body {
   font-family: inherit;
@@ -59,10 +57,20 @@ html, body {
   max-width: -webkit-calc(800px - 4rem);
 }
 
+.highlighter-rouge .highlight,
+.highlight {
+  background: none;
+}
+
 code, pre {
   font-family: "Roboto Mono", Monaco, courier, monospace;
-  background: $code-background;
   border: none;
+  color: mix($foreground, $background, 75%);
+}
+
+code, pre, .highlighter-rouge {
+  background: mix($foreground, $background, 8%);
+  border-radius: 0.25rem;
 }
 
 pre {
@@ -72,12 +80,6 @@ pre {
 h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, dl, figure, .highlight
 {
   margin-bottom: 1rem;
-}
-
-.highlighter-rouge .highlight,
-.highlight {
-  background: $code-background;
-  border-radius: 0.25rem;
 }
 
 .highlight {
@@ -95,6 +97,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
+  > code {
+    color: inherit;
+  }
   color: $main;
   &:hover, &:focus {
     color: lighten($main, 5%);
@@ -127,8 +132,8 @@ table {
 
 blockquote {
   font-size: 1rem;
-  border-left: 0.25rem solid $white;
-  color: mix($white, $foreground);
+  border-left: 0.25rem solid mix($foreground, $background, 25%);
+  color: mix($foreground, $background);
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;

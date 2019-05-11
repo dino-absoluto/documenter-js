@@ -53,7 +53,7 @@
 }
 
 .p {
-  color: darken($white, 10%);
+  color: mix($foreground, $background, 25%);
 }
 
 .si {
@@ -66,7 +66,7 @@
 }
 
 .c1 {
-  color: $white;
+  color: mix($foreground, $background, 25%);
 }
 
 .mf {
