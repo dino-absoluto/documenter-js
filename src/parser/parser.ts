@@ -39,7 +39,8 @@ import {
   DocPlainText,
   DocSoftBreak,
   DocLinkTag,
-  DocDeclarationReference
+  DocDeclarationReference,
+  DocFencedCode
 } from '@microsoft/tsdoc'
 
 import {
@@ -153,6 +154,17 @@ export class Parser {
           const url = String(link.urlDestination)
           return new Link(link.linkText || url, url)
         }
+      }
+      case DocNodeKind.FencedCode: {
+        const typed = node as DocFencedCode
+        let code = typed.code
+        if (code[code.length - 1] === '\n') {
+          code = code.substr(0, code.length - 1)
+        }
+        return new FormattedBlock(code, {
+          type: BlockType.Code,
+          subType: typed.language
+        })
       }
       default:
         return new Span(node.kind)
