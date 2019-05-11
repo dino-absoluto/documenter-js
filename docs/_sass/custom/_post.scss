@@ -16,6 +16,12 @@
  * limitations under the License.
  *
  */
+/* variables */
+$heading: $cyan-bright;
+
+h2, h4, h5, h6 {
+  color: $heading;
+}
 
 h2 {
   font-size: 2rem;
@@ -32,18 +38,20 @@ h3 {
     display: inline-block;
     margin-left: -1.5ch;
     width: 1.5ch;
-    color: $cyan-bright;
+    color: $heading;
   }
 }
 
 h4 {
   font-size: 1.25rem;
   margin-top: 1rem;
-  display: inline-table;
-  background: lighten($foreground, 15%);
-  color: $background;
-  // background: lighten($white-bright, 10%);
-  // border: 1px solid $border;
-  padding: 0 1ch 0 4rem;
-
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 2rem;
+    height: 0;
+    border-bottom: 1px solid mix($heading, $background);
+    vertical-align: middle;
+    margin-right: 0.5ch;
+  }
 }
