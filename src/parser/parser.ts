@@ -383,7 +383,7 @@ export class Parser {
           const typed = mem as ApiMethod
           const nameField = new FormattedBlock([
             new Link(
-              typed.excerpt.text.replace(/;$/, ''),
+              typed.name + '()',
               this.createLinkGetter(mem)
             )
           ])
