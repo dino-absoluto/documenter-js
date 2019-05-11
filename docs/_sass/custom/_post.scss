@@ -42,16 +42,19 @@ h3 {
   }
 }
 
-h4 {
-  font-size: 1.25rem;
-  margin-top: 1rem;
+h4, h5, h6 {
   &:before {
     content: '';
     display: inline-block;
-    width: 2rem;
+    width: 2.5em;
     height: 0;
     border-bottom: 1px solid mix($heading, $background);
     vertical-align: middle;
     margin-right: 0.5ch;
   }
+}
+
+h4 {
+  font-size: 1.25rem;
+  margin-top: 1rem;
 }

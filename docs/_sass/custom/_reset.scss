@@ -17,29 +17,28 @@
  *
  */
 /* variables */
-$black: #3b4855;
-$red: #cb496a;
-$green: #398000;
-$yellow: #946313;
-$blue: #2873a9;
-$magenta: #c544b0;
-$cyan: #038475;
-$white: #dcd7d2;
-$black-bright: #4b5c6c;
-$red-bright: #f0577d;
-$green-bright: #439700;
-$yellow-bright: #af7516;
-$blue-bright: #3089c9;
-$magenta-bright: #ea51d0;
-$cyan-bright: #039c8a;
-$white-bright: #edeae8;
+/* bright */
+$black: #394149;
+$red: #d7768e;
+$green: #699f3d;
+$yellow: #c87e66;
+$blue: #5d95be;
+$magenta: #bf76d7;
+$cyan: #3fa1a1;
+$white: #dcd8d5;
 
-$main: $blue-bright;
+$main: $blue;
 $foreground: $black;
-$background: lighten($white-bright, 14%);
+$background: lighten($white, 14%);
 
-$border: mix($foreground, $background, 15%);
-$code-background: mix($foreground, $background, 5%);
+$border: mix($foreground, $background, 10%);
+$code-background: mix($foreground, $background, 8%);
+
+html, body {
+  font-family: inherit;
+  background: none;
+  color: inherit;
+}
 
 :root {
   background: $background;
@@ -47,15 +46,9 @@ $code-background: mix($foreground, $background, 5%);
   font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
 }
 
-body {
-  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
-  background: none;
-  color: inherit;
-}
-
 .site-footer,
 .site-header {
-  background: $white-bright;
+  background: lighten($white, 10%);
   border: none;
 }
 
@@ -122,13 +115,13 @@ table {
     border-color: $border;
   }
   th {
-    background: mix($foreground, $background, 5%);
+    background: mix($border, $background, 50%);
   }
   td {
     background: none;
   }
   tr:nth-child(even) {
-    background: mix($foreground, $background, 2.5%);
+    background: mix($border, $background, 25%);
   }
 }
 
