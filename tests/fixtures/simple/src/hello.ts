@@ -37,7 +37,8 @@ export class Hello {
    * Print a message.
    *
    * @param i - print this number
-   * @returns void
+   * @returns
+   * Doesn't return anything.
    */
   public print (i: number): void {
     console.log('Hello World!', i + '!')

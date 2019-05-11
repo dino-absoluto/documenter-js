@@ -1,4 +1,16 @@
 /**
+ * This is a test package.
+ *
+ * ```typescript
+ * class Hello {
+ *   public count: number = 0 + 1
+ *   public text?: string = 'hello world!'
+ * }
+ * ```
+ *
+ * @packageDocumentation
+ */
+/*
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
  * Copyright 2019 Dino <dinoabsoluto+dev@gmail.com>
@@ -23,7 +35,7 @@ export { Hello }
 export { printMessage } from './hello'
 
 /**
- * See {@link Hello.print}
+ * See {@link Hello.print}.
  * @public
  */
 export const PI_CONSTANT = 3.14
