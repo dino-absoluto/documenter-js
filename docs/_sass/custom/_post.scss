@@ -46,11 +46,12 @@ h4, h5, h6 {
   &:before {
     content: '';
     display: inline-block;
-    width: 2.5em;
+    width: 4em;
     height: 0;
     border-bottom: 1px solid mix($heading, $background);
     vertical-align: middle;
     margin-right: 0.5ch;
+    margin-left: -1em;
   }
 }
 
