@@ -40,8 +40,10 @@ h4 {
   font-size: 1.25rem;
   margin-top: 1rem;
   display: inline-table;
-  background: lighten($foreground, 25%);
-  padding: 0 1ch 0 4rem;
+  background: lighten($foreground, 15%);
   color: $background;
+  // background: lighten($white-bright, 10%);
+  // border: 1px solid $border;
+  padding: 0 1ch 0 4rem;
 
 }

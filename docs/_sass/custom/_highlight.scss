@@ -23,16 +23,29 @@
   color: $blue;
 }
 
+.nt {
+  color: $red;
+}
+
+.nf,
+.nx,
+.nt {
+  font-weight: normal;
+}
+
 .k {
   color: $magenta;
+  font-weight: normal;
 }
 
 .kd {
   color: $yellow;
+  font-weight: normal;
 }
 
 .o {
   color: $cyan;
+  font-weight: normal;
 }
 
 .p {
@@ -50,4 +63,8 @@
 
 .c1 {
   color: $white;
+}
+
+.mf {
+  color: $yellow;
 }

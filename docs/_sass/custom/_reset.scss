@@ -17,23 +17,22 @@
  *
  */
 /* variables */
-$black: #1c2025;
-$red: #d56e88;
-$green: #619932;
-$yellow: #aa8243;
-$blue: #5390ba;
-$magenta: #d16ac0;
-$cyan: #369d91;
-$white: #cac5c0;
-
-$black-bright: #2d343a;
-$red-bright: #dc859b;
-$green-bright: #7aa953;
-$yellow-bright: #b79660;
-$blue-bright: #6fa1c5;
-$magenta-bright: #d881ca;
-$cyan-bright: #55aca2;
-$white-bright: #dcd8d5;
+$black: #3b4855;
+$red: #cb496a;
+$green: #398000;
+$yellow: #946313;
+$blue: #2873a9;
+$magenta: #c544b0;
+$cyan: #038475;
+$white: #dcd7d2;
+$black-bright: #4b5c6c;
+$red-bright: #f0577d;
+$green-bright: #439700;
+$yellow-bright: #af7516;
+$blue-bright: #3089c9;
+$magenta-bright: #ea51d0;
+$cyan-bright: #039c8a;
+$white-bright: #edeae8;
 
 $foreground: $black;
 $background: lighten($white-bright, 14%);
@@ -69,7 +68,7 @@ body {
 code, pre {
   font-family: "Roboto Mono", Monaco, courier, monospace;
   background: $code-background;
-  border-color: $border;
+  border: none;
 }
 
 pre {
@@ -124,4 +123,14 @@ table {
   tr:nth-child(even) {
     background: mix($foreground, $background, 2.5%);
   }
+}
+
+blockquote {
+  font-size: 1rem;
+  border-left-color: $white;
+  color: mix($foreground, $background, 50%);
+  font-style: normal;
+  font-weight: normal;
+  letter-spacing: normal;
+  padding: 0.5rem 1rem;
 }
