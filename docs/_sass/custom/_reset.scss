@@ -34,6 +34,7 @@ $magenta-bright: #ea51d0;
 $cyan-bright: #039c8a;
 $white-bright: #edeae8;
 
+$main: $blue-bright;
 $foreground: $black;
 $background: lighten($white-bright, 14%);
 
@@ -101,9 +102,15 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-  color: $blue-bright;
-  a:visited {
-    color: $blue;
+  color: $main;
+  &:hover, &:focus {
+    color: lighten($main, 5%);
+  }
+  &:visited {
+    color: darken($main, 5%);
+    &:hover, &:focus {
+      color: $main;
+    }
   }
 }
 
@@ -127,8 +134,8 @@ table {
 
 blockquote {
   font-size: 1rem;
-  border-left-color: $white;
-  color: mix($foreground, $background, 50%);
+  border-left: 0.25rem solid $white;
+  color: mix($white, $foreground);
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
