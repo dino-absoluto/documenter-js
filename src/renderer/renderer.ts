@@ -98,6 +98,9 @@ export class Renderer {
       case 'FORMATTED_SPAN': {
         const typed = node as FormattedSpan
         let text = this.renderNode(typed, 'SPAN')
+        const begin = (text.match(/^\s+/) || [''])[0]
+        const end = (text.match(/\s+$/) || [''])[0]
+        text = text.trim()
         if (typed.code) {
           text = '`' + text + '`'
         }
@@ -107,7 +110,7 @@ export class Renderer {
         if (typed.em) {
           text = '*' + text + '*'
         }
-        return text
+        return begin + text + end
       }
       case 'LINE_BREAK':
         return '\n'

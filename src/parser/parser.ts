@@ -241,12 +241,35 @@ export class Parser {
         const children = trimNodes(block.getChildNodes()).map(
           (docItem) => this.parseDoc(item, docItem)
         )
-        children.unshift(new FormattedSpan('Deprecated:', {
+        children.unshift(new FormattedSpan('Deprecated: ', {
           strong: true
         }))
         doc.append(new FormattedBlock(
           children, {
             type: BlockType.Error
+          }
+        ))
+      }
+      if (comment.modifierTagSet.isBeta() ||
+        comment.modifierTagSet.isAlpha() ||
+        comment.modifierTagSet.isExperimental()
+      ) {
+        comment.modifierTagSet.isPackageDocumentation()
+        const children = [
+          new FormattedSpan('Unstable: ', { strong: true })
+        ]
+        if (comment.modifierTagSet.isBeta()) {
+          children.push(new FormattedSpan('beta', { code: true }))
+        }
+        if (comment.modifierTagSet.isAlpha()) {
+          children.push(new FormattedSpan('alpha', { code: true }))
+        }
+        if (comment.modifierTagSet.isExperimental()) {
+          children.push(new FormattedSpan('experimental', { code: true }))
+        }
+        doc.append(new FormattedBlock(
+          children, {
+            type: BlockType.Warning
           }
         ))
       }
@@ -542,7 +565,7 @@ export class Parser {
     return block
   }
 
-  public parse (): Set<Document> {
+  public parse (depth = 0): Set<Document> {
     const docs = new Set<Document>()
     for (const entry of this.model.members) {
       const doc = this.parseItem(entry)
