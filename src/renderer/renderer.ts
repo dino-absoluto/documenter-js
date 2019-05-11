@@ -84,8 +84,8 @@ export class Renderer {
     return blocks.join('<br>')
   }
 
-  public renderNode (node: Node): string {
-    switch (node.kind) {
+  public renderNode (node: Node, kind = node.kind): string {
+    switch (kind) {
       case 'TEXT': {
         const typed = node as Text
         return typed.text
@@ -97,7 +97,7 @@ export class Renderer {
       }
       case 'FORMATTED_SPAN': {
         const typed = node as FormattedSpan
-        let text = this.renderSpan(typed.children)
+        let text = this.renderNode(typed, 'SPAN')
         if (typed.code) {
           text = '`' + text + '`'
         }
@@ -143,7 +143,7 @@ export class Renderer {
       }
       case 'LINK': {
         const typed = node as Link
-        let text = this.renderSpan(typed.children)
+        let text = this.renderNode(typed, 'SPAN')
         return `[${text}](${typed.href.toString()})`
       }
       case 'TABLE_CELL': {

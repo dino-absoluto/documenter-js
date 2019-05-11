@@ -44,5 +44,8 @@ export class FormattedSpan extends Span implements FormattedSpanAttributes {
     if (opts.em !== undefined) {
       this.em = opts.em
     }
+    if (opts.code !== undefined) {
+      this.code = opts.code
+    }
   }
 }

@@ -359,7 +359,9 @@ export class Parser {
         case ApiItemKind.Property: {
           const typed = mem as ApiProperty
           const nameField = new FormattedBlock([
-            new Link(typed.name, this.createLinkGetter(mem))
+            new Link(
+              [ new FormattedSpan(typed.name, { code: true }) ],
+              this.createLinkGetter(mem))
           ])
           if (typed.isStatic) {
             nameField.append(
@@ -383,9 +385,8 @@ export class Parser {
           const typed = mem as ApiMethod
           const nameField = new FormattedBlock([
             new Link(
-              typed.name + '()',
-              this.createLinkGetter(mem)
-            )
+              [ new FormattedSpan(typed.name + '()', { code: true }) ],
+              this.createLinkGetter(mem))
           ])
           if (typed.isStatic) {
             nameField.append(
@@ -419,7 +420,9 @@ export class Parser {
     const memTables = new Table([ 'Member', 'Value', 'Description' ])
     for (const mem of item.members) {
       const cells: (string | Node)[] = [
-        new Link(mem.displayName, this.createLinkGetter(mem)),
+        new Link(
+          [ new FormattedSpan(mem.displayName, { code: true }) ],
+          this.createLinkGetter(mem)),
         mem.initializerExcerpt.text,
         this.parseItemConcise(mem, true)
       ]
@@ -431,11 +434,11 @@ export class Parser {
 
   private generateParamsTable (item: ApiParameterListMixin): Node {
     const block = new FormattedBlock()
-    const memTables = new Table([ 'Member', 'Value', 'Description' ])
+    const memTables = new Table([ 'Parameter', 'Type', 'Description' ])
     for (const mem of item.parameters) {
       const cells: (string | Node)[] = [
-        mem.name,
-        mem.parameterTypeExcerpt.text
+        new FormattedSpan(mem.name, { code: true }),
+        new FormattedSpan(mem.parameterTypeExcerpt.text, { code: true })
       ]
       if (mem.tsdocParamBlock) {
         const docBlock = mem.tsdocParamBlock
@@ -464,7 +467,9 @@ export class Parser {
     const types = new Table([ 'Type Alias', 'Description' ])
     for (const mem of this.getMembers(container)) {
       const row = new TableRow([
-        new Link(mem.displayName, this.createLinkGetter(mem)),
+        new Link(
+          [ new FormattedSpan(mem.displayName, { code: true }) ],
+          this.createLinkGetter(mem)),
         this.parseItemConcise(mem)
       ])
       switch (mem.kind) {
