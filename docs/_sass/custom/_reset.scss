@@ -36,7 +36,7 @@ $cyan-bright: #55aca2;
 $white-bright: #dcd8d5;
 
 $foreground: $black;
-$background: lighten($white-bright, 15%);
+$background: lighten($white-bright, 14%);
 
 $border: mix($foreground, $background, 15%);
 $code-background: mix($foreground, $background, 5%);
@@ -53,23 +53,37 @@ body {
   color: inherit;
 }
 
+.site-footer,
+.site-header {
+  background: $white-bright;
+  border: none;
+}
+
+.wrapper {
+  padding-left: 2rem;
+  padding-right: 2rem;
+  max-width: calc(800px - 4rem);
+  max-width: -webkit-calc(800px - 4rem);
+}
+
 code, pre {
   font-family: "Roboto Mono", Monaco, courier, monospace;
   background: $code-background;
+  border-color: $border;
 }
 
 pre {
   padding: 1rem;
 }
 
-h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, dl, figure, .highlight {
+h1, h2, h3, h4, h5, h6, p, blockquote, pre, ul, ol, dl, figure, .highlight
+{
   margin-bottom: 1rem;
 }
 
 .highlighter-rouge .highlight,
 .highlight {
   background: $code-background;
-  border: none;
   border-radius: 0.25rem;
 }
 

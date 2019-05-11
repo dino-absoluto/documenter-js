@@ -16,7 +16,9 @@
  * limitations under the License.
  *
  */
+/* highlight */
 
+.nf,
 .nx {
   color: $blue;
 }
@@ -34,5 +36,18 @@
 }
 
 .p {
-  color: $black-bright;
+  color: darken($white, 10%);
+}
+
+.si {
+  color: $red;
+}
+
+.s1,
+.s2 {
+  color: $green;
+}
+
+.c1 {
+  color: $white;
 }

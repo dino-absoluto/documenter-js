@@ -18,13 +18,30 @@
  */
 
 h2 {
+  font-size: 2rem;
   margin-top: 4rem;
   border-bottom: 1px solid $border;
 }
 
+h3 {
+  font-size: 1.5rem;
+  &:before {
+    content: '#';
+    font-size: 1.25rem;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: -1.5ch;
+    width: 1.5ch;
+    color: $cyan-bright;
+  }
+}
+
 h4 {
-  background: lighten($foreground, 20%);
-  color: $background;
-  padding: 0.05rem 0.5rem 0.05rem 4rem;
+  font-size: 1.25rem;
+  margin-top: 1rem;
   display: inline-table;
+  background: lighten($foreground, 25%);
+  padding: 0 1ch 0 4rem;
+  color: $background;
+
 }
