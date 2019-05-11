@@ -25,6 +25,7 @@ import {
   FormattedBlock,
   FormattedSpan,
   BlockType,
+  Text,
   Span,
   Link,
   Table,
@@ -63,15 +64,40 @@ export class Renderer {
     return blocks.join('\n\n')
   }
 
+  public renderSpan (nodes: Iterable<Node>): string {
+    let blocks: string[] = []
+    let lastSpan: string | undefined
+    for (const node of nodes) {
+      if (node instanceof Block && node.isParagraph) {
+        if (lastSpan) {
+          blocks.push(lastSpan)
+        }
+        lastSpan = undefined
+        blocks.push(this.renderNode(node))
+      } else {
+        lastSpan = (lastSpan || '') + this.renderNode(node)
+      }
+    }
+    if (lastSpan) {
+      blocks.push(lastSpan)
+    }
+    return blocks.join('<br>')
+  }
+
   public renderNode (node: Node): string {
     switch (node.kind) {
+      case 'TEXT': {
+        const typed = node as Text
+        return typed.text
+      }
       case 'SPAN': {
         const typed = node as Span
-        return typed.text
+        let text = this.renderSpan(typed.children)
+        return text
       }
       case 'FORMATTED_SPAN': {
         const typed = node as FormattedSpan
-        let text = typed.text
+        let text = this.renderSpan(typed.children)
         if (typed.code) {
           text = '`' + text + '`'
         }
@@ -117,7 +143,8 @@ export class Renderer {
       }
       case 'LINK': {
         const typed = node as Link
-        return `[${typed.text}](${typed.href.toString()})`
+        let text = this.renderSpan(typed.children)
+        return `[${text}](${typed.href.toString()})`
       }
       case 'TABLE_CELL': {
         const typed = node as TableCell

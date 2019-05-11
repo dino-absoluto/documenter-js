@@ -27,7 +27,7 @@ export {
   Link,
   Image
 } from './link'
-export { Node, Span, Block } from './node'
+export { Node, Text, Span, Block } from './node'
 export {
   Table,
   TableRow,

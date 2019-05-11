@@ -88,11 +88,11 @@ export abstract class Node implements ChildNode, ParentNode {
 }
 
 /**
- * A text span node.
+ * A text plain text spain.
  */
-export class Span extends Node {
+export class Text extends Node {
   public get kind (): string {
-    return 'SPAN'
+    return 'TEXT'
   }
 
   public text: string
@@ -103,6 +103,24 @@ export class Span extends Node {
 
   protected beforeAdd (): never {
     throw new Error('Span cannot have children.')
+  }
+}
+
+/**
+ * A text span.
+ */
+export class Span extends Node {
+  public get kind (): string {
+    return 'SPAN'
+  }
+
+  public constructor (children: Node[] | string = []) {
+    super()
+    this.append(...(
+      typeof children === 'string'
+        ? [ new Text(children) ]
+        : Array.from(children)
+    ))
   }
 }
 
@@ -118,7 +136,7 @@ export abstract class Block extends Node {
     super()
     this.append(...(
       typeof children === 'string'
-        ? [ new Span(children) ]
+        ? [ new Text(children) ]
         : Array.from(children)
     ))
   }

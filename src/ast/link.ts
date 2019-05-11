@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import { Span } from './node'
+import { Node, Span } from './node'
 
 interface RefStatic {
   kind: 'static'
@@ -87,8 +87,8 @@ export class Link extends Span {
   }
 
   public href: Reference
-  public constructor (text: string, href: ReferenceInit) {
-    super(text)
+  public constructor (children: string | Node[], href: ReferenceInit) {
+    super(children)
     this.href = new Reference(href)
   }
 }
