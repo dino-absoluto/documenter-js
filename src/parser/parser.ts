@@ -112,7 +112,16 @@ export class Parser {
           throw new Error('Cannot resolve link: ' +
             item.getScopedNameWithinPackage())
         }
-        return heading.link
+        let link = heading.link
+        if (heading.parent instanceof Document &&
+          !heading.parent.parent &&
+          (!heading.previous || (
+            heading.parent.first &&
+            heading.parent.first.next === heading))
+        ) {
+          link = link.substring(0, link.lastIndexOf('#'))
+        }
+        return link
       }
       throw new Error('No heading found.')
     }
@@ -211,6 +220,10 @@ export class Parser {
         name = 'index_1'
       }
       doc.path = path.join(pkgName, name)
+    }
+    /* Breadcrumb */
+    if (depth >= 0) {
+      doc.append(this.generateBreadcrumb(item))
     }
     /* Heading */
     let heading
@@ -419,6 +432,27 @@ export class Parser {
       }
     }
     return docs
+  }
+
+  private generateBreadcrumb (item: ApiItem): Node {
+    const block = new FormattedBlock([], { type: BlockType.Blockquote })
+    for (const hItem of item.getHierarchy()) {
+      switch (hItem.kind) {
+        case ApiItemKind.Model:
+        case ApiItemKind.EntryPoint:
+          break
+        default: {
+          block.append(
+            new Span(' / '),
+            new Link(
+              hItem.displayName,
+              this.createLinkGetter(hItem)
+            )
+          )
+        }
+      }
+    }
+    return block
   }
 
   private generateClassTable (item: ApiClass | ApiInterface): Node {

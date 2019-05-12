@@ -30,6 +30,7 @@ $white: #dcd8d5;
 $main: $blue;
 $foreground: $black;
 $background: lighten($white, 14%);
+$background-block: mix($foreground, $background, 8%);
 $border: mix($foreground, $background, 10%);
 
 html, body {
@@ -46,7 +47,7 @@ html, body {
 
 .site-footer,
 .site-header {
-  background: lighten($white, 10%);
+  background: $background-block;
   border: none;
 }
 
@@ -69,7 +70,7 @@ code, pre {
 }
 
 code, pre, .highlighter-rouge {
-  background: mix($foreground, $background, 8%);
+  background: $background-block;
   border-radius: 0.25rem;
 }
 
@@ -134,6 +135,7 @@ blockquote {
   font-size: 1rem;
   border-left: 0.25rem solid mix($foreground, $background, 25%);
   color: mix($foreground, $background);
+  background: mix($background-block, $background);
   font-style: normal;
   font-weight: normal;
   letter-spacing: normal;
