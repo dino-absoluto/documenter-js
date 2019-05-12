@@ -22,6 +22,7 @@ import { Renderer } from './renderer'
 // import * as c from 'kleur'
 import * as fs from 'fs'
 import * as path from 'path'
+import del from 'del'
 import makeDir = require('make-dir')
 /* code */
 
@@ -30,6 +31,7 @@ import makeDir = require('make-dir')
  */
 export interface Options {
   outDir: string
+  depth?: number
 }
 
 /**
@@ -41,13 +43,22 @@ async (modelFiles: string[], options: Options): Promise<void> => {
   for (const file of modelFiles) {
     parser.loadPackage(file)
   }
-  const renderer = new Renderer(parser.parse(1))
+  const renderer = new Renderer(parser.parse(options.depth || 0))
   const { outDir } = options
   await makeDir(outDir)
   const savedCWD = process.cwd()
   try {
     process.chdir(outDir)
-    for (const [fpath, content] of renderer.render()) {
+    const rendered = renderer.render()
+    const dirs = new Set<string>()
+    for (const [fpath] of rendered) {
+      const target = path.join(outDir, fpath + '.md')
+      dirs.add(path.dirname(target))
+    }
+    for (const dir of dirs) {
+      await del(dir)
+    }
+    for (const [fpath, content] of rendered) {
       const target = path.join(outDir, fpath + '.md')
       await makeDir(path.dirname(target))
       fs.writeFileSync(target,
