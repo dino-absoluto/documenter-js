@@ -1,4 +1,4 @@
-/**
+/*
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
  * Copyright 2019 Dino <dinoabsoluto+dev@gmail.com>
@@ -17,7 +17,10 @@
  *
  */
 /* imports */
-import { Node, Span } from './node'
+import {
+  Node,
+  Span
+} from './node'
 
 interface RefStatic {
   kind: 'static'

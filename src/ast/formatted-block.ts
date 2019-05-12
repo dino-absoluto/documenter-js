@@ -1,4 +1,4 @@
-/**
+/*
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
  * Copyright 2019 Dino <dinoabsoluto+dev@gmail.com>
