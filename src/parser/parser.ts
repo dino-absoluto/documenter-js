@@ -298,9 +298,13 @@ export class Parser {
       doc.append(new FormattedBlock(children))
     }
     if (item instanceof ApiDeclaredItem) {
+      let text = item.getExcerptWithModifiers()
+      if (text[text.length - 1] === ';') {
+        text = text.substr(0, text.length - 1)
+      }
       doc.append(
         new Heading('Syntax', 3),
-        new FormattedBlock(item.getExcerptWithModifiers(), {
+        new FormattedBlock(text, {
           type: BlockType.Code,
           subType: 'typescript'
         })
