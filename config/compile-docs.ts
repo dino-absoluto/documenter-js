@@ -22,18 +22,30 @@ import { execFile as execFileCB } from 'child_process'
 import { promisify } from 'util'
 import * as path from 'path'
 import * as c from 'kleur'
+import globby = require('globby')
 
 const execFile = promisify(execFileCB)
 
 ;(async () => {
   const pkgDir = path.resolve(__dirname, '../examples/simple')
   console.log('Run api-extractor on ' + c.cyan('examples/simple'))
-  const data = await execFile('npm', ['run', 'compile:api'], {
-    cwd: pkgDir
-  })
-  console.log(data.stdout)
-  console.log(data.stderr)
-  const docModelFile = path.resolve(__dirname, '../__tmp__/docModel/simple.api.json')
+  {
+    const data = await execFile('npm', ['run', 'compile:api'], {
+      cwd: pkgDir
+    })
+    console.log(data.stdout)
+    console.log(data.stderr)
+  }
+  console.log('Run api-extractor on ' + c.cyan('<current project>'))
+  {
+    const data = await execFile('npm', ['run', 'compile:api'], {
+    })
+    console.log(data.stdout)
+    console.log(data.stderr)
+  }
+  const modelFiles = await globby(
+    path.resolve(__dirname, '../__tmp__/docModel/*.api.json')
+  )
   const outputDir = path.resolve(__dirname, '../docs/api')
-  await documenter(docModelFile, outputDir)
+  await documenter(modelFiles, outputDir)
 })()
