@@ -36,6 +36,9 @@ let initCells: (children: TableCellData[]) => TableCell[]
 let initHeader: (header: TableHeader | string[]) => TableHeader
 let initRow: (row: TableRow | TableCellData[]) => TableRow
 
+let LocalTableRow: Function
+let LocalTableCell: Function
+
 /**
  * A table.
  */
@@ -52,7 +55,7 @@ export class Table extends Block {
 
   protected beforeAdd (newNodes: Node[]): void {
     for (const node of newNodes) {
-      if (!(node instanceof TableRow)) {
+      if (!(node instanceof LocalTableRow)) {
         throw new Error('Table only accept TableRow')
       }
     }
@@ -89,7 +92,7 @@ export class TableRow extends Block {
 
   protected beforeAdd (newNodes: Node[]): void {
     for (const node of newNodes) {
-      if (!(node instanceof TableCell)) {
+      if (!(node instanceof LocalTableCell)) {
         throw new Error('TableRow only accept TableCell')
       }
     }
@@ -99,7 +102,7 @@ export class TableRow extends Block {
     return super.parent as Table
   }
 
-  [PARENT_CONSTRAINT] (newParent: Node) {
+  protected [PARENT_CONSTRAINT] (newParent: Node): void {
     if (!(newParent instanceof Table)) {
       throw new Error('TableRow can only be added to Table.')
     }
@@ -118,7 +121,7 @@ export class TableCell extends Block {
     return super.parent as TableRow
   }
 
-  [PARENT_CONSTRAINT] (newParent: Node) {
+  protected [PARENT_CONSTRAINT] (newParent: Node): void {
     if (!(newParent instanceof TableRow)) {
       throw new Error('TableCell can only be added to TableRow.')
     }
@@ -170,3 +173,6 @@ initCells = (children: (TableCellData)[]): TableCell[] => {
     }
   })
 }
+
+LocalTableRow = TableRow
+LocalTableCell = TableCell

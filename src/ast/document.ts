@@ -50,7 +50,7 @@ export class Document extends Block {
     return super.parent as Document
   }
 
-  [PARENT_CONSTRAINT] (newParent: Node) {
+  protected [PARENT_CONSTRAINT] (newParent: Node): void {
     if (!(newParent instanceof Document)) {
       throw new Error('Document can only be added to Document.')
     }
