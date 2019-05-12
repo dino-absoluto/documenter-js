@@ -518,10 +518,12 @@ export class Parser {
       }
       memTables.addRow(cells)
     }
-    block.append(
-      new Heading('Parameters', 4),
-      memTables
-    )
+    if (memTables.hasRows) {
+      block.append(
+        new Heading('Parameters', 4),
+        memTables
+      )
+    }
     return block
   }
 
