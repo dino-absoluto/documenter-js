@@ -329,7 +329,7 @@ export class Parser {
         text = text.substring(0, text.length - 1)
       }
       doc.append(
-        new Heading('Syntax', 3),
+        // new Heading('Syntax', 3),
         new FormattedBlock(text, {
           type: BlockType.Code,
           subType: 'typescript'
