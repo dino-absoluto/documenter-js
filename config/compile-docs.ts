@@ -17,7 +17,7 @@
  *
  */
 /* imports */
-import documenter from '../src'
+import { generateDocuments } from '../src'
 import { execFile as execFileCB } from 'child_process'
 import { promisify } from 'util'
 import {
@@ -51,8 +51,10 @@ const execFile = promisify(execFileCB)
   const modelFiles = await globby(
     path.resolve(__dirname, '../__tmp__/docModel/*.api.json')
   )
-  const outputDir = path.resolve(__dirname, '../docs/api')
-  await documenter(modelFiles, outputDir)
+  const outDir = path.resolve(__dirname, '../docs/api')
+  await generateDocuments(modelFiles, {
+    outDir
+  })
   /** copy REAMDE */
   {
     const data = readFileSync(path.resolve(__dirname, '../README.md')).toString('utf8')

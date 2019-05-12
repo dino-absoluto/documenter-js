@@ -25,13 +25,24 @@ import * as path from 'path'
 import makeDir = require('make-dir')
 /* code */
 
-export const documenter =
-async (modelFiles: string[], outDir: string): Promise<void> => {
+/**
+ * @beta
+ */
+export interface Options {
+  outDir: string
+}
+
+/**
+ * @beta
+ */
+export const generateDocuments =
+async (modelFiles: string[], options: Options): Promise<void> => {
   const parser = new Parser()
   for (const file of modelFiles) {
     parser.loadPackage(file)
   }
   const renderer = new Renderer(parser.parse(1))
+  const { outDir } = options
   await makeDir(outDir)
   const savedCWD = process.cwd()
   try {

@@ -21,4 +21,4 @@
  * @packageDocumentation
  */
 /* imports */
-export { documenter as default } from './documenter'
+export { generateDocuments, Options } from './documenter'
