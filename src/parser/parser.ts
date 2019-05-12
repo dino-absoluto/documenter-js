@@ -114,7 +114,7 @@ export class Parser {
         }
         return heading.link
       }
-      return ''
+      throw new Error('No heading found.')
     }
   }
 
@@ -341,9 +341,8 @@ export class Parser {
       case ApiItemKind.Property:
       case ApiItemKind.PropertySignature:
       case ApiItemKind.TypeAlias:
-      case ApiItemKind.Variable: {
+      case ApiItemKind.Variable:
         break
-      }
       default: {
         throw new Error('Unsupported ApiItem kind: ' + item.kind)
       }
@@ -391,6 +390,26 @@ export class Parser {
     //   }
     // }
     let docs = [ doc ]
+    switch (item.kind) {
+      case ApiItemKind.Enum:
+        return docs
+      case ApiItemKind.Class:
+      case ApiItemKind.Interface:
+      case ApiItemKind.Method:
+      case ApiItemKind.MethodSignature:
+      case ApiItemKind.Function:
+      case ApiItemKind.Namespace:
+      case ApiItemKind.Package:
+      case ApiItemKind.Property:
+      case ApiItemKind.PropertySignature:
+      case ApiItemKind.TypeAlias:
+      case ApiItemKind.Variable: {
+        break
+      }
+      default: {
+        throw new Error('Unsupported ApiItem kind: ' + item.kind)
+      }
+    }
     for (const mem of this.getMembers(item)) {
       const memDoc = this.parseItem(mem, depth - 1)
       if (depth > 0) {
@@ -472,10 +491,8 @@ export class Parser {
     const memTables = new Table([ 'Member', 'Value', 'Description' ])
     for (const mem of item.members) {
       const cells: (string | Node)[] = [
-        new Link(
-          [ new FormattedSpan(mem.displayName, { code: true }) ],
-          this.createLinkGetter(mem)),
-        mem.initializerExcerpt.text,
+        new FormattedSpan(mem.displayName, { code: true }),
+        new FormattedSpan(mem.initializerExcerpt.text, { code: true }),
         this.parseItemConcise(mem, true)
       ]
       memTables.addRow(cells)
