@@ -32,7 +32,7 @@
 import { Hello } from './hello'
 
 export { Hello }
-export { printMessage } from './hello'
+export { TestClass, printMessage } from './hello'
 
 /**
  * See {@link Hello.print}.

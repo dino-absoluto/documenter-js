@@ -32,7 +32,9 @@ import {
   ApiMethodSignature,
   ApiEnum,
   ApiInterface,
-  ApiParameterListMixin
+  ApiParameterListMixin,
+  ApiConstructor,
+  ApiConstructSignature
 } from '@microsoft/api-extractor-model'
 
 import {
@@ -235,6 +237,10 @@ export class Parser {
     /* Heading */
     let heading
     switch (item.kind) {
+      case ApiItemKind.ConstructSignature:
+      case ApiItemKind.Constructor:
+        heading = new Heading(`${scopedName}`, 2)
+        break
       case ApiItemKind.Class:
         heading = new Heading(`${scopedName} class`, 2)
         break
@@ -352,6 +358,9 @@ export class Parser {
     }
     /* Table */
     switch (item.kind) {
+      case ApiItemKind.ConstructSignature:
+      case ApiItemKind.Constructor:
+        break
       case ApiItemKind.Class: {
         doc.append(this.generateClassTable(item as ApiClass))
         break
@@ -432,6 +441,8 @@ export class Parser {
     switch (item.kind) {
       case ApiItemKind.Enum:
         return docs
+      case ApiItemKind.ConstructSignature:
+      case ApiItemKind.Constructor:
       case ApiItemKind.Class:
       case ApiItemKind.Interface:
       case ApiItemKind.Method:
@@ -505,10 +516,24 @@ export class Parser {
 
   private generateClassTable (item: ApiClass | ApiInterface): Node {
     const block = new FormattedBlock()
+    const constructors: Node[] = []
     const propsTable = new Table([ 'Property', 'Type', 'Description' ])
     const methodsTable = new Table([ 'Method', 'Description' ])
     for (const mem of item.members) {
       switch (mem.kind) {
+        case ApiItemKind.Constructor:
+        case ApiItemKind.ConstructSignature: {
+          const typed = mem as ApiConstructor | ApiConstructSignature
+          const params = typed.parameters.map(param =>
+            `${param.name}: ${param.parameterTypeExcerpt.text}`
+          ).join(', ')
+          constructors.push(new FormattedBlock([
+            new Link(
+              [ new FormattedSpan(`constructor(${params})`, { code: true }) ],
+              this.createLinkGetter(mem))
+          ]))
+          break
+        }
         case ApiItemKind.PropertySignature:
         case ApiItemKind.Property: {
           const typed = mem as ApiProperty | ApiPropertySignature & { isStatic?: unknown }
@@ -556,6 +581,11 @@ export class Parser {
           break
         }
       }
+    }
+    if (constructors.length) {
+      block.append(
+        new Heading('Constructors', 3),
+        new FormattedBlock(constructors))
     }
     if (propsTable.hasRows) {
       block.append(

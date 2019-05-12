@@ -30,6 +30,12 @@
 export class Hello {
   private zero = 0
   /**
+   * @internal
+   */
+  public constructor () {
+    this.zero = 0
+  }
+  /**
    * Number one.
    */
   public one: number = 1
@@ -46,6 +52,19 @@ export class Hello {
 
   public sayHello (i?: number, ...texts: string[]): void {
     console.log(i, texts)
+  }
+}
+
+/**
+ * @beta
+ */
+export class TestClass {
+  public text: string
+  /**
+   * @param text - Text value.
+   */
+  public constructor (text: string) {
+    this.text = text
   }
 }
 
