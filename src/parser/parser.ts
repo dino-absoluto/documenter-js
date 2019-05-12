@@ -42,7 +42,8 @@ import {
   DocSoftBreak,
   DocLinkTag,
   DocDeclarationReference,
-  DocFencedCode
+  DocFencedCode,
+  DocCodeSpan
 } from '@microsoft/tsdoc'
 
 import {
@@ -166,6 +167,10 @@ export class Parser {
           const url = String(link.urlDestination)
           return new Link(link.linkText || url, url)
         }
+      }
+      case DocNodeKind.CodeSpan: {
+        const typed = node as DocCodeSpan
+        return new FormattedSpan(typed.code, { code: true })
       }
       case DocNodeKind.FencedCode: {
         const typed = node as DocFencedCode
@@ -324,6 +329,26 @@ export class Parser {
           subType: 'typescript'
         })
       )
+      const comment = item.tsdocComment
+      if (ApiParameterListMixin.isBaseClassOf(item)) {
+        doc.append(this.generateParamsTable(item as ApiParameterListMixin))
+      } else if (comment && comment.params) {
+        const block = new FormattedBlock()
+        const memTables = new Table([ 'Parameter', 'Description' ])
+        for (const param of comment.params) {
+          const content = this.parseDocNodes(item, param.content.nodes)
+          memTables.addRow([
+            param.parameterName,
+            new FormattedBlock(content)
+          ])
+        }
+        block.append(
+          new Heading('Parameters', 4),
+          memTables)
+        if (memTables.hasRows) {
+          doc.append(block)
+        }
+      }
     }
     /* Table */
     switch (item.kind) {
@@ -342,7 +367,6 @@ export class Parser {
       case ApiItemKind.Method:
       case ApiItemKind.MethodSignature:
       case ApiItemKind.Function: {
-        doc.append(this.generateParamsTable(item as ApiParameterListMixin))
         break
       }
       case ApiItemKind.Namespace: {
