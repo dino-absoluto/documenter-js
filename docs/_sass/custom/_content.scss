@@ -16,60 +16,46 @@
  * limitations under the License.
  *
  */
-/* highlight */
+/* variables */
+$heading: $main;
 
-.nf,
-.nx {
-  color: $blue;
+h2, h4, h5, h6 {
+  color: $heading;
 }
 
-.nt {
-  color: $red;
+h2 {
+  font-size: 2rem;
+  margin-top: 2.5rem;
+  border-bottom: 1px solid $border;
 }
 
-.na,
-.nb {
-  color: $cyan;
+h3 {
+  font-size: 1.5rem;
+  &:before {
+    content: '#';
+    font-size: 1.25rem;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: -1.5ch;
+    width: 1.5ch;
+    color: $heading;
+  }
 }
 
-.nf,
-.nx,
-.nt {
-  font-weight: normal;
+h4, h5, h6 {
+  &:before {
+    content: '';
+    display: inline-block;
+    width: 4em;
+    height: 0;
+    border-bottom: 1px solid mix($heading, $background);
+    vertical-align: middle;
+    margin-right: 0.5ch;
+    margin-left: -1em;
+  }
 }
 
-.k {
-  color: $magenta;
-  font-weight: normal;
-}
-
-.kd {
-  color: $yellow;
-  font-weight: normal;
-}
-
-.o {
-  color: $cyan;
-  font-weight: normal;
-}
-
-.p {
-  color: mix($foreground, $background, 25%);
-}
-
-.si {
-  color: $red;
-}
-
-.s1,
-.s2 {
-  color: $green;
-}
-
-.c1 {
-  color: mix($foreground, $background, 25%);
-}
-
-.mf {
-  color: $yellow;
+h4 {
+  font-size: 1.25rem;
+  margin-top: 1rem;
 }

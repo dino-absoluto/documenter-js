@@ -141,3 +141,14 @@ blockquote {
   letter-spacing: normal;
   padding: 0.5rem 1rem;
 }
+
+.post-list {
+  h3 {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.post-link {
+  display: inline;
+}

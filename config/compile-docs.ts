@@ -20,6 +20,10 @@
 import documenter from '../src'
 import { execFile as execFileCB } from 'child_process'
 import { promisify } from 'util'
+import {
+  readFileSync,
+  writeFileSync
+} from 'fs'
 import * as path from 'path'
 import * as c from 'kleur'
 import globby = require('globby')
@@ -43,9 +47,18 @@ const execFile = promisify(execFileCB)
     console.log(data.stdout)
     console.log(data.stderr)
   }
+  /** generate from api */
   const modelFiles = await globby(
     path.resolve(__dirname, '../__tmp__/docModel/*.api.json')
   )
   const outputDir = path.resolve(__dirname, '../docs/api')
   await documenter(modelFiles, outputDir)
-})()
+  /** copy REAMDE */
+  {
+    const data = readFileSync(path.resolve(__dirname, '../README.md')).toString('utf8')
+    const text = data.substring(data.indexOf('\n') + 1)
+    writeFileSync(path.resolve(__dirname, '../docs/_includes/README.md'), text)
+  }
+})().catch(err => {
+  console.error(c.red(err))
+})

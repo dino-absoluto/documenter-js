@@ -24,5 +24,13 @@
 @import "custom/reset";
 
 .post {
-  @import "custom/_post.scss";
+  @import "custom/post";
+}
+
+.home {
+  @import "custom/home";
+}
+
+.post, .home {
+  @import "custom/content";
 }

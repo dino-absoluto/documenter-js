@@ -6,6 +6,4 @@ layout: home
 title: Documenter
 ---
 
-# documenter
-
-> Document generator.
+{% include README.md %}

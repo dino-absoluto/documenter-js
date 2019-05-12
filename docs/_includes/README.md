@@ -1,4 +1,3 @@
-# @dinoabsoluto/documenter
 
 > Generate documents for typescript projects.
 
