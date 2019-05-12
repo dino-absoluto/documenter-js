@@ -60,7 +60,7 @@ import * as path from 'path'
 
 /* code */
 
-const trimNodes = (nodes: ReadonlyArray<DocNode>): DocNode[] => {
+const trimNodes = (nodes: readonly DocNode[]): DocNode[] => {
   let start = 0
   for (const node of nodes) {
     if (node instanceof DocSoftBreak) {
@@ -181,7 +181,7 @@ export class Parser {
     }
   }
 
-  private parseDocNodes (item: ApiItem, nodes: ReadonlyArray<DocNode>): Node[] {
+  private parseDocNodes (item: ApiItem, nodes: readonly DocNode[]): Node[] {
     return trimNodes(nodes).map(
       (docItem) => this.parseDoc(item, docItem)
     )
