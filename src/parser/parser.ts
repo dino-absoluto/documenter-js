@@ -27,7 +27,9 @@ import {
   ApiDocumentedItem,
   ApiClass,
   ApiProperty,
+  ApiPropertySignature,
   ApiMethod,
+  ApiMethodSignature,
   ApiEnum,
   ApiInterface,
   ApiParameterListMixin
@@ -468,8 +470,9 @@ export class Parser {
     const methodsTable = new Table([ 'Method', 'Description' ])
     for (const mem of item.members) {
       switch (mem.kind) {
+        case ApiItemKind.PropertySignature:
         case ApiItemKind.Property: {
-          const typed = mem as ApiProperty
+          const typed = mem as ApiProperty | ApiPropertySignature & { isStatic?: unknown }
           const nameField = new FormattedBlock([
             new Link(
               [ new FormattedSpan(typed.name, { code: true }) ],
@@ -493,8 +496,9 @@ export class Parser {
           propsTable.addRow(cells)
           break
         }
+        case ApiItemKind.MethodSignature:
         case ApiItemKind.Method: {
-          const typed = mem as ApiMethod
+          const typed = mem as ApiMethod | ApiMethodSignature & { isStatic?: unknown }
           const nameField = new FormattedBlock([
             new Link(
               [ new FormattedSpan(typed.name + '()', { code: true }) ],
