@@ -53,7 +53,7 @@ beforeAll(async () => {
 
 /* code */
 describe('simple', () => {
-  test('simple', () => {
-    documenter(docModelFile, path.resolve('output'))
+  test('simple', async () => {
+    await documenter(docModelFile, path.resolve('output'))
   })
 })

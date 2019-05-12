@@ -25,16 +25,24 @@ import * as path from 'path'
 import makeDir = require('make-dir')
 /* code */
 
-export const documenter = (modelFile: string, outDir: string): void => {
+export const documenter =
+async (modelFile: string, outDir: string): Promise<void> => {
   const parser = new Parser()
   parser.loadPackage(modelFile)
   const renderer = new Renderer(parser.parse(1))
-  for (const [fpath, content] of renderer.render()) {
-    const target = path.join(outDir, fpath + '.md')
-    makeDir.sync(path.dirname(target))
-    fs.writeFileSync(target,
-      '---\ntitle: API\n---\n' +
-      content
-    )
+  await makeDir(outDir)
+  const savedCWD = process.cwd()
+  try {
+    process.chdir(outDir)
+    for (const [fpath, content] of renderer.render()) {
+      const target = path.join(outDir, fpath + '.md')
+      await makeDir(path.dirname(target))
+      fs.writeFileSync(target,
+        '---\ntitle: API\n---\n' +
+        content
+      )
+    }
+  } finally {
+    process.chdir(savedCWD)
   }
 }
