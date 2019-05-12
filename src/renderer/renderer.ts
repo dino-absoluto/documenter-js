@@ -175,8 +175,8 @@ export class Renderer {
       }
       case 'TABLE_CELL': {
         const typed = node as TableCell
-        let text = this.renderBlock(typed.children).trim()
-        return text.replace(/\n/g, '<br>').replace(/\|/g, '\\|')
+        let text = this.renderSpan(typed.children).trim()
+        return text.replace(/\n/g, ' ').replace(/\|/g, '\\|')
       }
       case 'TABLE': {
         const typed = node as Table
