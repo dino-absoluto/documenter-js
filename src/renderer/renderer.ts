@@ -33,8 +33,23 @@ import {
   TableCell,
   TableColumnAlignment
 } from '../ast'
+import * as path from 'path'
 
 /* code */
+
+const getDoc = (node: Node): Document | undefined => {
+  let root = node.parent
+  while (root) {
+    if (root.parent) {
+      root = root.parent
+    } else {
+      if (root instanceof Document) {
+        return root
+      }
+      return undefined
+    }
+  }
+}
 /**
  * The renderer.
  */
@@ -147,7 +162,16 @@ export class Renderer {
       case 'LINK': {
         const typed = node as Link
         let text = this.renderNode(typed, 'SPAN')
-        return `[${text}](${typed.href.toString()})`
+        let href = typed.href.toString()
+        const root = getDoc(typed)
+        if (root) {
+          const file = root.path
+          if (!file) {
+            throw new Error('This document\'s path is not set.')
+          }
+          href = path.relative(path.dirname(file), href)
+        }
+        return `[${text}](${href})`
       }
       case 'TABLE_CELL': {
         const typed = node as TableCell
@@ -215,7 +239,7 @@ export class Renderer {
     }
     const result = new Map<string, string>()
     for (const doc of this.docs) {
-      result.set(doc.path || '<< undefined >>', this.renderNode(doc))
+      result.set(doc.path || '<< undefined >>', this.renderNode(doc) + '\n')
     }
     return result
   }

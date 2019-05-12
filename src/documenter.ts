@@ -25,13 +25,14 @@ import * as path from 'path'
 import makeDir = require('make-dir')
 /* code */
 
-export const documenter = (modelFile: string, dirname: string): void => {
+export const documenter = (modelFile: string, outDir: string): void => {
   const parser = new Parser()
   parser.loadPackage(modelFile)
-  const renderer = new Renderer(parser.parse())
-  makeDir.sync(dirname)
+  const renderer = new Renderer(parser.parse(1))
   for (const [fpath, content] of renderer.render()) {
-    fs.writeFileSync(path.join(dirname, fpath), content)
+    const target = path.join(outDir, fpath + '.md')
+    makeDir.sync(path.dirname(target))
+    fs.writeFileSync(target, content)
     // console.log(c.magenta(fpath) + '\n' + c.green(content))
   }
 }

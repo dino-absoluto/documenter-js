@@ -56,6 +56,7 @@ import {
   Table,
   TableRow
 } from '../ast'
+import * as path from 'path'
 
 /* code */
 
@@ -192,7 +193,7 @@ export class Parser {
     return block
   }
 
-  private parseItem (item: ApiItem): Document {
+  private parseItem (item: ApiItem, depth = 0): Document[] {
     const doc = new Document()
     const pkgName = (() => {
       const pkg = item.getAssociatedPackage()
@@ -202,8 +203,15 @@ export class Parser {
       return 'unknown'
     })()
     const scopedName = item.getScopedNameWithinPackage()
-    doc.path = pkgName + '.md' +
-      (scopedName ? ('#' + scopedName) : '')
+    if (!scopedName) {
+      doc.path = path.join(pkgName, 'index')
+    } else {
+      let name = scopedName.toLowerCase()
+      if (name === 'index') {
+        name = 'index_1'
+      }
+      doc.path = path.join(pkgName, name)
+    }
     /* Heading */
     let heading
     switch (item.kind) {
@@ -378,11 +386,16 @@ export class Parser {
     //     throw new Error('Unsupported ApiItem kind: ' + item.kind)
     //   }
     // }
+    let docs = [ doc ]
     for (const mem of this.getMembers(item)) {
-      const memDoc = this.parseItem(mem)
-      doc.append(memDoc)
+      const memDoc = this.parseItem(mem, depth - 1)
+      if (depth > 0) {
+        docs = docs.concat(memDoc)
+      } else {
+        doc.append(...memDoc)
+      }
     }
-    return doc
+    return docs
   }
 
   private generateClassTable (item: ApiClass | ApiInterface): Node {
@@ -578,11 +591,13 @@ export class Parser {
   }
 
   public parse (depth = 0): Set<Document> {
-    const docs = new Set<Document>()
+    const results = new Set<Document>()
     for (const entry of this.model.members) {
-      const doc = this.parseItem(entry)
-      docs.add(doc)
+      const docs = this.parseItem(entry, depth)
+      for (const doc of docs) {
+        results.add(doc)
+      }
     }
-    return docs
+    return results
   }
 }
