@@ -1,15 +1,3 @@
-/**
- * This is a test package.
- *
- * ```typescript
- * class Hello {
- *   public count: number = 0 + 1
- *   public text?: string = 'hello world!'
- * }
- * ```
- *
- * @packageDocumentation
- */
 /*
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
@@ -28,6 +16,18 @@
  * limitations under the License.
  *
  */
+/**
+ * This is a test package.
+ *
+ * ```typescript
+ * class Hello {
+ *   public count: number = 0 + 1
+ *   public text?: string = 'hello world!'
+ * }
+ * ```
+ *
+ * @packageDocumentation
+ */
 /* imports */
 import { Hello } from './hello'
 
@@ -39,3 +39,49 @@ export { printMessage } from './hello'
  * @public
  */
 export const PI_CONSTANT = 3.14
+
+export const enum Align {
+  /**
+   * Align left.
+   */
+  left = 'left',
+  /**
+   * Align center.
+   */
+  center = 'center',
+  /**
+   * Align right.
+   */
+  right = 'right'
+}
+
+export type ABC = string
+export type Int = number
+
+let n = 0
+
+export function count (): number {
+  return n++
+}
+
+/**
+ * A single point.
+ */
+export interface Point {
+  /**
+   * x coordinate.
+   */
+  x: number
+  /**
+   * y coordinate.
+   */
+  y: number
+}
+
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace test {
+  export const defaultValue = 1
+  export const recall = (): number => 0
+  /** @internal */
+  export const internalValue = 1
+}
