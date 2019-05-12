@@ -689,39 +689,40 @@ export class Parser {
           break
       }
     }
+    const level = 3
     if (classes.hasRows) {
       block.append(
-        new Heading('Classes', 2),
+        new Heading('Classes', level),
         classes)
     }
     if (enums.hasRows) {
       block.append(
-        new Heading('Enumerations', 2),
+        new Heading('Enumerations', level),
         enums)
     }
     if (functions.hasRows) {
       block.append(
-        new Heading('Functions', 2),
+        new Heading('Functions', level),
         functions)
     }
     if (interfaces.hasRows) {
       block.append(
-        new Heading('Interfaces', 2),
+        new Heading('Interfaces', level),
         interfaces)
     }
     if (namespaces.hasRows) {
       block.append(
-        new Heading('Namespaces', 2),
+        new Heading('Namespaces', level),
         namespaces)
     }
     if (vars.hasRows) {
       block.append(
-        new Heading('Variables', 2),
+        new Heading('Variables', level),
         vars)
     }
     if (types.hasRows) {
       block.append(
-        new Heading('Type Aliases', 2),
+        new Heading('Type Aliases', level),
         types)
     }
     return block
