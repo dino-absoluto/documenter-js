@@ -27,14 +27,26 @@ import makeDir = require('make-dir')
 /* code */
 
 /**
+ * Describe options for generateDocuments().
  * @beta
  */
 export interface Options {
+  /**
+   * Output directory, files within maybe deleted.
+   */
   outDir: string
+  /**
+   * Set the maximum depth of breadcrumb navigation.
+   */
   depth?: number
 }
 
 /**
+ * Generate documents from `.api.json` files.
+ * @param modelFiles - Array of `.api.json` files.
+ * @param options - Generation options.
+ * @returns
+ * Return a promise which resolve to `undefined` on completion.
  * @beta
  */
 export const generateDocuments =
