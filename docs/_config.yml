@@ -42,5 +42,4 @@ plugins:
 
 header_pages:
   - about.md
-  - index.md
-  - api/simple/index.md
+  - api/@dinoabsoluto/documenter/index.md

@@ -1,4 +1,4 @@
-/**
+/*
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
  * Copyright 2019 Dino <dinoabsoluto+dev@gmail.com>
@@ -15,6 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
+ */
+/**
+ * See [simple](../../simple) for a preview.
+ * @packageDocumentation
  */
 /* imports */
 export { documenter as default } from './documenter'
