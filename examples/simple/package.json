@@ -4,8 +4,8 @@
   "description": "",
   "main": "index",
   "scripts": {
-    "build:ts": "../../../node_modules/.bin/tsc",
-    "build:api": "../../../node_modules/.bin/api-extractor run --local",
+    "compile:ts": "../../node_modules/.bin/tsc",
+    "compile:api": "npm run compile:ts && ../../node_modules/.bin/api-extractor run --local",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "private": true,

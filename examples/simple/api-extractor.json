@@ -12,10 +12,10 @@
   },
   "docModel": {
     "enabled": true,
-    "apiJsonFilePath": "<projectFolder>/__tmp__/docModel/<unscopedPackageName>.api.json"
+    "apiJsonFilePath": "<projectFolder>/../../__tmp__/docModel/<unscopedPackageName>.api.json"
   },
   "tsdocMetadata": {
-    "enabled": true,
+    "enabled": false,
     "tsdocMetadataFilePath": "<projectFolder>/__tmp__/tsdocMeta/tsdoc-metadata.json"
   }
 }

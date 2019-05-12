@@ -6,9 +6,11 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts src",
     "test": "jest",
-    "prepublishOnly": "npm run build -- --env.prod && npm run build:api",
-    "build": "webpack",
-    "build:api": "tsc -p tsconfig.build.json -d --emitDeclarationOnly && api-extractor run --local --verbose"
+    "prepublishOnly": "npm run compile:prod",
+    "compile": "webpack",
+    "compile:prod": "webpack --env.prod && npm run compile:api",
+    "compile:api": "tsc -p tsconfig.build.json -d --emitDeclarationOnly && api-extractor run --local --verbose",
+    "compile:docs": "ts-node config/compile-docs.ts"
   },
   "repository": {
     "type": "git",

@@ -17,43 +17,23 @@
  *
  */
 /* imports */
-import * as path from 'path'
-import { accessSync } from 'fs'
+import documenter from '../src'
 import { execFile as execFileCB } from 'child_process'
 import { promisify } from 'util'
-import documenter from '../src'
+import * as path from 'path'
+import * as c from 'kleur'
 
 const execFile = promisify(execFileCB)
-const dataDir = path.join(__dirname, 'fixtures/simple')
-const docModelFile = path.join(dataDir, '__tmp__/docModel/simple.api.json')
 
-beforeAll(async () => {
-  try {
-    accessSync(docModelFile)
-    return
-  } catch (err) {
-  }
-  let output = ''
-  {
-    const data = await execFile('npm', ['run', 'build:ts'], {
-      cwd: dataDir
-    })
-    output += data.stdout
-    output += data.stderr
-  }
-  {
-    const data = await execFile('npm', ['run', 'build:api'], {
-      cwd: dataDir
-    })
-    output += data.stdout
-    output += data.stderr
-  }
-  console.log(output)
-}, 20000)
-
-/* code */
-describe('simple', () => {
-  test('simple', async () => {
-    await documenter(docModelFile, path.resolve('output'))
+;(async () => {
+  const pkgDir = path.resolve(__dirname, '../examples/simple')
+  console.log('Run api-extractor on ' + c.cyan('examples/simple'))
+  const data = await execFile('npm', ['run', 'compile:api'], {
+    cwd: pkgDir
   })
-})
+  console.log(data.stdout)
+  console.log(data.stderr)
+  const docModelFile = path.resolve(__dirname, '../__tmp__/docModel/simple.api.json')
+  const outputDir = path.resolve(__dirname, '../docs/api')
+  await documenter(docModelFile, outputDir)
+})()
