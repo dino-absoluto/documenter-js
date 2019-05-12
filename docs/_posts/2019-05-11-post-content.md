@@ -2,8 +2,6 @@
 layout: post
 title: "This post demonstrates post content styles"
 categories: junk
-author: "Bart Simpson"
-meta: "Springfield"
 ---
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce bibendum neque eget nunc mattis eu sollicitudin enim tincidunt. Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit.
@@ -45,6 +43,15 @@ Vestibulum lacus tortor, ultricies id dignissim ac, bibendum in velit. Proin con
   </body>
 </html>
 ```
+
+{% highlight ruby %}
+def print_hi(name)
+  puts "Hi, #{name}"
+end
+print_hi('Tom')
+#=> prints 'Hi, Tom' to STDOUT.
+{% endhighlight %}
+
 
 
 In arcu magna, aliquet vel pretium et, molestie et arcu. Mauris lobortis nulla et felis ullamcorper bibendum. Phasellus et hendrerit mauris.
