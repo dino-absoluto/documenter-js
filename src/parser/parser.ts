@@ -169,7 +169,7 @@ export class Parser {
         const typed = node as DocFencedCode
         let code = typed.code
         if (code[code.length - 1] === '\n') {
-          code = code.substr(0, code.length - 1)
+          code = code.substring(0, code.length - 1)
         }
         return new FormattedBlock(code, {
           type: BlockType.Code,
@@ -313,7 +313,7 @@ export class Parser {
     if (item instanceof ApiDeclaredItem) {
       let text = item.getExcerptWithModifiers()
       if (text[text.length - 1] === ';') {
-        text = text.substr(0, text.length - 1)
+        text = text.substring(0, text.length - 1)
       }
       doc.append(
         new Heading('Syntax', 3),
