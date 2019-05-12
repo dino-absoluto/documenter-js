@@ -40,6 +40,14 @@ export { printMessage } from './hello'
  */
 export const PI_CONSTANT = 3.14
 
+/**
+ * Text alignment.
+ *
+ * @remarks
+ * Actual value is a string.
+ *
+ * @public
+ */
 export const enum Align {
   /**
    * Align left.
@@ -55,17 +63,27 @@ export const enum Align {
   right = 'right'
 }
 
+/**
+ * @public
+ */
 export type ABC = string
+/**
+ * @public
+ */
 export type Int = number
 
 let n = 0
 
+/**
+ * @public
+ */
 export function count (): number {
   return n++
 }
 
 /**
  * A single point.
+ * @public
  */
 export interface Point {
   /**
@@ -78,6 +96,9 @@ export interface Point {
   y: number
 }
 
+/**
+ * @public
+ */
 // eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace test {
   export const defaultValue = 1
