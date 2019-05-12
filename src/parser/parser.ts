@@ -439,25 +439,40 @@ export class Parser {
   private generateBreadcrumb (item: ApiItem): Node {
     const block = new FormattedBlock([], { type: BlockType.Blockquote })
     let first = true
+    const add = (text: string, link?: () => string): void => {
+      if (first) {
+        first = false
+      } else {
+        block.append(new Span(' / '))
+      }
+      if (link) {
+        block.append(new Link(text, link))
+      } else {
+        block.append(new Span(text))
+      }
+    }
     for (const hi of item.getHierarchy()) {
       switch (hi.kind) {
         case ApiItemKind.Model:
         case ApiItemKind.EntryPoint:
           break
-        default: {
-          if (first) {
-            first = false
+        case ApiItemKind.Package: {
+          let name = hi.displayName
+          const fms = name.split('/', 2)
+          if (fms.length === 1) {
+            add(name, this.createLinkGetter(hi))
           } else {
-            block.append(
-              new Span(' / ')
-            )
+            add(fms[0])
+            add(fms[1], this.createLinkGetter(hi))
           }
-          block.append(
-            new Link(
-              hi.displayName,
-              this.createLinkGetter(hi)
-            )
+          break
+        }
+        default: {
+          add(
+            hi.displayName,
+            this.createLinkGetter(hi)
           )
+          break
         }
       }
     }
