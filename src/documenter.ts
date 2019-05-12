@@ -32,7 +32,9 @@ export const documenter = (modelFile: string, outDir: string): void => {
   for (const [fpath, content] of renderer.render()) {
     const target = path.join(outDir, fpath + '.md')
     makeDir.sync(path.dirname(target))
-    fs.writeFileSync(target, content)
-    // console.log(c.magenta(fpath) + '\n' + c.green(content))
+    fs.writeFileSync(target,
+      '---\ntitle: API\n---\n' +
+      content
+    )
   }
 }

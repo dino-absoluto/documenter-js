@@ -43,4 +43,4 @@ plugins:
 header_pages:
   - about.md
   - index.md
-  - api/index.md
+  - api/simple/index.md
