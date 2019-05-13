@@ -27,7 +27,7 @@ import makeDir = require('make-dir')
 /* code */
 
 /**
- * Describe options for generateDocuments().
+ * Describe options for `generateDocuments()`.
  * @beta
  */
 export interface Options {
