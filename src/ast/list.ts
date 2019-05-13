@@ -27,6 +27,12 @@ export class List extends Block {
     return 'LIST'
   }
 
+  public numbered: boolean
+  public constructor (children: Node[] | string = [], numbered = false) {
+    super(children)
+    this.numbered = numbered
+  }
+
   protected beforeAdd (newNodes: Node[]): void {
     for (const node of newNodes) {
       if (!(node instanceof LocalListItem)) {

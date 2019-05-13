@@ -31,7 +31,9 @@ import {
   Table,
   TableHeader,
   TableCell,
-  TableColumnAlignment
+  TableColumnAlignment,
+  List,
+  ListItem
 } from '../ast'
 import * as path from 'path'
 
@@ -227,6 +229,31 @@ export class Renderer {
         return texts.map((row) => {
           return row.join('|') + '|'
         }).join('\n')
+      }
+      case 'LIST_ITEM': {
+        const typed = node as ListItem
+        let text = this.renderBlock(typed.children).trim()
+        return text.replace(/\n\n/g, '<br>\n')
+          .split('\n')
+          .map(t => `  ${t}`)
+          .join('\n')
+      }
+      case 'LIST': {
+        let items = []
+        const typed = node as List
+        let count = 0
+        for (const item of typed.children) {
+          let text = this.renderBlock(item.children).trim()
+          text = text
+            .replace(/\n\n/g, '<br>\n')
+            .replace(/\n/g, '\n  ')
+          if (typed.numbered) {
+            items.push(`${++count}. ` + text)
+          } else {
+            items.push('- ' + text)
+          }
+        }
+        return items.join('\n')
       }
       default:
         throw new Error('Unsupported Node type: ' + node.kind)

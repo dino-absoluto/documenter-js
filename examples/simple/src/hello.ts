@@ -1,4 +1,4 @@
-/**
+/*
  * @author Dino <dinoabsoluto+dev@gmail.com>
  * @license
  * Copyright 2019 Dino <dinoabsoluto+dev@gmail.com>
@@ -61,9 +61,18 @@ export class Hello {
 export class TestClass {
   public text: string
   /**
+   * Constructs a new instance of the `TestClass` class.
    * @param text - Text value.
+   * @param callback - Callback function.
    */
-  public constructor (text: string) {
+  public constructor (text: string, callback: () => void)
+  /**
+   * Constructs a new instance of the `TestClass` class.
+   * @param text - Text value.
+   * @param inverse - Reverse the text.
+   */
+  public constructor (text: string, inverse: boolean)
+  public constructor (text: string, inverse: unknown) {
     this.text = text
   }
 }

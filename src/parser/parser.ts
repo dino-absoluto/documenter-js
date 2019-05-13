@@ -59,7 +59,9 @@ import {
   LineBreak,
   Link,
   Table,
-  TableRow
+  TableRow,
+  List,
+  ListItem
 } from '../ast'
 import * as path from 'path'
 
@@ -527,7 +529,7 @@ export class Parser {
           const params = typed.parameters.map(param =>
             `${param.name}: ${param.parameterTypeExcerpt.text}`
           ).join(', ')
-          constructors.push(new FormattedBlock([
+          constructors.push(new ListItem([
             new Link(
               [ new FormattedSpan(`constructor(${params})`, { code: true }) ],
               this.createLinkGetter(mem))
@@ -585,7 +587,7 @@ export class Parser {
     if (constructors.length) {
       block.append(
         new Heading('Constructors', 3),
-        new FormattedBlock(constructors))
+        new List(constructors, true))
     }
     if (propsTable.hasRows) {
       block.append(
