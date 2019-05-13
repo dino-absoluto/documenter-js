@@ -1,5 +1,7 @@
 ---
-title: API
+{
+  "title": "API"
+}
 ---
 > @dinoabsoluto / [documenter](index)
 
@@ -52,10 +54,12 @@ export interface Options
 
 ### Properties
 
-Property                                 | Type     | Description                                     |
------------------------------------------|----------|-------------------------------------------------|
-[`depth`](index#optionsdepth-property)   | `number` | Set the maximum depth of breadcrumb navigation. |
-[`outDir`](index#optionsoutdir-property) | `string` | Output directory, files within maybe deleted.   |
+Property                                           | Type                        | Description                                     |
+---------------------------------------------------|-----------------------------|-------------------------------------------------|
+[`depth`](index#optionsdepth-property)             | `number`                    | Set the maximum depth of breadcrumb navigation. |
+[`extraFiles`](index#optionsextrafiles-property)   | `Map<string, string>`       | Extra files.                                    |
+[`frontMatter`](index#optionsfrontmatter-property) | `(fpath: string) => object` | Front matter generator.                         |
+[`outDir`](index#optionsoutdir-property)           | `string`                    | Output directory, files within maybe deleted.   |
 
 ## Options.depth property
 
@@ -64,6 +68,32 @@ Set the maximum depth of breadcrumb navigation.
 ```typescript
 depth?: number
 ```
+
+## Options.extraFiles property
+
+Extra files.
+
+```typescript
+extraFiles?: Map<string, string>
+```
+
+## Options.frontMatter property
+
+Front matter generator.
+
+```typescript
+frontMatter?: (fpath: string) => object
+```
+
+#### Parameters
+
+Parameter | Description         |
+----------|---------------------|
+fpath     | Path of input file. |
+
+#### Return value
+
+ Return an `object` representing the front matter.
 
 ## Options.outDir property
 

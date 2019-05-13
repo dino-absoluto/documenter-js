@@ -39,6 +39,17 @@ export interface Options {
    * Set the maximum depth of breadcrumb navigation.
    */
   depth?: number
+  /**
+   * Extra files.
+   */
+  extraFiles?: Map<string, string>
+  /**
+   * Front matter generator.
+   * @param fpath - Path of input file.
+   * @returns
+   * Return an `object` representing the front matter.
+   */
+  frontMatter?: (fpath: string) => object
 }
 
 /**
@@ -62,6 +73,11 @@ export async function generateDocuments
   try {
     process.chdir(outDir)
     const rendered = renderer.render()
+    if (options.extraFiles) {
+      for (const [fname, content] of options.extraFiles) {
+        rendered.set(fname, content)
+      }
+    }
     const dirs = new Set<string>()
     for (const [fpath] of rendered) {
       const target = path.join(outDir, fpath + '.md')
@@ -71,12 +87,15 @@ export async function generateDocuments
       await del(dir)
       await makeDir(dir)
     }
-    for (const [fpath, content] of rendered) {
+    for (let [fpath, content] of rendered) {
       const target = path.join(outDir, fpath + '.md')
-      fs.writeFileSync(target,
-        '---\ntitle: API\n---\n' +
-        content
-      )
+      if (options.frontMatter) {
+        content = '---\n' +
+          JSON.stringify(options.frontMatter(fpath), null, 2) +
+          '\n---\n' +
+          content
+      }
+      fs.writeFileSync(target, content)
     }
   } finally {
     process.chdir(savedCWD)

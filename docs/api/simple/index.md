@@ -1,5 +1,7 @@
 ---
-title: API
+{
+  "title": "API"
+}
 ---
 > [simple](index)
 

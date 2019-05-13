@@ -53,7 +53,12 @@ const execFile = promisify(execFileCB)
   )
   const outDir = path.resolve(__dirname, '../docs/api')
   await generateDocuments(modelFiles, {
-    outDir
+    outDir,
+    frontMatter: (_fpath: string) => {
+      return {
+        title: 'API'
+      }
+    }
   })
   /** copy REAMDE */
   {
