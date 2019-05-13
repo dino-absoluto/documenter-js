@@ -69,10 +69,10 @@ export async function generateDocuments
     }
     for (const dir of dirs) {
       await del(dir)
+      await makeDir(dir)
     }
     for (const [fpath, content] of rendered) {
       const target = path.join(outDir, fpath + '.md')
-      await makeDir(path.dirname(target))
       fs.writeFileSync(target,
         '---\ntitle: API\n---\n' +
         content
