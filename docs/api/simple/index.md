@@ -31,9 +31,9 @@ Enumeration                 | Description     |
 
 ### Functions
 
-Function                        | Description |
---------------------------------|-------------|
-[`count`](index#count-function) |             |
+Function                          | Description |
+----------------------------------|-------------|
+[`count()`](index#count-function) |             |
 
 ### Interfaces
 

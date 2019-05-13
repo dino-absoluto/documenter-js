@@ -655,7 +655,12 @@ export class Parser {
     for (const mem of this.getMembers(container)) {
       const row = new TableRow([
         new Link(
-          [ new FormattedSpan(mem.displayName, { code: true }) ],
+          [ new FormattedSpan(
+            ApiParameterListMixin.isBaseClassOf(mem)
+              ? mem.displayName + '()'
+              : mem.displayName,
+            { code: true })
+          ],
           this.createLinkGetter(mem)),
         this.parseItemConcise(mem)
       ])

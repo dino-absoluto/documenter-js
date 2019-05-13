@@ -9,9 +9,9 @@ See [simple](../../simple) for a preview.
 
 ### Functions
 
-Function                                                | Description                                |
---------------------------------------------------------|--------------------------------------------|
-[`generateDocuments`](index#generatedocuments-function) | Generate documents from `.api.json` files. |
+Function                                                  | Description                                |
+----------------------------------------------------------|--------------------------------------------|
+[`generateDocuments()`](index#generatedocuments-function) | Generate documents from `.api.json` files. |
 
 ### Interfaces
 
