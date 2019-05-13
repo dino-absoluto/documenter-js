@@ -7,17 +7,38 @@ title: API
 
 See [simple](../../simple) for a preview.
 
+### Functions
+
+Function                                                | Description                                |
+--------------------------------------------------------|--------------------------------------------|
+[`generateDocuments`](index#generatedocuments-function) | Generate documents from `.api.json` files. |
+
 ### Interfaces
 
 Interface                            | Description                                 |
 -------------------------------------|---------------------------------------------|
 [`Options`](index#options-interface) | Describe options for `generateDocuments()`. |
 
-### Variables
+## generateDocuments() function
 
-Variable                                                | Description                                |
---------------------------------------------------------|--------------------------------------------|
-[`generateDocuments`](index#generatedocuments-variable) | Generate documents from `.api.json` files. |
+**Unstable:** `beta`
+
+Generate documents from `.api.json` files.
+
+```typescript
+export declare function generateDocuments(modelFiles: string[], options: Options): Promise<void>
+```
+
+#### Parameters
+
+Parameter    | Type       | Description                 |
+-------------|------------|-----------------------------|
+`modelFiles` | `string[]` | Array of `.api.json` files. |
+`options`    | `Options`  | Generation options.         |
+
+#### Return value
+
+ Return a promise which resolve to `undefined` on completion.
 
 ## Options interface
 
@@ -51,24 +72,3 @@ Output directory, files within maybe deleted.
 ```typescript
 outDir: string
 ```
-
-## generateDocuments variable
-
-**Unstable:** `beta`
-
-Generate documents from `.api.json` files.
-
-```typescript
-generateDocuments: (modelFiles: string[], options: Options) => Promise<void>
-```
-
-#### Parameters
-
-Parameter  | Description                 |
------------|-----------------------------|
-modelFiles | Array of `.api.json` files. |
-options    | Generation options.         |
-
-#### Return value
-
- Return a promise which resolve to `undefined` on completion.

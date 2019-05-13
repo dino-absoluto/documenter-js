@@ -1,7 +1,7 @@
 
 > Generate documents for typescript projects.
 
-![Travis CI](https://travis-ci.com/dino-absoluto/documenter-js.svg?branch=master)
+[![Build Status](https://travis-ci.com/dino-absoluto/documenter-js.svg?branch=master)](https://travis-ci.com/dino-absoluto/documenter-js)
 
 
 ## Install

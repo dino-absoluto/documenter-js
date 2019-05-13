@@ -49,8 +49,8 @@ export interface Options {
  * Return a promise which resolve to `undefined` on completion.
  * @beta
  */
-export const generateDocuments =
-async (modelFiles: string[], options: Options): Promise<void> => {
+export async function generateDocuments
+(modelFiles: string[], options: Options): Promise<void> {
   const parser = new Parser()
   for (const file of modelFiles) {
     parser.loadPackage(file)
