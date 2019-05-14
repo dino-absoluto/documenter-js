@@ -353,7 +353,7 @@ export class Parser {
         block.append(
           new Heading('Parameters', 4),
           memTables)
-        if (memTables.hasRows) {
+        if (memTables.rows) {
           doc.append(block)
         }
       }
@@ -589,12 +589,12 @@ export class Parser {
         new Heading('Constructors', 3),
         new List(constructors, true))
     }
-    if (propsTable.hasRows) {
+    if (propsTable.rows) {
       block.append(
         new Heading('Properties', 3),
         propsTable)
     }
-    if (methodsTable.hasRows) {
+    if (methodsTable.rows) {
       block.append(
         new Heading('Methods', 3),
         methodsTable)
@@ -634,7 +634,7 @@ export class Parser {
       }
       memTables.addRow(cells)
     }
-    if (memTables.hasRows) {
+    if (memTables.rows) {
       block.append(
         new Heading('Parameters', 4),
         memTables
@@ -697,37 +697,37 @@ export class Parser {
       }
     }
     const level = 3
-    if (classes.hasRows) {
+    if (classes.rows) {
       block.append(
         new Heading('Classes', level),
         classes)
     }
-    if (enums.hasRows) {
+    if (enums.rows) {
       block.append(
         new Heading('Enumerations', level),
         enums)
     }
-    if (functions.hasRows) {
+    if (functions.rows) {
       block.append(
         new Heading('Functions', level),
         functions)
     }
-    if (interfaces.hasRows) {
+    if (interfaces.rows) {
       block.append(
         new Heading('Interfaces', level),
         interfaces)
     }
-    if (namespaces.hasRows) {
+    if (namespaces.rows) {
       block.append(
         new Heading('Namespaces', level),
         namespaces)
     }
-    if (vars.hasRows) {
+    if (vars.rows) {
       block.append(
         new Heading('Variables', level),
         vars)
     }
-    if (types.hasRows) {
+    if (types.rows) {
       block.append(
         new Heading('Type Aliases', level),
         types)

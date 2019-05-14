@@ -29,6 +29,8 @@ describe('Document', () => {
     const h1 = new Heading('example')
     const h2 = new Heading('example')
     const h3 = new Heading('Hello World!')
+    expect(doc.kind).toBe('DOCUMENT')
+    expect(doc.isParagraph).toBe(true)
     doc.append(group)
     doc.append(h1)
     group.append(h2)
@@ -70,5 +72,6 @@ describe('Document', () => {
     expect(doc1.path).toBe('simple.md')
     doc1.path = 'doc1.md'
     expect(doc1.path).toBe('simple.md')
+    expect(() => doc1.generateIDs()).toThrow()
   })
 })

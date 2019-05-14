@@ -73,8 +73,8 @@ export class Table extends Block {
     this.append(...rows.map(initRow))
   }
 
-  public get hasRows (): boolean {
-    return this.first !== this.last
+  public get rows (): number {
+    return this.children.length - 1
   }
 }
 
@@ -98,10 +98,6 @@ export class TableRow extends Block {
     }
   }
 
-  public get parent (): Table | undefined {
-    return super.parent as Table
-  }
-
   protected [PARENT_CONSTRAINT] (newParent: Node): void {
     if (!(newParent instanceof Table)) {
       throw new Error('TableRow can only be added to Table.')
@@ -115,10 +111,6 @@ export class TableRow extends Block {
 export class TableCell extends Block {
   public get kind (): string {
     return 'TABLE_CELL'
-  }
-
-  public get parent (): TableRow | undefined {
-    return super.parent as TableRow
   }
 
   protected [PARENT_CONSTRAINT] (newParent: Node): void {
@@ -143,6 +135,10 @@ export class TableHeader extends TableRow {
   ) {
     super(children)
     this.aligns = aligns
+  }
+
+  public remove (): void {
+    throw new Error('TableHeader cannot be removed.')
   }
 }
 
