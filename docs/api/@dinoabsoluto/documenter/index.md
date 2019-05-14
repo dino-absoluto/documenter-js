@@ -3,7 +3,7 @@
   "title": "API"
 }
 ---
-> @dinoabsoluto / [documenter](index)
+> @dinoabsoluto / [documenter]()
 
 # @dinoabsoluto/documenter package
 
@@ -11,15 +11,15 @@ See [simple](../../simple) for a preview.
 
 ### Functions
 
-Function                                                  | Description                                |
-----------------------------------------------------------|--------------------------------------------|
-[`generateDocuments()`](index#generatedocuments-function) | Generate documents from `.api.json` files. |
+Function                                             | Description                                |
+-----------------------------------------------------|--------------------------------------------|
+[`generateDocuments()`](#generatedocuments-function) | Generate documents from `.api.json` files. |
 
 ### Interfaces
 
-Interface                            | Description                                 |
--------------------------------------|---------------------------------------------|
-[`Options`](index#options-interface) | Describe options for `generateDocuments()`. |
+Interface                       | Description                                 |
+--------------------------------|---------------------------------------------|
+[`Options`](#options-interface) | Describe options for `generateDocuments()`. |
 
 ## generateDocuments() function
 
@@ -54,12 +54,12 @@ export interface Options
 
 ### Properties
 
-Property                                           | Type                        | Description                                     |
----------------------------------------------------|-----------------------------|-------------------------------------------------|
-[`depth`](index#optionsdepth-property)             | `number`                    | Set the maximum depth of breadcrumb navigation. |
-[`extraFiles`](index#optionsextrafiles-property)   | `Map<string, string>`       | Extra files.                                    |
-[`frontMatter`](index#optionsfrontmatter-property) | `(fpath: string) => object` | Front matter generator.                         |
-[`outDir`](index#optionsoutdir-property)           | `string`                    | Output directory, files within maybe deleted.   |
+Property                                      | Type                        | Description                                     |
+----------------------------------------------|-----------------------------|-------------------------------------------------|
+[`depth`](#optionsdepth-property)             | `number`                    | Set the maximum depth of breadcrumb navigation. |
+[`extraFiles`](#optionsextrafiles-property)   | `Map<string, string>`       | Extra files.                                    |
+[`frontMatter`](#optionsfrontmatter-property) | `(fpath: string) => object` | Front matter generator.                         |
+[`outDir`](#optionsoutdir-property)           | `string`                    | Output directory, files within maybe deleted.   |
 
 ## Options.depth property
 

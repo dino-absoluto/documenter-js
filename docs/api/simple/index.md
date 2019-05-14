@@ -3,7 +3,7 @@
   "title": "API"
 }
 ---
-> [simple](index)
+> [simple]()
 
 # simple package
 
@@ -20,48 +20,48 @@ class Hello {
 
 ### Classes
 
-Class                                | Description              |
--------------------------------------|--------------------------|
-[`Hello`](index#hello-class)         | Describe a Hello object. |
-[`TestClass`](index#testclass-class) |                          |
+Class                           | Description              |
+--------------------------------|--------------------------|
+[`Hello`](#hello-class)         | Describe a Hello object. |
+[`TestClass`](#testclass-class) |                          |
 
 ### Enumerations
 
-Enumeration                 | Description     |
-----------------------------|-----------------|
-[`Align`](index#align-enum) | Text alignment. |
+Enumeration            | Description     |
+-----------------------|-----------------|
+[`Align`](#align-enum) | Text alignment. |
 
 ### Functions
 
-Function                          | Description |
-----------------------------------|-------------|
-[`count()`](index#count-function) |             |
+Function                     | Description |
+-----------------------------|-------------|
+[`count()`](#count-function) |             |
 
 ### Interfaces
 
-Interface                        | Description     |
----------------------------------|-----------------|
-[`Point`](index#point-interface) | A single point. |
+Interface                   | Description     |
+----------------------------|-----------------|
+[`Point`](#point-interface) | A single point. |
 
 ### Namespaces
 
-Namespace                      | Description |
--------------------------------|-------------|
-[`test`](index#test-namespace) |             |
+Namespace                 | Description |
+--------------------------|-------------|
+[`test`](#test-namespace) |             |
 
 ### Variables
 
-Variable                                      | Description                                 |
-----------------------------------------------|---------------------------------------------|
-[`PI_CONSTANT`](index#pi_constant-variable)   | See [Hello.print](index#helloprint-method). |
-[`printMessage`](index#printmessage-variable) | Print a welcome message.                    |
+Variable                                 | Description                            |
+-----------------------------------------|----------------------------------------|
+[`PI_CONSTANT`](#pi_constant-variable)   | See [Hello.print](#helloprint-method). |
+[`printMessage`](#printmessage-variable) | Print a welcome message.               |
 
 ### Type Aliases
 
-Type Alias              | Description |
-------------------------|-------------|
-[`ABC`](index#abc-type) |             |
-[`Int`](index#int-type) |             |
+Type Alias         | Description |
+-------------------|-------------|
+[`ABC`](#abc-type) |             |
+[`Int`](#int-type) |             |
 
 ## Align enum
 
@@ -101,16 +101,16 @@ export declare class Hello
 
 ### Properties
 
-Property                         | Type     | Description |
----------------------------------|----------|-------------|
-[`one`](index#helloone-property) | `number` | Number one. |
+Property                    | Type     | Description |
+----------------------------|----------|-------------|
+[`one`](#helloone-property) | `number` | Number one. |
 
 ### Methods
 
-Method                                     | Description      |
--------------------------------------------|------------------|
-[`print()`](index#helloprint-method)       | Print a message. |
-[`sayHello()`](index#hellosayhello-method) |                  |
+Method                                | Description      |
+--------------------------------------|------------------|
+[`print()`](#helloprint-method)       | Print a message. |
+[`sayHello()`](#hellosayhello-method) |                  |
 
 ### Remarks
 
@@ -167,10 +167,10 @@ export interface Point
 
 ### Properties
 
-Property                     | Type     | Description   |
------------------------------|----------|---------------|
-[`x`](index#pointx-property) | `number` | x coordinate. |
-[`y`](index#pointy-property) | `number` | y coordinate. |
+Property                | Type     | Description   |
+------------------------|----------|---------------|
+[`x`](#pointx-property) | `number` | x coordinate. |
+[`y`](#pointy-property) | `number` | y coordinate. |
 
 ## Point.x property
 
@@ -198,10 +198,10 @@ export declare namespace test
 
 ### Variables
 
-Variable                                          | Description |
---------------------------------------------------|-------------|
-[`defaultValue`](index#testdefaultvalue-variable) |             |
-[`recall`](index#testrecall-variable)             |             |
+Variable                                     | Description |
+---------------------------------------------|-------------|
+[`defaultValue`](#testdefaultvalue-variable) |             |
+[`recall`](#testrecall-variable)             |             |
 
 ## test.defaultValue variable
 
@@ -227,14 +227,14 @@ export declare class TestClass
 
 ### Constructors
 
-1. [`constructor(text: string, callback: () => void)`](index#testclassconstructor)
-2. [`constructor(text: string, inverse: boolean)`](index#testclassconstructor-1)
+1. [`constructor(text: string, callback: () => void)`](#testclassconstructor)
+2. [`constructor(text: string, inverse: boolean)`](#testclassconstructor-1)
 
 ### Properties
 
-Property                               | Type     | Description |
----------------------------------------|----------|-------------|
-[`text`](index#testclasstext-property) | `string` |             |
+Property                          | Type     | Description |
+----------------------------------|----------|-------------|
+[`text`](#testclasstext-property) | `string` |             |
 
 ## TestClass.(constructor)()
 
@@ -290,7 +290,7 @@ export declare type Int = number
 
 ## PI_CONSTANT variable
 
-See [Hello.print](index#helloprint-method).
+See [Hello.print](#helloprint-method).
 
 ```typescript
 PI_CONSTANT = 3.14

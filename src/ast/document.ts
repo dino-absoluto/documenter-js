@@ -20,6 +20,7 @@
 import { PARENT_CONSTRAINT } from '@dinoabsoluto/tree'
 import { Node, Block } from './node'
 import { Heading } from './heading'
+import * as path from 'path'
 import toId from '../utils/to-id'
 
 function * traverse (node: Node): IterableIterator<Node> {
@@ -72,7 +73,7 @@ export class Document extends Block {
     if (this.parent) {
       throw new Error('Document.generateIDs cannot be called from sub document.')
     }
-    const { path: fpath } = this
+    let { path: fpath } = this
     const idCount: { [id: string]: number } = {}
     if (fpath === undefined) {
       for (const node of traverse(this)) {
@@ -81,6 +82,9 @@ export class Document extends Block {
         }
       }
     } else {
+      if (path.basename(fpath) === 'index') {
+        fpath = path.dirname(fpath) + '/'
+      }
       for (const node of traverse(this)) {
         if (node instanceof Heading) {
           const id = toId(node.text)
