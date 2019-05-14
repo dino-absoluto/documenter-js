@@ -67,7 +67,10 @@ describe('Text', () => {
 describe('Span', () => {
   test('simple', () => {
     const node = new Span()
+    const n1 = new Span('Hello')
     expect(node.kind).toBe('SPAN')
+    node.append(n1)
+    expect(node.first).toBe(n1)
   })
 })
 
