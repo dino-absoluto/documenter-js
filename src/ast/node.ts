@@ -62,18 +62,24 @@ export abstract class Node implements ChildNode, ParentNode {
   }
 
   public before (...nodes: Node[]): void {
-    this.beforeAdd(nodes)
-    Tree.before(this, ...nodes)
+    if (this.parent) {
+      this.parent.beforeAdd(nodes)
+      Tree.before(this, ...nodes)
+    }
   }
 
   public after (...nodes: Node[]): void {
-    this.beforeAdd(nodes)
-    Tree.after(this, ...nodes)
+    if (this.parent) {
+      this.parent.beforeAdd(nodes)
+      Tree.after(this, ...nodes)
+    }
   }
 
   public replaceWith (...nodes: Node[]): void {
-    this.beforeAdd(nodes)
-    Tree.replaceWith(this, ...nodes)
+    if (this.parent) {
+      this.parent.beforeAdd(nodes)
+      Tree.replaceWith(this, ...nodes)
+    }
   }
 
   public append (...nodes: Node[]): void {
